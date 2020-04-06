@@ -1,6 +1,6 @@
 const Login = { template: '<login></login>' }
 const Homepage = { template : '<homepage></homepage>' }
-
+const TipPregleda = { template : '<tipPregleda></tipPregleda>' }
 const router = new VueRouter({
 	  mode: 'hash',
 	  routes: [
@@ -18,7 +18,12 @@ const router = new VueRouter({
 	    	path: "/homepage",
 	    	name : "homepage",
 	    	component : Homepage
-	    } 
+	    },
+	    {
+	    	path: "/tipPregleda",
+	    	name : "tipPregleda",
+	    	component : TipPregleda
+	    }  
 	  ]
 });
 
