@@ -30,4 +30,5 @@ public class TipPregledaService {
 		tipPregledaRepository.deleteById(id);
 	}
 
+
 }
