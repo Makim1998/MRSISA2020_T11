@@ -21,7 +21,6 @@ public class StavkaCenovnika {
 	@Column 
 	private String usluga;
 	@ManyToOne
-	@JoinColumn(name="cenovnik",nullable=false)
 	private Cenovnik cenovnik;
 	
 	public Cenovnik getCenovnik() {

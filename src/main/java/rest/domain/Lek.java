@@ -18,8 +18,7 @@ public class Lek {
 	private Integer id;
 	@Column
 	private String naziv;
-	@ManyToMany
-	@JoinColumn(name="recepti", nullable=false)
+	@ManyToMany(mappedBy="lekovi")
 	private Set<Recept> recepti=new HashSet<Recept>();
 	
 	public Lek() {

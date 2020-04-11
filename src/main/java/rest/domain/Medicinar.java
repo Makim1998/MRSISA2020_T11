@@ -2,9 +2,15 @@ package rest.domain;
 
 import java.util.ArrayList;
 
+import javax.persistence.Entity;
+import javax.persistence.ManyToOne;
+
+@Entity
 public class Medicinar extends User {
 	
 	private ArrayList<GodisnjiOdmor> godisnji;
+	
+	@ManyToOne
 	private Klinika klinika;
 	
 	public ArrayList<GodisnjiOdmor> getGodisnji() {

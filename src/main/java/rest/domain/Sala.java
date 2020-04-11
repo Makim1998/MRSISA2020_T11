@@ -21,7 +21,6 @@ public class Sala {
 	@Column
 	private String naziv;
 	@ManyToOne
-	@JoinColumn(name="klinika",nullable=false)
 	private Klinika klinika;
 	
 	public Sala() {

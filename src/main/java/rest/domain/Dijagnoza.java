@@ -19,14 +19,11 @@ public class Dijagnoza {
 	private Integer id;
 	@Column
 	private String opis;
-	@OneToMany
-	@JoinColumn(name="recepti", nullable=false)
+	@OneToMany(mappedBy="dijagnoza")
 	private Set<Recept> recepti =new HashSet<Recept>();
 	@ManyToOne
-	@JoinColumn(name="lekar", nullable=false)
 	private Lekar lekar;
-	@OneToMany
-	@JoinColumn(name="pregledi", nullable=false)
+	@OneToMany(mappedBy="dijagnoza")
 	private Set<Pregled> pregledi =new HashSet<Pregled>();
 	
 	public Dijagnoza() {

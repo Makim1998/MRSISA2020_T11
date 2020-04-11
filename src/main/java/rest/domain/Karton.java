@@ -24,8 +24,7 @@ public class Karton {
 	@OneToOne
 	@JoinColumn(name="pacijent", nullable=false)
 	private Pacijent pacijent;
-	@OneToMany
-	@JoinColumn(name="pregledi", nullable=false)
+	@OneToMany(mappedBy="karton")
 	private Set<Pregled> pregledi =new HashSet<Pregled>();
 	
 	public Set<Pregled> getPregledi() {

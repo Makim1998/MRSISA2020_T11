@@ -1,9 +1,14 @@
 package rest.domain;
 
 import java.util.ArrayList;
+import java.util.HashSet;
+import java.util.List;
+import java.util.Set;
 
 import javax.persistence.Entity;
 import javax.persistence.Id;
+import javax.persistence.OneToMany;
+import javax.persistence.OneToOne;
 
 @Entity
 public class Klinika {
@@ -13,8 +18,10 @@ public class Klinika {
 	private String naziv;
 	private String adresa;
 	private String opis;
+	@OneToOne(mappedBy="klinika")
 	private Cenovnik cenovnik;
-	private ArrayList<Sala> sale;
+	@OneToMany(mappedBy="klinika")
+	private Set<Sala> sale = new HashSet<Sala>();
 	
 	public int getId() {
 		return id;
@@ -46,21 +53,7 @@ public class Klinika {
 	public void setCenovnik(Cenovnik cenovnik) {
 		this.cenovnik = cenovnik;
 	}
-	public ArrayList<Sala> getSale() {
-		return sale;
-	}
-	public void setSale(ArrayList<Sala> sale) {
-		this.sale = sale;
-	}
-	
-	public Klinika(String naziv, String adresa, String opis, Cenovnik cenovnik, ArrayList<Sala> sale) {
-		super();
-		this.naziv = naziv;
-		this.adresa = adresa;
-		this.opis = opis;
-		this.cenovnik = cenovnik;
-		this.sale = sale;
-	}
+
 	
 	public Klinika() {
 	}

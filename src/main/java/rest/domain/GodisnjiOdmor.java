@@ -23,7 +23,6 @@ public class GodisnjiOdmor {
 	@Column
 	private Boolean prihvacenOdbijen;
 	@ManyToOne
-	@JoinColumn(name="medicinar", nullable=false)
 	private Medicinar medicinar;
 	
 	public GodisnjiOdmor() {

@@ -2,6 +2,8 @@ package rest.domain;
 
 import java.util.ArrayList;
 
+import javax.persistence.Entity;
+@Entity
 public class Lekar extends Medicinar{
 
 	private ArrayList<Pregled> pregledi;

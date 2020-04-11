@@ -18,13 +18,10 @@ public class Recept {
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Integer id;
 	@ManyToMany
-	@JoinColumn(name="lekovi", nullable=false)
 	private Set<Lek> lekovi=new HashSet<Lek>();
 	@ManyToOne
-	@JoinColumn(name="sestra", nullable=false)
 	private MedicinskaSestra sestra;
 	@ManyToOne
-	@JoinColumn(name="lekovi", nullable=false)
 	private Dijagnoza dijagnoza;
 	
 	public Recept() {
