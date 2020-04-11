@@ -16,8 +16,8 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import rest.domain.TipPregleda;
-import rest.domain.TipPregledaDTO;
 import rest.domain.User;
+import rest.dto.TipPregledaDTO;
 import rest.service.TipPregledaService;
 
 @RestController

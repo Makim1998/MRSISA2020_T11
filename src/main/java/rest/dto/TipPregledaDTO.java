@@ -1,4 +1,6 @@
-package rest.domain;
+package rest.dto;
+
+import rest.domain.TipPregleda;
 
 public class TipPregledaDTO {
 

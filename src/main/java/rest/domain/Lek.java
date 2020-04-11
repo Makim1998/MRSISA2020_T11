@@ -9,23 +9,27 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
-import javax.persistence.ManyToOne;
-import javax.persistence.OneToMany;
-import javax.persistence.OneToOne;
+import javax.persistence.ManyToMany;
 
 @Entity
-public class Sala {
+public class Lek {
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Integer id;
 	@Column
 	private String naziv;
-	@ManyToOne
-	@JoinColumn(name="klinika",nullable=false)
-	private Klinika klinika;
+	@ManyToMany
+	@JoinColumn(name="recepti", nullable=false)
+	private Set<Recept> recepti=new HashSet<Recept>();
 	
-	public Sala() {
+	public Lek() {
 		super();
+	}
+	public Set<Recept> getRecepti() {
+		return recepti;
+	}
+	public void setRecepti(Set<Recept> recepti) {
+		this.recepti = recepti;
 	}
 	public Integer getId() {
 		return id;
@@ -39,11 +43,4 @@ public class Sala {
 	public void setNaziv(String naziv) {
 		this.naziv = naziv;
 	}
-	public Klinika getKlinika() {
-		return klinika;
-	}
-	public void setKlinika(Klinika klinika) {
-		this.klinika = klinika;
-	}
-	
 }
