@@ -1,8 +1,17 @@
 package rest.domain;
 
+import javax.persistence.Entity;
+import javax.persistence.Id;
+
+@Entity
 public class User {
+	
+	@Id
+	private int id;
 	private String username;
     private String password;
+    private String ime;
+    private String prezime;
     
 	public User() {
 	}
@@ -13,6 +22,7 @@ public class User {
 		this.password = password;
 	}
 
+	
 	public String getUsername() {
 		return username;
 	}
@@ -25,5 +35,30 @@ public class User {
 	public void setPassword(String password) {
 		this.password = password;
 	}
+
+	public int getId() {
+		return id;
+	}
+
+	public void setId(int id) {
+		this.id = id;
+	}
+
+	public String getIme() {
+		return ime;
+	}
+
+	public void setIme(String ime) {
+		this.ime = ime;
+	}
+
+	public String getPrezime() {
+		return prezime;
+	}
+
+	public void setPrezime(String prezime) {
+		this.prezime = prezime;
+	}
+	
 
 }
