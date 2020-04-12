@@ -1,6 +1,8 @@
 package rest.domain;
 
 import java.util.ArrayList;
+import java.util.HashSet;
+import java.util.Set;
 
 import javax.persistence.OneToMany;
 
@@ -10,18 +12,11 @@ import javax.persistence.Entity;
 public class MedicinskaSestra extends Medicinar {
 	
 	@OneToMany(mappedBy="sestra")
-	private ArrayList<Recept> recepti;
+	private Set<Recept> recepti=new HashSet<Recept>();
 
-	public ArrayList<Recept> getRecepti() {
-		return recepti;
-	}
 
-	public void setRecepti(ArrayList<Recept> recepti) {
-		this.recepti = recepti;
-	}
-
-	public MedicinskaSestra(String username, String password, ArrayList<GodisnjiOdmor> godisnji, Klinika klinika,
-			ArrayList<Recept> recepti) {
+	public MedicinskaSestra(String username, String password, Set<GodisnjiOdmor> godisnji, Klinika klinika,
+			Set<Recept> recepti) {
 		super(username, password, godisnji, klinika);
 		this.recepti = recepti;
 	}

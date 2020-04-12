@@ -1,8 +1,10 @@
 package rest.domain;
 
 import javax.persistence.Column;
+import javax.persistence.Entity;
 import javax.persistence.OneToOne;
 
+@Entity
 public class Pacijent extends User{
 	
 	@Column

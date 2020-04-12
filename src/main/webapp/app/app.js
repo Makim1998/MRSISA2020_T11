@@ -1,5 +1,7 @@
 const Login = { template: '<login></login>' }
 const Homepage = { template : '<homepage></homepage>' }
+const AdministratorKlinike = { template : '<administratorKlinike></administratorKlinike>' }
+const Sala = { template : '<sala></sala>' }
 const TipPregleda = { template : '<tipPregleda></tipPregleda>' }
 const router = new VueRouter({
 	  mode: 'hash',
@@ -18,6 +20,16 @@ const router = new VueRouter({
 	    	path: "/homepage",
 	    	name : "homepage",
 	    	component : Homepage
+	    },
+	    {
+	    	path: "/administratorKlinike",
+	    	name : "administratorKlinike",
+	    	component : AdministratorKlinike
+	    },
+	    {
+	    	path: "/sala",
+	    	name : "sala",
+	    	component : Sala
 	    },
 	    {
 	    	path: "/tipPregleda",

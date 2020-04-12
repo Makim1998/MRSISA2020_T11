@@ -1,6 +1,8 @@
 package rest.domain;
 
 import java.util.ArrayList;
+import java.util.HashSet;
+import java.util.Set;
 
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
@@ -11,17 +13,10 @@ import javax.persistence.Entity;
 public class Medicinar extends User {
 	
 	@OneToMany(mappedBy="medicinar")
-	private ArrayList<GodisnjiOdmor> godisnji;
+	private Set<GodisnjiOdmor> godisnji= new HashSet<GodisnjiOdmor>();
 	@ManyToOne
 	private Klinika klinika;
 	
-	public ArrayList<GodisnjiOdmor> getGodisnji() {
-		return godisnji;
-	}
-	
-	public void setGodisnji(ArrayList<GodisnjiOdmor> godisnji) {
-		this.godisnji = godisnji;
-	}
 	
 	public Klinika getKlinika() {
 		return klinika;
@@ -34,7 +29,7 @@ public class Medicinar extends User {
 	public Medicinar() {
 	}
 
-	public Medicinar(String username, String password, ArrayList<GodisnjiOdmor> godisnji, Klinika klinika) {
+	public Medicinar(String username, String password, Set<GodisnjiOdmor> godisnji, Klinika klinika) {
 		super(username, password);
 		this.godisnji = godisnji;
 		this.klinika = klinika;
