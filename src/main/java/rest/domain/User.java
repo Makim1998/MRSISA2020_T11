@@ -1,5 +1,6 @@
 package rest.domain;
 
+import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.Id;
 
@@ -8,9 +9,13 @@ public class User {
 	
 	@Id
 	private int id;
+	@Column
 	private String username;
+	@Column
     private String password;
+	@Column
     private String ime;
+	@Column
     private String prezime;
     
 	public User() {

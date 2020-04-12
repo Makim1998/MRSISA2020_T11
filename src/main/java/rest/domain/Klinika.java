@@ -2,20 +2,40 @@ package rest.domain;
 
 import java.util.ArrayList;
 
+import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.OneToMany;
+import javax.persistence.OneToOne;
 
 @Entity
 public class Klinika {
 	
 	@Id
 	private int id;
+	@Column
 	private String naziv;
+	@Column
 	private String adresa;
+	@Column
 	private String opis;
+	@OneToOne
+	@JoinColumn(name="cenovnik", nullable=false)
 	private Cenovnik cenovnik;
+	@OneToOne
+	@JoinColumn(name="administrator", nullable=false)
+	private AdministratorKlinike administrator;
+	@OneToMany
+	@JoinColumn(name="sale", nullable=false)
 	private ArrayList<Sala> sale;
 	
+	public AdministratorKlinike getAdministrator() {
+		return administrator;
+	}
+	public void setAdministrator(AdministratorKlinike administrator) {
+		this.administrator = administrator;
+	}
 	public int getId() {
 		return id;
 	}
@@ -53,12 +73,15 @@ public class Klinika {
 		this.sale = sale;
 	}
 	
-	public Klinika(String naziv, String adresa, String opis, Cenovnik cenovnik, ArrayList<Sala> sale) {
+	public Klinika(int id, String naziv, String adresa, String opis, Cenovnik cenovnik,
+			AdministratorKlinike administrator, ArrayList<Sala> sale) {
 		super();
+		this.id = id;
 		this.naziv = naziv;
 		this.adresa = adresa;
 		this.opis = opis;
 		this.cenovnik = cenovnik;
+		this.administrator = administrator;
 		this.sale = sale;
 	}
 	

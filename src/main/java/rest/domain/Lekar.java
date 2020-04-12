@@ -2,8 +2,13 @@ package rest.domain;
 
 import java.util.ArrayList;
 
+import javax.persistence.JoinColumn;
+import javax.persistence.OneToMany;
+
 public class Lekar extends Medicinar{
 
+	@OneToMany
+	@JoinColumn(name="pregledi")
 	private ArrayList<Pregled> pregledi;
 
 	public ArrayList<Pregled> getPregledi() {

@@ -3,7 +3,6 @@ package rest.domain;
 import java.util.HashSet;
 import java.util.Set;
 
-import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
@@ -26,6 +25,9 @@ public class Recept {
 	@ManyToOne
 	@JoinColumn(name="lekovi", nullable=false)
 	private Dijagnoza dijagnoza;
+	@ManyToOne
+	@JoinColumn(name="administrator", nullable=false)
+	private AdministratorKlinickogCentra administrator;
 	
 	public Recept() {
 		super();
@@ -54,4 +56,11 @@ public class Recept {
 	public void setDijagnoza(Dijagnoza dijagnoza) {
 		this.dijagnoza = dijagnoza;
 	}
+	public AdministratorKlinickogCentra getAdministrator() {
+		return administrator;
+	}
+	public void setAdministrator(AdministratorKlinickogCentra administrator) {
+		this.administrator = administrator;
+	}
+
 }
