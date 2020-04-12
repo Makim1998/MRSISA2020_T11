@@ -3,29 +3,42 @@ package rest.domain;
 import java.util.HashSet;
 import java.util.Set;
 
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.OneToMany;
 import javax.persistence.OneToOne;
 
 @Entity
 public class Klinika {
-	
 	@Id
-	private int id;
-	@Column
+	@GeneratedValue(strategy = GenerationType.IDENTITY)
+	private Integer id;
+	
+	@Column(name ="naziv", unique = true, nullable = false)
 	private String naziv;
-	@Column
+	
+	@Column(name ="adresa", unique = true, nullable = false)
 	private String adresa;
-	@Column
+	
+	@Column(name ="opis", nullable = false)
 	private String opis;
+	
 	@OneToOne(mappedBy="klinika")
 	private AdministratorKlinike administrator;
+	
 	@OneToOne(mappedBy="klinika")
 	private Cenovnik cenovnik;
-	@OneToMany(mappedBy="klinika")
+	
+	@OneToMany(mappedBy="klinika",fetch = FetchType.LAZY, cascade = CascadeType.ALL)
 	private Set<Sala> sale = new HashSet<Sala>();
+	
+	@OneToMany(mappedBy="klinika",fetch = FetchType.LAZY, cascade = CascadeType.ALL)
+	private Set<Medicinar> zaposleni = new HashSet<Medicinar>();
 	
 	public AdministratorKlinike getAdministrator() {
 		return administrator;

@@ -1,20 +1,21 @@
 package rest.domain;
 
-import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.Set;
 
+import javax.persistence.CascadeType;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.OneToMany;
 
 @Entity
 public class AdministratorKlinickogCentra extends User{
 
-	@OneToMany(mappedBy="administrator")
+	@OneToMany(mappedBy="AdministratorKlinickogCentra",fetch = FetchType.LAZY, cascade = CascadeType.ALL)
 	private Set<Recept> recepti=new HashSet<Recept>();
 	
-	@OneToMany(mappedBy="admin")
-	private Set<AdministratorKlinike> administratori=new HashSet<AdministratorKlinike>();
+	@OneToMany(mappedBy="AdministratorKlinickogCentra",fetch = FetchType.LAZY, cascade = CascadeType.ALL)
+	private Set<AdministratorKlinike> administratori = new HashSet<AdministratorKlinike>();
 	
 
 	

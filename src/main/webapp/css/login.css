@@ -19,3 +19,9 @@
     font-size: 15px;
     font-weight: bold;
 }
+#vrsta{
+	display: table 
+}
+.celija{
+	display: table-cell
+}

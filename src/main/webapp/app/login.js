@@ -20,6 +20,9 @@ Vue.component("login", {
 		<div class="form-group">
     		<button type="button" class="btn btn-primary btn-block" v-on:click="login()">Log in</button>
 		</div>
+		<div class="form-group">
+    		<router-link :to="{ name: 'register'}" >Register</router-link>
+		</div>
     </form>
 </div>		  
 `
