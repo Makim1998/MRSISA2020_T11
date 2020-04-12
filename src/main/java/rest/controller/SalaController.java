@@ -16,60 +16,64 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import rest.domain.TipPregleda;
+import rest.domain.Sala;
+import rest.domain.SalaDTO;
 import rest.domain.User;
-import rest.dto.TipPregledaDTO;
-import rest.service.TipPregledaService;
+import rest.service.SalaService;
+
 
 @RestController
-@RequestMapping("rest/tipPregleda")
-public class TipPregledaController {
+
+@RequestMapping("rest/sala")
+public class SalaController {
 	@Autowired
-	private TipPregledaService tipPregledaService;
+	
+	private SalaService salaService;
 
 	@GetMapping
-	public ResponseEntity<List<TipPregledaDTO>> getTipPregleda() {
+	public ResponseEntity<List<SalaDTO>> getSala() {
 		
-		List<TipPregleda> tipovi = tipPregledaService.findAll();
+		List<Sala> sale = salaService.findAll();
 
-		List<TipPregledaDTO> tipoviDTO = new ArrayList<>();
-		for (TipPregleda s : tipovi) {
-			tipoviDTO.add(new TipPregledaDTO(s));
+		List<SalaDTO> saleDTO = new ArrayList<>();
+		for (Sala s : sale) {
+			saleDTO.add(new SalaDTO(s));
 		}
 
-		return new ResponseEntity<>(tipoviDTO, HttpStatus.OK);
+		return new ResponseEntity<>(saleDTO, HttpStatus.OK);
 	}
 	@PutMapping(value="/izmeni",consumes = "application/json")
-	public ResponseEntity<TipPregledaDTO> updateCourse(@RequestBody TipPregledaDTO tipPregledaDTO) {
+	public ResponseEntity<SalaDTO> updateCourse(@RequestBody SalaDTO salaDTO) {
 
 		// a course must exist
-		TipPregleda tipPregleda = tipPregledaService.findOne(tipPregledaDTO.getId());
+		Sala sala = salaService.findOne(salaDTO.getId());
 
-		if (tipPregleda == null) {
+		if (sala == null) {
 			return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
 		}
 
-		tipPregleda.setNaziv(tipPregledaDTO.getNaziv());
+		sala.setNaziv(salaDTO.getNaziv());
 
-		tipPregleda = tipPregledaService.save(tipPregleda);
-		return new ResponseEntity<>(new TipPregledaDTO(tipPregleda), HttpStatus.OK);
+		sala = salaService.save(sala);
+		return new ResponseEntity<>(new SalaDTO(sala), HttpStatus.OK);
 	}
 	@DeleteMapping(value = "/{id}")
-	public ResponseEntity<Void> deleteCourse(@PathVariable Long id) {
+	public ResponseEntity<Void> deleteCourse(@PathVariable Integer id) {
 
-		TipPregleda tip = tipPregledaService.findOne(id);
+		Sala sala = salaService.findOne(id);
 		System.out.println("brisanje");
-		if (tip != null) {
-			tipPregledaService.remove(id);
+		if (sala != null) {
+			salaService.remove(id);
 			return new ResponseEntity<>(HttpStatus.OK);
 		} else {
 			return new ResponseEntity<>(HttpStatus.NOT_FOUND);
 		}
 	}
 	@PostMapping(value="/dodaj",consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
-	public ResponseEntity<User> login(@RequestBody TipPregledaDTO tipPregledaDTO){
-		TipPregleda tipPregleda=new TipPregleda(tipPregledaDTO.getId(),tipPregledaDTO.getNaziv());
-		tipPregledaService.save(tipPregleda);
+	public ResponseEntity<User> login(@RequestBody SalaDTO salaDTO){
+		Sala sala= new Sala(salaDTO.getId(),salaDTO.getNaziv());
+		salaService.save(sala);
 		return new ResponseEntity<>(HttpStatus.OK);
 	}
 }
+

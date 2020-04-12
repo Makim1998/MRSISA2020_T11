@@ -20,6 +20,10 @@ public class Sala {
 	public Sala() {
 		super();
 	}
+	public Sala(Integer id2, String naziv2) {
+		id=id2;
+		naziv=naziv2;
+	}
 	public Integer getId() {
 		return id;
 	}
