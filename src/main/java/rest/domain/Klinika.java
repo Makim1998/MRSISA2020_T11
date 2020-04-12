@@ -1,11 +1,11 @@
 package rest.domain;
 
-import java.util.ArrayList;
+import java.util.HashSet;
+import java.util.Set;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.Id;
-import javax.persistence.JoinColumn;
 import javax.persistence.OneToMany;
 import javax.persistence.OneToOne;
 
@@ -20,15 +20,12 @@ public class Klinika {
 	private String adresa;
 	@Column
 	private String opis;
-	@OneToOne
-	@JoinColumn(name="cenovnik", nullable=false)
-	private Cenovnik cenovnik;
-	@OneToOne
-	@JoinColumn(name="administrator", nullable=false)
+	@OneToOne(mappedBy="klinika")
 	private AdministratorKlinike administrator;
-	@OneToMany
-	@JoinColumn(name="sale", nullable=false)
-	private ArrayList<Sala> sale;
+	@OneToOne(mappedBy="klinika")
+	private Cenovnik cenovnik;
+	@OneToMany(mappedBy="klinika")
+	private Set<Sala> sale = new HashSet<Sala>();
 	
 	public AdministratorKlinike getAdministrator() {
 		return administrator;
@@ -66,15 +63,15 @@ public class Klinika {
 	public void setCenovnik(Cenovnik cenovnik) {
 		this.cenovnik = cenovnik;
 	}
-	public ArrayList<Sala> getSale() {
+	public Set<Sala> getSale() {
 		return sale;
 	}
-	public void setSale(ArrayList<Sala> sale) {
+	public void setSale(Set<Sala> sale) {
 		this.sale = sale;
 	}
 	
 	public Klinika(int id, String naziv, String adresa, String opis, Cenovnik cenovnik,
-			AdministratorKlinike administrator, ArrayList<Sala> sale) {
+			AdministratorKlinike administrator, Set<Sala> sale) {
 		super();
 		this.id = id;
 		this.naziv = naziv;

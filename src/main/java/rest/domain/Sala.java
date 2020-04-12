@@ -5,7 +5,6 @@ import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
-import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 
 @Entity
@@ -16,7 +15,6 @@ public class Sala {
 	@Column
 	private String naziv;
 	@ManyToOne
-	@JoinColumn(name="klinika",nullable=false)
 	private Klinika klinika;
 	
 	public Sala() {

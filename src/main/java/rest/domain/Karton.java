@@ -9,9 +9,9 @@ import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
-import javax.persistence.JoinColumn;
 import javax.persistence.OneToMany;
 import javax.persistence.OneToOne;
+
 @Entity
 public class Karton {
 	@Id
@@ -21,11 +21,9 @@ public class Karton {
 	private Date datumRodjenja;
 	@Column
 	private String krvnaGrupa;
-	@OneToOne
-	@JoinColumn(name="pacijent", nullable=false)
+	@OneToOne(mappedBy="karton")
 	private Pacijent pacijent;
-	@OneToMany
-	@JoinColumn(name="pregledi", nullable=false)
+	@OneToMany(mappedBy="karton")
 	private Set<Pregled> pregledi =new HashSet<Pregled>();
 	
 	public Set<Pregled> getPregledi() {

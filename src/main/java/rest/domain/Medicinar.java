@@ -2,17 +2,17 @@ package rest.domain;
 
 import java.util.ArrayList;
 
-import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 
+import javax.persistence.Entity;
+
+@Entity
 public class Medicinar extends User {
 	
-	@OneToMany
-	@JoinColumn(name="godisnji")
+	@OneToMany(mappedBy="medicinar")
 	private ArrayList<GodisnjiOdmor> godisnji;
 	@ManyToOne
-	@JoinColumn(name="klinika")
 	private Klinika klinika;
 	
 	public ArrayList<GodisnjiOdmor> getGodisnji() {

@@ -1,7 +1,6 @@
 package rest.domain;
 
 import javax.persistence.Column;
-import javax.persistence.JoinColumn;
 import javax.persistence.OneToOne;
 
 public class Pacijent extends User{
@@ -15,7 +14,6 @@ public class Pacijent extends User{
 	@Column
 	private String drzava;
 	@OneToOne
-	@JoinColumn(name="karton")
 	private Karton karton;
 	
 	public String getOsiguranika() {

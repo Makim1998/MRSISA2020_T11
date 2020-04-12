@@ -8,9 +8,9 @@ import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
-import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
+
 @Entity
 public class Dijagnoza {
 	
@@ -19,14 +19,11 @@ public class Dijagnoza {
 	private Integer id;
 	@Column
 	private String opis;
-	@OneToMany
-	@JoinColumn(name="recepti", nullable=false)
+	@OneToMany(mappedBy="dijagnoza")
 	private Set<Recept> recepti =new HashSet<Recept>();
 	@ManyToOne
-	@JoinColumn(name="lekar", nullable=false)
 	private Lekar lekar;
-	@OneToMany
-	@JoinColumn(name="pregledi", nullable=false)
+	@OneToMany(mappedBy="dijagnoza")
 	private Set<Pregled> pregledi =new HashSet<Pregled>();
 	
 	public Dijagnoza() {

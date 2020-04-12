@@ -7,37 +7,40 @@ import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
-import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToOne;
 
 @Entity 
 public class Pregled {
+
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Integer id;
+	
 	@Column
 	private Date datum;
+	
 	@Column
 	private int trajanje;
+	
 	@ManyToOne
-	@JoinColumn(name="tip",referencedColumnName = "naziv" ,nullable=false)
 	private TipPregleda tip;
+	
 	@ManyToOne
-	@JoinColumn(name="karton", nullable=false)
 	private Karton karton;
+	
 	@OneToOne
-	@JoinColumn(name="cena", nullable=false)
 	private StavkaCenovnika cena;
+	
 	@ManyToOne
-	@JoinColumn(name="sala", nullable=false)
 	private Sala sala;
+	
 	@ManyToOne
-	@JoinColumn(name="lekar", nullable=false)
 	private Lekar lekar;
+	
 	@ManyToOne
-	@JoinColumn(name="dijagnoza", nullable=false)
 	private Dijagnoza dijagnoza;
+	
 	public Integer getId() {
 		return id;
 	}
@@ -95,5 +98,4 @@ public class Pregled {
 	public Pregled() {
 		super();
 	}
-	
 }

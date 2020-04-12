@@ -20,11 +20,10 @@ public class TipPregleda {
 		this.id =1l;
 		this.naziv = "NEEEE";
 	}
-	public TipPregleda(Long id, String naziv) {
-		this.id = id;
-		this.naziv = naziv;
+	public TipPregleda(Long id2, String naziv2) {
+		id=id2;
+		naziv=naziv2;
 	}
-
 	public Long getId() {
 		return id;
 	}

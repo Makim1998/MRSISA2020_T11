@@ -2,16 +2,13 @@ package rest.domain;
 
 import java.util.ArrayList;
 
-import javax.persistence.JoinColumn;
 import javax.persistence.OneToMany;
 
 public class AdministratorKlinickogCentra extends User{
 
-	@OneToMany
-	@JoinColumn(name="recepti")
+	@OneToMany(mappedBy="administrator")
 	private ArrayList<Recept> recepti;
-	@OneToMany
-	@JoinColumn(name="administratori")
+	@OneToMany(mappedBy="admin")
 	private ArrayList<AdministratorKlinike> administratori;
 	
 	

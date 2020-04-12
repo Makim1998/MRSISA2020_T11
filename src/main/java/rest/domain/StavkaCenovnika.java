@@ -5,7 +5,6 @@ import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
-import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 
 @Entity
@@ -18,7 +17,6 @@ public class StavkaCenovnika {
 	@Column 
 	private String usluga;
 	@ManyToOne
-	@JoinColumn(name="cenovnik",nullable=false)
 	private Cenovnik cenovnik;
 	
 	public Cenovnik getCenovnik() {
