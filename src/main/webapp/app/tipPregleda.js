@@ -38,9 +38,10 @@ Vue.component("tipPregleda", {
    </table>
    <div class="form-popup" id="myForm">
     <h6>Izmena ID:{{this.id}}</h6>
-    <td><input type="text" class="psw" v-model="izmena" placeholder="Naziv pregleda"></td>
-    <button type="button" class="btn maal" v-on:click="izmeni()">Potvrdi</button>
-    <button type="button" class="btn zaal" v-on:click="otkazi()">Otkazi</button>
+    <input type="text" class="psw" v-model="izmena" placeholder="Naziv pregleda">
+    </br></br>
+	<button type="button" class="btn maal leftbutton" v-on:click="izmeni()">Potvrdi</button>
+	<button type="button" class="btn zaal rightbutton" v-on:click="otkazi()">Otkazi</button>
    </div>
 </div>
 </div>		  
