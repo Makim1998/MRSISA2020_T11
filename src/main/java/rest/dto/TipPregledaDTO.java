@@ -26,7 +26,7 @@ public class TipPregledaDTO {
 
 
 
-	public String getNaziv() {
+	public  String getNaziv() {
 		return naziv;
 	}
 
