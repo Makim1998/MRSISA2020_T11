@@ -5,6 +5,7 @@ const Sala = { template : '<sala></sala>' }
 const TipPregleda = { template : '<tipPregleda></tipPregleda>' }
 const Register = { template : '<register></register>' }
 const Lekar = { template : '<lekar></lekar>' }
+const Klinika = { template: '<klinika></klinika>' }
 
 const router = new VueRouter({
 	  mode: 'hash',
@@ -48,7 +49,12 @@ const router = new VueRouter({
 	    	path: "/tipPregleda",
 	    	name : "tipPregleda",
 	    	component : TipPregleda
-	    }  
+	    },
+	    {
+	    	path: "/klinika",
+	    	name : "klinika",
+	    	component : Klinika
+	    }
 	  ]
 });
 

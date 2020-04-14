@@ -13,6 +13,8 @@ import javax.persistence.Id;
 import javax.persistence.OneToMany;
 import javax.persistence.OneToOne;
 
+import rest.dto.KlinikaDTO;
+
 @Entity
 public class Klinika {
 	@Id
@@ -96,6 +98,15 @@ public class Klinika {
 	}
 	
 	public Klinika() {
+	}
+	
+	public Klinika(KlinikaDTO dto) {
+		this.id = dto.id;
+		this.adresa = dto.adresa;
+		this.naziv = dto.naziv;
+		this.opis = dto.opis;
+		this.administrator = new AdministratorKlinike();
+		this.cenovnik = new Cenovnik();
 	}
 	
 }
