@@ -28,7 +28,7 @@ public class Klinika {
 	@Column(name ="opis", nullable = false)
 	private String opis;
 	
-	@OneToOne(mappedBy="klinika")
+	@OneToOne(mappedBy="klinika",fetch = FetchType.LAZY, cascade = CascadeType.ALL)
 	private AdministratorKlinike administrator;
 	
 	@OneToOne(mappedBy="klinika")

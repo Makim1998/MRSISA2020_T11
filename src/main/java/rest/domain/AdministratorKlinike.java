@@ -10,10 +10,7 @@ public class AdministratorKlinike extends User{
 	
 	@ManyToOne(cascade = CascadeType.ALL, fetch = FetchType.LAZY)
 	private Klinika klinika;
-	@ManyToOne(cascade = CascadeType.ALL, fetch = FetchType.LAZY)
-
-	private AdministratorKlinickogCentra admin;
-
+	
 	public Klinika getKlinika() {
 		return klinika;
 	}
@@ -22,13 +19,7 @@ public class AdministratorKlinike extends User{
 		this.klinika = klinika;
 	}
 	
-	public AdministratorKlinickogCentra getAdmin() {
-		return admin;
-	}
 
-	public void setAdmin(AdministratorKlinickogCentra admin) {
-		this.admin = admin;
-	}
 
 	public AdministratorKlinike(String username, String password, Klinika klinika) {
 		super(username, password);

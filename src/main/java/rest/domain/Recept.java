@@ -19,7 +19,7 @@ public class Recept {
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Integer id;
 	@ManyToMany
-	@JoinTable(name = "lek", joinColumns = @JoinColumn(name = "recept_id", referencedColumnName = "id"), inverseJoinColumns = @JoinColumn(name = "teacher_id", referencedColumnName = "id"))
+	@JoinTable(name = "lecenje", joinColumns = @JoinColumn(name = "recept_id", referencedColumnName = "id"), inverseJoinColumns = @JoinColumn(name = "lek_id", referencedColumnName = "id"))
 	private Set<Lek> lekovi=new HashSet<Lek>();
 	@ManyToOne
 	private MedicinskaSestra sestra;

@@ -6,15 +6,17 @@ import java.util.Set;
 import javax.persistence.CascadeType;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
+import javax.persistence.JoinColumn;
 import javax.persistence.OneToMany;
 
 @Entity
 public class AdministratorKlinickogCentra extends User{
 
-	@OneToMany(mappedBy="AdministratorKlinickogCentra",fetch = FetchType.LAZY, cascade = CascadeType.ALL)
+	@OneToMany(mappedBy="administrator",fetch = FetchType.LAZY, cascade = CascadeType.ALL)
 	private Set<Recept> recepti=new HashSet<Recept>();
 	
-	@OneToMany(mappedBy="AdministratorKlinickogCentra",fetch = FetchType.LAZY, cascade = CascadeType.ALL)
+	@OneToMany(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
+	@JoinColumn(name = "administratori", referencedColumnName = "id")
 	private Set<AdministratorKlinike> administratori = new HashSet<AdministratorKlinike>();
 	
 
