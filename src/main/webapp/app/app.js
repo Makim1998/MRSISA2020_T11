@@ -3,7 +3,10 @@ const Homepage = { template : '<homepage></homepage>' }
 const AdministratorKlinike = { template : '<administratorKlinike></administratorKlinike>' }
 const Sala = { template : '<sala></sala>' }
 const TipPregleda = { template : '<tipPregleda></tipPregleda>' }
+const Register = { template : '<register></register>' }
 const Lekar = { template : '<lekar></lekar>' }
+const Klinika = { template: '<klinika></klinika>' }
+
 const router = new VueRouter({
 	  mode: 'hash',
 	  routes: [
@@ -16,6 +19,11 @@ const router = new VueRouter({
 	    	path: "/login",
 	    	name : "login",
 	    	component : Login
+	    },
+	    {
+	    	path: "/register",
+	    	name : "register",
+	    	component : Register
 	    },
 	    {
 	    	path: "/homepage",
@@ -41,7 +49,12 @@ const router = new VueRouter({
 	    	path: "/tipPregleda",
 	    	name : "tipPregleda",
 	    	component : TipPregleda
-	    }  
+	    },
+	    {
+	    	path: "/klinika",
+	    	name : "klinika",
+	    	component : Klinika
+	    }
 	  ]
 });
 

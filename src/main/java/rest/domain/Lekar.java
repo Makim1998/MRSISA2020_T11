@@ -1,12 +1,10 @@
 package rest.domain;
 
-import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.Set;
 
-import javax.persistence.OneToMany;
-
 import javax.persistence.Entity;
+import javax.persistence.OneToMany;
 
 @Entity
 public class Lekar extends Medicinar{

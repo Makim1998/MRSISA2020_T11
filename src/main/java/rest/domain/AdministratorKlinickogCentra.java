@@ -3,17 +3,21 @@ package rest.domain;
 import java.util.HashSet;
 import java.util.Set;
 
+import javax.persistence.CascadeType;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
+import javax.persistence.JoinColumn;
 import javax.persistence.OneToMany;
 
 @Entity
 public class AdministratorKlinickogCentra extends User{
 
-	@OneToMany(mappedBy="administrator")
+	@OneToMany(mappedBy="administrator",fetch = FetchType.LAZY, cascade = CascadeType.ALL)
 	private Set<Recept> recepti=new HashSet<Recept>();
 	
-	@OneToMany(mappedBy="admin")
-	private Set<AdministratorKlinike> administratori=new HashSet<AdministratorKlinike>();
+	@OneToMany(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
+	@JoinColumn(name = "administratori", referencedColumnName = "id")
+	private Set<AdministratorKlinike> administratori = new HashSet<AdministratorKlinike>();
 	
 
 	

@@ -2,8 +2,10 @@ package rest.domain;
 
 import java.util.Date;
 
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
@@ -14,13 +16,17 @@ public class GodisnjiOdmor {
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Integer id;
-	@Column
+	
+	@Column(name = "datumPocetka", nullable = false)
 	private Date datumPocetka;
-	@Column
+	
+	@Column(name = "datumKraja", nullable = false)
 	private Date datumKraja;
-	@Column
+	
+	@Column(name = "prihvacenOdbijen")
 	private Boolean prihvacenOdbijen;
-	@ManyToOne
+	
+	@ManyToOne(cascade = CascadeType.ALL, fetch = FetchType.LAZY)
 	private Medicinar medicinar;
 	
 	public GodisnjiOdmor() {

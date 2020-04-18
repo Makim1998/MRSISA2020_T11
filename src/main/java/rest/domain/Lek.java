@@ -15,8 +15,13 @@ public class Lek {
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Integer id;
-	@Column
+	
+	@Column(name = "sifra", unique = true, nullable = false)
+	private String sifra;
+	
+	@Column(name = "naziv", nullable = false)
 	private String naziv;
+	
 	@ManyToMany(mappedBy="lekovi")
 	private Set<Recept> recepti=new HashSet<Recept>();
 	

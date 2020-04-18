@@ -3,10 +3,13 @@ package rest.domain;
 import java.util.HashSet;
 import java.util.Set;
 
+import javax.persistence.CascadeType;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.JoinColumn;
 import javax.persistence.OneToMany;
 import javax.persistence.OneToOne;
 
@@ -15,10 +18,14 @@ public class Cenovnik {
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Integer id;
-	@OneToMany(mappedBy="cenovnik")
-	private Set<StavkaCenovnika> stavka=new HashSet<StavkaCenovnika>();
-	@OneToOne
+	
+	@OneToMany(mappedBy="cenovnik", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
+	private Set<StavkaCenovnika> stavke = new HashSet<StavkaCenovnika>();
+	
+	@OneToOne(cascade = CascadeType.ALL)
+    @JoinColumn(name = "klinika_id", referencedColumnName = "id")
 	private Klinika klinika;
+	
 	public Cenovnik() {
 		super();
 	}
@@ -29,10 +36,10 @@ public class Cenovnik {
 		this.id = id;
 	}
 	public Set<StavkaCenovnika> getStavka() {
-		return stavka;
+		return stavke;
 	}
 	public void setStavka(Set<StavkaCenovnika> stavka) {
-		this.stavka = stavka;
+		this.stavke = stavka;
 	}
 	public Klinika getKlinika() {
 		return klinika;

@@ -7,6 +7,9 @@ import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.JoinTable;
+import javax.persistence.JoinColumn;
+
 import javax.persistence.ManyToMany;
 import javax.persistence.ManyToOne;
 
@@ -16,6 +19,7 @@ public class Recept {
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Integer id;
 	@ManyToMany
+	@JoinTable(name = "lecenje", joinColumns = @JoinColumn(name = "recept_id", referencedColumnName = "id"), inverseJoinColumns = @JoinColumn(name = "lek_id", referencedColumnName = "id"))
 	private Set<Lek> lekovi=new HashSet<Lek>();
 	@ManyToOne
 	private MedicinskaSestra sestra;
