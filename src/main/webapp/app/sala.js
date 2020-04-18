@@ -52,8 +52,7 @@ Vue.component("sala", {
 			this.id=id;
 			document.getElementById("myForm").style.display = "block";
         },
-		izmeni() {
-			alert("izmeni")       
+		izmeni() {      
         	axios
         	.put('rest/sala/izmeni', {"id":this.id, "naziv":this.izmena})
 			.then(response => this.$router.replace({ name: "administratorKlinike" }));
