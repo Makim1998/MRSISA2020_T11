@@ -5,10 +5,11 @@ import java.util.HashSet;
 import java.util.Set;
 
 import javax.persistence.OneToMany;
-
+import javax.persistence.Table;
 import javax.persistence.Entity;
 
 @Entity
+@Table(name="medicinskaSestra")
 public class MedicinskaSestra extends Medicinar {
 	
 	@OneToMany(mappedBy="sestra")

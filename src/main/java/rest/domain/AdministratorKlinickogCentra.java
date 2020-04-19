@@ -8,26 +8,36 @@ import javax.persistence.Entity;
 import javax.persistence.FetchType;
 import javax.persistence.JoinColumn;
 import javax.persistence.OneToMany;
+import javax.persistence.OneToOne;
+import javax.persistence.Table;
 
 @Entity
+@Table(name="administratorKlinickogCentra")
 public class AdministratorKlinickogCentra extends User{
 
 	@OneToMany(mappedBy="administrator",fetch = FetchType.LAZY, cascade = CascadeType.ALL)
 	private Set<Recept> recepti=new HashSet<Recept>();
 	
-	@OneToMany(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
-	@JoinColumn(name = "administratori", referencedColumnName = "id")
-	private Set<AdministratorKlinike> administratori = new HashSet<AdministratorKlinike>();
+	@OneToOne(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
+	@JoinColumn(name = "KC", referencedColumnName = "id")
+	private KlinickiCentar klinickiCentar;
 	
-
-	
-	public AdministratorKlinickogCentra(String username, String password, Set<Recept> recepti,
-			Set<AdministratorKlinike> administratori) {
-		super(username, password);
-		this.recepti = recepti;
-		this.administratori = administratori;
+	public Set<Recept> getRecepti() {
+		return recepti;
 	}
-	
+
+	public void setRecepti(Set<Recept> recepti) {
+		this.recepti = recepti;
+	}
+
+	public KlinickiCentar getKlinickiCentar() {
+		return klinickiCentar;
+	}
+
+	public void setKlinickiCentar(KlinickiCentar klinickiCentar) {
+		this.klinickiCentar = klinickiCentar;
+	}
+
 	public AdministratorKlinickogCentra() {
 	}
 	

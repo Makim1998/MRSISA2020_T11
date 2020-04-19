@@ -4,8 +4,10 @@ import javax.persistence.CascadeType;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
 import javax.persistence.ManyToOne;
+import javax.persistence.Table;
 
 @Entity
+@Table(name="administratorKlinike")
 public class AdministratorKlinike extends User{
 	
 	@ManyToOne(cascade = CascadeType.ALL, fetch = FetchType.LAZY)

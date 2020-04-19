@@ -1,4 +1,6 @@
-package rest.domain;
+package rest.dto;
+
+import rest.domain.Sala;
 
 public class SalaDTO {
 	private Integer id;

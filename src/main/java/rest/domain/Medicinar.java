@@ -6,10 +6,11 @@ import java.util.Set;
 
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
-
+import javax.persistence.Table;
 import javax.persistence.Entity;
 
 @Entity
+@Table(name="medicinar")
 public class Medicinar extends User {
 	
 	@OneToMany(mappedBy="medicinar")

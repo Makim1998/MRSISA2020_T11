@@ -36,12 +36,14 @@ Vue.component("tipPregleda", {
 			<td><router-link :to="{ name: 'administratorKlinike' }" tag="button" float='right' class="btn btn-primary" >Nazad</router-link></td>
 		</tr>	
    </table>
+   <div id="modaldark">
    <div class="form-popup" id="myForm">
     <h6>Izmena ID:{{this.id}}</h6>
     <input type="text" class="psw" v-model="izmena" placeholder="Naziv pregleda">
     </br></br>
 	<button type="button" class="btn maal leftbutton" v-on:click="izmeni()">Potvrdi</button>
 	<button type="button" class="btn zaal rightbutton" v-on:click="otkazi()">Otkazi</button>
+   </div>
    </div>
 </div>
 </div>		  
@@ -51,16 +53,22 @@ Vue.component("tipPregleda", {
 		uredi(id) {
 			this.id=id;
 			document.getElementById("myForm").style.display = "block";
+			document.getElementById("modaldark").style.display = "block";
+			document.getElementById("modaldark").style.opacity="1";
         },
 		izmeni() {     
         	axios
         	.put('rest/tipPregleda/izmeni', {"id":this.id, "naziv":this.izmena})
 			.then(response => this.$router.replace({ name: "administratorKlinike" }));
 			document.getElementById("myForm").style.display = "none";
+			document.getElementById("modaldark").style.display = "none";
+			document.getElementById("modaldark").style.opacity="0";
 
         },
 		otkazi() {
 			document.getElementById("myForm").style.display = "none";
+			document.getElementById("modaldark").style.display = "none";
+			document.getElementById("modaldark").style.opacity="0";
         },
 		obrisi(id) {
             axios

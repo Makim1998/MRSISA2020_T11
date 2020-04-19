@@ -25,7 +25,7 @@ Vue.component("sala", {
 		</tr>
 		<tr v-for="tp in tipovi" >
 			<td class="myclass">{{tp.id}}</td>
-			<td class="myclass">{{tp.naziv}}</option>
+			<td class="myclass">{{tp.naziv}}</td>
 			<td><input class="btn btn-warning btn-lg" value='Izmeni' type='button'  v-on:click="uredi(tp.id)"/></td>
 			<td><input class="btn btn-danger btn-lg" value='Obrisi' type='button' v-on:click="obrisi(tp.id)"/></td>
 		</tr>
@@ -36,12 +36,14 @@ Vue.component("sala", {
 			<td><router-link :to="{ name: 'administratorKlinike' }" tag="button" float='right' class="btn btn-primary" >Nazad</router-link></td>
 		</tr>	
    </table>
+   <div id="modaldark">
    <div class="form-popup" id="myForm">
     <h6>Izmena ID:{{this.id}}</h6>
     <input type="text" class="psw" v-model="izmena" placeholder="Naziv sale">
     </br></br>
     <button type="button" class="btn maal leftbutton" v-on:click="izmeni()">Potvrdi</button>
     <button type="button" class="btn zaal rightbutton" v-on:click="otkazi()">Otkazi</button>
+   </div>
    </div>
 </div>
 </div>		  
@@ -51,16 +53,22 @@ Vue.component("sala", {
 		uredi(id) {
 			this.id=id;
 			document.getElementById("myForm").style.display = "block";
+			document.getElementById("modaldark").style.display = "block";
+			document.getElementById("modaldark").style.opacity="1";
         },
 		izmeni() {      
         	axios
         	.put('rest/sala/izmeni', {"id":this.id, "naziv":this.izmena})
 			.then(response => this.$router.replace({ name: "administratorKlinike" }));
 			document.getElementById("myForm").style.display = "none";
+			document.getElementById("modaldark").style.display = "none";
+			document.getElementById("modaldark").style.opacity="0";
 
         },
 		otkazi() {
 			document.getElementById("myForm").style.display = "none";
+			document.getElementById("modaldark").style.display = "none";
+			document.getElementById("modaldark").style.opacity="0";
         },
 		obrisi(id) {
             axios
