@@ -46,7 +46,7 @@ Vue.component("login", {
     			.then((response) => {
 					console.log("uspesno logovanje");
     				console.log(response);
-    				console.log(response.data);
+    				console.log(response.data.uloga);
     				if(response.data.uloga == "PACIJENT"){
     					console.log("Ulogovao se pacijent");
     					this.$router.replace({ name: "pacijentHome" });

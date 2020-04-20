@@ -12,6 +12,8 @@ import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
 import rest.dto.LekarDTO;
 
 @Entity
@@ -28,6 +30,7 @@ public class Lekar extends User{
 	private Set<GodisnjiOdmor> godisnji= new HashSet<GodisnjiOdmor>();
 	
 	@ManyToOne
+	@JsonIgnore
 	private Klinika klinika;
 
 	

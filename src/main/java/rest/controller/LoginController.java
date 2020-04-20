@@ -102,8 +102,10 @@ public class LoginController {
 	@PostMapping(consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
 	public ResponseEntity<User> login(@RequestBody User user)
 			throws Exception {
-		User u = userService.findByEmail(user.getUsername());
 		System.out.println("logovanje");
+		System.out.println("halo");
+		User u = userService.findByEmail(user.getUsername());
+		
 		System.out.println(user.getUsername()+ " " + user.getPassword());
 		if(u == null) {
 			System.out.println("nije pronasao korisnicko ime");
