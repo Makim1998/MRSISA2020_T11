@@ -10,7 +10,7 @@ import javax.persistence.OneToOne;
 public class Pacijent extends User{
 	
 	@Column
-	private String Osiguranika;
+	private String brojOsiguranika;
 	@Column
 	private String adresa;
 	@Column
@@ -22,11 +22,11 @@ public class Pacijent extends User{
     @JoinColumn(name = "karton_id", referencedColumnName = "id")
 	private Karton karton;
 	
-	public String getOsiguranika() {
-		return Osiguranika;
+	public String getbrojOsiguranika() {
+		return brojOsiguranika;
 	}
-	public void setOsiguranika(String osiguranika) {
-		Osiguranika = osiguranika;
+	public void setbrojOsiguranika(String osiguranika) {
+		brojOsiguranika = osiguranika;
 	}
 	public String getAdresa() {
 		return adresa;
@@ -56,10 +56,10 @@ public class Pacijent extends User{
 	public Pacijent() {
 	}
 	
-	public Pacijent(String username, String password, String osiguranika, String adresa, String grad, String drzava,
+	public Pacijent(String username, String password,String ime,String prezime, String osiguranika, String adresa, String grad, String drzava,
 			Karton karton) {
-		super(username, password);
-		Osiguranika = osiguranika;
+		super(username, password,ime,prezime);
+		this.brojOsiguranika = osiguranika;
 		this.adresa = adresa;
 		this.grad = grad;
 		this.drzava = drzava;

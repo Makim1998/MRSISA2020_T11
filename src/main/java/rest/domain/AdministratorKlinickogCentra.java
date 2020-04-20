@@ -11,6 +11,8 @@ import javax.persistence.OneToMany;
 import javax.persistence.OneToOne;
 import javax.persistence.Table;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
 @Entity
 @Table(name="administratorKlinickogCentra")
 public class AdministratorKlinickogCentra extends User{
@@ -20,6 +22,7 @@ public class AdministratorKlinickogCentra extends User{
 	
 	@OneToOne(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
 	@JoinColumn(name = "KC", referencedColumnName = "id")
+	@JsonIgnore
 	private KlinickiCentar klinickiCentar;
 	
 	public Set<Recept> getRecepti() {

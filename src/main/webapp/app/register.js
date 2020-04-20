@@ -68,7 +68,7 @@ Vue.component("register", {
                     console.log("The username and / or password is incorrect");
                 }*/
             	axios
-    			.post('rest/login', {"username": this.input.username, "password":this.input.password})
+    			.post('rest/register', {"username": this.input.username, "password":this.input.password})
     			.then(response => this.$router.replace({ name: "homepage" }))
     			.catch(function(error){
     				if(error.response){

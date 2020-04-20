@@ -10,9 +10,7 @@ import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
-import javax.persistence.JoinColumn;
 import javax.persistence.OneToMany;
-import javax.persistence.OneToOne;
 
 @Entity
 public class KlinickiCentar {
@@ -20,10 +18,34 @@ public class KlinickiCentar {
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Integer id;
 	
-	@Column(name ="naziv", unique = true, nullable = false)
+	@Column
 	private String naziv;
 	
-	
-	@OneToMany(mappedBy="klinickiCentar")
+	public Integer getId() {
+		return id;
+	}
+
+	public void setId(Integer id) {
+		this.id = id;
+	}
+
+	public String getNaziv() {
+		return naziv;
+	}
+
+	public void setNaziv(String naziv) {
+		this.naziv = naziv;
+	}
+
+	public Set<Klinika> getKlinike() {
+		return klinike;
+	}
+
+	public void setKlinike(Set<Klinika> klinike) {
+		this.klinike = klinike;
+	}
+
+	@OneToMany(mappedBy="klinickiCentar", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
 	private Set<Klinika> klinike = new HashSet<Klinika>();
 }
+

@@ -15,6 +15,8 @@ import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 import javax.persistence.OneToOne;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
+
 import rest.dto.KlinikaDTO;
 
 @Entity
@@ -45,7 +47,11 @@ public class Klinika {
 	private Set<Sala> sale = new HashSet<Sala>();
 	
 	@OneToMany(mappedBy="klinika",fetch = FetchType.LAZY, cascade = CascadeType.ALL)
-	private Set<Medicinar> zaposleni = new HashSet<Medicinar>();
+	
+	private Set<Lekar> lekari = new HashSet<Lekar>();
+	
+	@OneToMany(mappedBy="klinika",fetch = FetchType.LAZY, cascade = CascadeType.ALL)
+	private Set<MedicinskaSestra> medicinskeSestre = new HashSet<MedicinskaSestra>();
 	
 	public AdministratorKlinike getAdministrator() {
 		return administrator;

@@ -1,7 +1,5 @@
 package rest.domain;
 
-import java.sql.Time;
-import java.text.DateFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
@@ -10,27 +8,50 @@ import java.util.Set;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
+
+import com.fasterxml.jackson.annotation.JsonIgnore;
 
 import rest.dto.LekarDTO;
 
 @Entity
+
+
 @Table(name="lekar")
-public class Lekar extends Medicinar{
+public class Lekar extends User{
 
 	@OneToMany(mappedBy="lekar")
 	private Set<Pregled> pregledi=new HashSet<Pregled>();
+
+	
+	@OneToMany(mappedBy="lekar")
+	private Set<GodisnjiOdmor> godisnji= new HashSet<GodisnjiOdmor>();
+	
+	@ManyToOne
+	@JsonIgnore
+	private Klinika klinika;
+
+	
 	@Column(name="od")
 	private Date RadnoVremeOd;
 	@Column(name="do")
 	private Date RadnoVremeDo;
 
-	public Lekar(String username, String password, Set<GodisnjiOdmor> godisnji, Klinika klinika,
-			Set<Pregled> pregledi) {
-		super(username, password, godisnji, klinika);
-		this.pregledi = pregledi;
+	public Lekar(String username, String password, String ime, String prezime) {
+		super(username, password, ime, prezime);
+		// TODO Auto-generated constructor stub
 	}
+
+
+
+	public Lekar(String username, String password) {
+		super(username, password);
+		// TODO Auto-generated constructor stub
+	}
+
+
 
 	public Lekar() {
 	}
@@ -71,6 +92,18 @@ public class Lekar extends Medicinar{
 
 	public void setRadnoVremeDo(Date radnoVremeDo) {
 		RadnoVremeDo = radnoVremeDo;
+	}
+
+
+
+	public Klinika getKlinika() {
+		return klinika;
+	}
+
+
+
+	public void setKlinika(Klinika klinika2) {
+		this.klinika = klinika2;		
 	}
 	
 }
