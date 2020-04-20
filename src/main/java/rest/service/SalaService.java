@@ -6,9 +6,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import rest.domain.Sala;
-import rest.domain.TipPregleda;
 import rest.repository.SalaRepository;
-import rest.repository.TipPregledaRepository;
 
 @Service
 public class SalaService {

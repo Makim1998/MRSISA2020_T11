@@ -27,7 +27,10 @@ public class GodisnjiOdmor {
 	private Boolean prihvacenOdbijen;
 	
 	@ManyToOne(cascade = CascadeType.ALL, fetch = FetchType.LAZY)
-	private Medicinar medicinar;
+	private Lekar lekar;
+	
+	@ManyToOne(cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+	private MedicinskaSestra sestra;
 	
 	public GodisnjiOdmor() {
 		super();
@@ -56,12 +59,19 @@ public class GodisnjiOdmor {
 	public void setPrihvacenOdbijen(Boolean prihvacenOdbijen) {
 		this.prihvacenOdbijen = prihvacenOdbijen;
 	}
-	public Medicinar getMedicinar() {
-		return medicinar;
+	public Lekar getLekar() {
+		return lekar;
 	}
-	public void setMedicinar(Medicinar medicinar) {
-		this.medicinar = medicinar;
+	public void setLekar(Lekar lekar) {
+		this.lekar = lekar;
 	}
+	public MedicinskaSestra getSestra() {
+		return sestra;
+	}
+	public void setSestra(MedicinskaSestra sestra) {
+		this.sestra = sestra;
+	}
+	
 
 
 }

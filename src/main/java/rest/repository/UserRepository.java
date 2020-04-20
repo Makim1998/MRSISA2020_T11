@@ -1,17 +1,9 @@
 package rest.repository;
 
-import java.util.Collection;
+import org.springframework.data.jpa.repository.JpaRepository;
 
 import rest.domain.User;
 
-public interface UserRepository {
-	Collection<User> findAll();
-
-	User create(User user);
-
-	User findOne(String id);
-	
-	User update(User user);
-
-	void delete(String id);
+public interface UserRepository extends JpaRepository<User,Integer>{
+	User findOneByEmail(String email);
 }
