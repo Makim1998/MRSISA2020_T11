@@ -48,7 +48,7 @@ Vue.component("administratorKlinike", {
 	  </div>
 	</div>
 	<div class="card text-white bg-primary mb-3" style="max-width: 20%; min-height:263px; float:left;">
-	  <div class="card-header"><router-link :to="{ name: 'homepage' }" tag="button" class="btn btn-secondary btn-lg" >Klikni</router-link></div>
+	  <div class="card-header"><router-link :to="{ name: 'lekari' }" tag="button" class="btn btn-secondary btn-lg" >Klikni</router-link></div>
 	  <div class="card-body">
 	    <h5 class="card-title">Lekari</h5>
 	    <p class="card-text">Mozete da pretrazujete, dodajete, menjate i uklanjate lekare.</p>

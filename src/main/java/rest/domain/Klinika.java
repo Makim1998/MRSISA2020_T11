@@ -10,6 +10,8 @@ import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 import javax.persistence.OneToOne;
 
@@ -23,6 +25,9 @@ public class Klinika {
 	
 	@Column(name ="naziv", unique = true, nullable = false)
 	private String naziv;
+	
+	@ManyToOne(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
+	private KlinickiCentar klinickiCentar;
 	
 	@Column(name ="adresa", unique = true, nullable = false)
 	private String adresa;

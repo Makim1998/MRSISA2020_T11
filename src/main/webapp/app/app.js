@@ -8,7 +8,8 @@ const TipPregleda = { template : '<tipPregleda></tipPregleda>' }
 const Register = { template : '<register></register>' }
 const Lekar = { template : '<lekar></lekar>' }
 const Klinika = { template: '<klinika></klinika>' }
-const bus = new Vue();
+
+const Lekari = { template: '<lekari></lekari>' }
 
 const router = new VueRouter({
 	  mode: 'hash',
@@ -62,6 +63,11 @@ const router = new VueRouter({
 	    	path: "/klinika",
 	    	name : "klinika",
 	    	component : Klinika
+	    },
+	    {
+	    	path: "/lekari",
+	    	name : "lekari",
+	    	component : Lekari
 	    }
 	  ]
 });

@@ -1,5 +1,7 @@
 package rest.controller;
 
+
+import java.text.ParseException;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -16,64 +18,52 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import rest.domain.Lekar;
 import rest.domain.Sala;
 import rest.domain.User;
+import rest.dto.LekarDTO;
 import rest.dto.SalaDTO;
+import rest.service.LekariService;
 import rest.service.SalaService;
 
 
 @RestController
 
-@RequestMapping("rest/sala")
-public class SalaController {
+@RequestMapping("rest/lekari")
+public class LekariController {
 	@Autowired
 	
-	private SalaService salaService;
+	private LekariService lekariService;
 
 	@GetMapping
-	public ResponseEntity<List<SalaDTO>> getSala() {
+	public ResponseEntity<List<LekarDTO>> getLekari() {
 		
-		List<Sala> sale = salaService.findAll();
+		List<Lekar> lekari = lekariService.findAll();
 
-		List<SalaDTO> saleDTO = new ArrayList<>();
-		for (Sala s : sale) {
-			saleDTO.add(new SalaDTO(s));
+		List<LekarDTO> lekariDTO = new ArrayList<>();
+		for (Lekar s : lekari) {
+			lekariDTO.add(new LekarDTO(s));
 		}
 
-		return new ResponseEntity<>(saleDTO, HttpStatus.OK);
-	}
-	@PutMapping(value="/izmeni",consumes = "application/json")
-	public ResponseEntity<SalaDTO> updateCourse(@RequestBody SalaDTO salaDTO) {
-
-		// a course must exist
-		Sala sala = salaService.findOne(salaDTO.getId());
-
-		if (sala == null) {
-			return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
-		}
-
-		sala.setNaziv(salaDTO.getNaziv());
-
-		sala = salaService.save(sala);
-		return new ResponseEntity<>(new SalaDTO(sala), HttpStatus.OK);
+		return new ResponseEntity<>(lekariDTO, HttpStatus.OK);
 	}
 	@DeleteMapping(value = "/{id}")
 	public ResponseEntity<Void> deleteCourse(@PathVariable Integer id) {
 
-		Sala sala = salaService.findOne(id);
+		Lekar lekar = lekariService.findOne(id);
 		System.out.println("brisanje");
-		if (sala != null) {
-			salaService.remove(id);
+		if (lekar != null) {
+			lekariService.remove(id);
 			return new ResponseEntity<>(HttpStatus.OK);
 		} else {
 			return new ResponseEntity<>(HttpStatus.NOT_FOUND);
 		}
 	}
 	@PostMapping(value="/dodaj",consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
-	public ResponseEntity<User> login(@RequestBody SalaDTO salaDTO){
-		Sala sala= new Sala(salaDTO.getId(),salaDTO.getNaziv());
-		salaService.save(sala);
+	public ResponseEntity<User> login(@RequestBody LekarDTO lekarDTO) throws ParseException{
+		lekariService.addLekar(lekarDTO);
 		return new ResponseEntity<>(HttpStatus.OK);
 	}
 }
+
 

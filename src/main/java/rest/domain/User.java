@@ -4,15 +4,18 @@ import javax.persistence.Column;
 import static javax.persistence.InheritanceType.JOINED;
 
 import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.Inheritance;
 
+
 @Entity
 @Inheritance(strategy=JOINED)
-
 public class User {
 	
 	@Id
+	@GeneratedValue(strategy=GenerationType.SEQUENCE,generator="seq")
 	private int id;
 	@Column(unique = true, nullable = false)
 	private String email;
