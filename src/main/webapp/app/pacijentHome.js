@@ -19,7 +19,7 @@ Vue.component('pacijentHome',{
 			<a href = "#karton" v-on:click = "component = 'karton'">Zdravstveni karton</a>
 			<a href = "#profil" v-on:click = "component = 'profil'" >Profil</a>
 			<div class="align-self-center mx-auto"> 
-                <button id = "odjavi" class="btn btn-primary btn-sm">Odjavi se</button>
+                <button id = "odjavi" class="btn btn-primary btn-sm" v-on:click = "odjavi()">Odjavi se</button>
             </div> 
 			
 		</div>
@@ -42,6 +42,15 @@ Vue.component('pacijentHome',{
 	},
 	
 	methods : {
+		odjavi(){
+			axios
+			.get('rest/login/logout')
+			.then((response) => {
+				console.log("odjava");
+				this.$router.replace({ name: "login" });
+			
+			});
+		}
 	},
 	mounted(){
 

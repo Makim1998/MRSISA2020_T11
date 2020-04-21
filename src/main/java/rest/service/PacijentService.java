@@ -26,6 +26,10 @@ public class PacijentService {
 	public Pacijent findByEmail(String email) {
 		return pacijentRepository.findOneByEmail(email);
 	}
+	
+	public Pacijent findByBrojOsiguranika(String br) {
+		return pacijentRepository.findOneByBrojOsiguranika(br);
+	}
 
 	public Pacijent save(Pacijent pacijent) {
 		return pacijentRepository.save(pacijent);
