@@ -27,6 +27,7 @@ public class KlinikaService {
 	}
 	
 	public void remove(Integer id) {
+		//provjera
 		klinikaRepository.deleteById(id);
 	}
 

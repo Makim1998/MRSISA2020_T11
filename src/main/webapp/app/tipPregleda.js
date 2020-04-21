@@ -16,6 +16,8 @@ Vue.component("tipPregleda", {
 	  <h2>Tipovi pregleda</h2>
 	  <p>Pretraga, dodavanje, izmena i brisanje.</p> 
 	</div>
+	<input type="text" style="margin-left:10px;margin-bottom:10px;" class="fotrol" id="myInput" placeholder="Naziv pregleda">
+	<input class="btn btn-success" type='button' value='Pretrazi'  v-on:click="fjaPretrage()"/>
    <table align="left" class="table">
 		<tr>
 		   <th>ID</th>
@@ -23,7 +25,7 @@ Vue.component("tipPregleda", {
 		   <th>Izmena</th>
 		   <th>Brisanje</th>
 		</tr>
-		<tr v-for="tp in tipovi" >
+		<tr v-for="tp in tipovi" class="filterDiv " >
 			<td class="myclass">{{tp.id}}</td>
 			<td class="myclass">{{tp.naziv}}</option>
 			<td><input class="btn btn-warning btn-lg" value='Izmeni' type='button'  v-on:click="uredi(tp.id)"/></td>
@@ -65,6 +67,22 @@ Vue.component("tipPregleda", {
 			document.getElementById("modaldark").style.opacity="0";
 
         },
+        fjaPretrage() {
+            var input, filter, ul, li, a, i, txtValue;
+            input = document.getElementById('myInput');
+            filter = input.value.toUpperCase();
+            li = document.getElementsByClassName("filterDiv");
+
+            for (i = 0; i < li.length; i++) {
+              a = li[i].getElementsByTagName("td")[1];
+              txtValue = a.textContent || a.innerText;
+              if (txtValue.toUpperCase().indexOf(filter) > -1) {
+                li[i].style.display = "";
+              } else {
+                li[i].style.display = "none";
+              }
+            }
+          },
 		otkazi() {
 			document.getElementById("myForm").style.display = "none";
 			document.getElementById("modaldark").style.display = "none";
