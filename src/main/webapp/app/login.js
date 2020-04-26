@@ -10,9 +10,9 @@ Vue.component("login", {
 	template: `
 <div id = "login">
     <form>
-		<h2 class="text-center">Log in</h2>       
+		<h2 class="text-center">Prijava</h2>       
 		<div class="form-group">
-   			<input type="text" class="form-control" v-model="input.username" placeholder="Username">
+   			<input type="text" class="form-control" v-model="input.username" placeholder="email">
 		</div>
 		<div class="form-group">
     		<input type="password" class="form-control" v-model="input.password" placeholder="Password">
@@ -21,16 +21,16 @@ Vue.component("login", {
     		<button type="button" class="btn btn-primary btn-block" v-on:click="login()">Log in</button>
 		</div>
 		<div class="form-group">
-    		<router-link :to="{ name: 'register'}" >Register</router-link>
+    		<router-link :to="{ name: 'register'}" >Registracija</router-link>
 		</div>
     </form>
 </div>		  
-`
-	, 
+` 
+		,
 /*	mounted() {
 		console.log("redirekt")
        this.$router.replace({ name: "pacijentHome" });
-        
+
     },*/
 	methods : {
 		login() {

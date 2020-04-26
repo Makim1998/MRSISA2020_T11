@@ -15,8 +15,8 @@ import javax.persistence.Inheritance;
 public class User {
 	
 	@Id
-	@GeneratedValue(strategy=GenerationType.SEQUENCE,generator="seq")
-	private int id;
+	@GeneratedValue(strategy=GenerationType.IDENTITY)
+	private Integer id;
 	@Column(unique = true, nullable = false)
 	private String email;
 	@Column
@@ -131,11 +131,12 @@ public class User {
 		this.password = password;
 	}
 
-	public int getId() {
+
+	public Integer getId() {
 		return id;
 	}
 
-	public void setId(int id) {
+	public void setId(Integer id) {
 		this.id = id;
 	}
 

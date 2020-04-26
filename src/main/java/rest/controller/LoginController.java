@@ -10,6 +10,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
+import org.springframework.http.client.OkHttp3ClientHttpRequestFactory;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -26,6 +27,7 @@ import rest.domain.Uloga;
 import rest.domain.User;
 import rest.service.AdminKService;
 import rest.service.LekariService;
+import rest.dto.PacijentDTO;
 import rest.service.PacijentService;
 import rest.service.UserService;
 
@@ -110,11 +112,50 @@ public class LoginController {
 			throws Exception {
 		return new ResponseEntity<User>(logedIn, HttpStatus.OK);
 	}
-	@GetMapping(value="/odjava",produces = MediaType.APPLICATION_JSON_VALUE)
-	public HttpStatus Odjava() {
-		logedIn=null;
-		return HttpStatus.OK;
+	@GetMapping(value="/odjava")
+	public ResponseEntity<User> Odjava() 
+		throws Exception {
+	logedIn = null;
+	return new ResponseEntity<User>(logedIn, HttpStatus.OK);
 	}
+	@PostMapping(value = "register",consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
+	public ResponseEntity<User> register(@RequestBody PacijentDTO pacijent)
+			throws Exception {
+		System.out.println("registrovanje pacijenta");
+		if(pacijent == null) {
+			return new ResponseEntity<User>(HttpStatus.BAD_REQUEST);
+		}
+		Pacijent p1 = patientService.findByEmail(pacijent.getEmail());
+		Pacijent p2 = patientService.findByBrojOsiguranika(pacijent.getBrojOsiguranika());
+		System.out.println(pacijent.getEmail()+ " " + pacijent.getPassword());
+		if(p1 != null) {
+			System.out.println("Kor. ime zauzeto");
+			return new ResponseEntity<User>(HttpStatus.BAD_REQUEST);
+		}
+		if(p2 != null) {
+			System.out.println("Broj osiguranika zauzet");
+			return new ResponseEntity<User>(HttpStatus.BAD_REQUEST);
+		}
+		
+		Pacijent p= new Pacijent();
+		p.setEmail(pacijent.getEmail());
+		p.setPassword(pacijent.getPassword());
+		p.setIme(pacijent.getIme());
+		p.setPrezime(pacijent.getPrezime());
+		p.setUloga(Uloga.PACIJENT);
+		System.out.println("Validni podaci");
+		p.setAdresa(pacijent.getAdresa());
+		p.setEmail(pacijent.getEmail());
+		p.setbrojOsiguranika(pacijent.getBrojOsiguranika());
+		p.setDrzava(pacijent.getDrzava());
+
+		p.setGrad(pacijent.getGrad());
+		p.setPassword(pacijent.getPassword());
+		System.out.println(p.getEmail());
+		patientService.save(p);
+		return new ResponseEntity<User>(p, HttpStatus.OK);
+	}
+
 	
 	@PostMapping(consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
 	public ResponseEntity<User> login(@RequestBody User user)

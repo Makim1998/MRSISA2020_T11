@@ -6,4 +6,5 @@ import rest.domain.Pacijent;
 
 public interface PacijentRepository extends JpaRepository<Pacijent,Integer> {
 	Pacijent findOneByEmail(String email);
+	Pacijent findOneByBrojOsiguranika(String brO);
 }
