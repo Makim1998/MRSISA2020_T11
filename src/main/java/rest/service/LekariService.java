@@ -26,6 +26,11 @@ public class LekariService {
 	@Autowired
 	private KlinikaRepository klinikaRepository;
 	
+	public Lekar findByEmail(String email) {
+		// TODO Auto-generated method stub
+		return lekarRepository.findOneByEmail(email);
+	}
+	
 	public Lekar findOne(Integer id) {
 		return lekarRepository.findById(id).orElseGet(null);
 	}

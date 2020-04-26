@@ -4,8 +4,7 @@ insert into tip_pregleda (id,naziv) values (3l,'Oftamoloski');
 insert into sala (id,naziv) values (1,'Operaciona');
 
 
-insert into user (id, email,  password,  ime,  prezime,uloga) values (4l,'pacijent','pacijent','Marko','Markovic',3);
-insert into pacijent (id, broj_osiguranika, adresa, grad, drzava) values (4l,'11111','Radiceva 6','Novi Sad','Srbija');
+insert into user (id, email,  password,  ime,  prezime,uloga,broj_osiguranika, adresa, grad, drzava) values (4l,'pacijent','pacijent','Marko','Markovic',3,'11111','Radiceva 6','Novi Sad','Srbija');
 
 
 insert into klinicki_centar (id,naziv) values (1,'Klinicki centar Novi Sad');

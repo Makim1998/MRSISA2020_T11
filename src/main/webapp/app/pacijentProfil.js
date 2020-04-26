@@ -15,7 +15,8 @@ Vue.component('pacijentProfil',{
 		}
 	},
 	template: ` 
-<div id = "login">
+<div class="oneoption">
+<div id = "login" class="sidenavlogin">
     <form>
 		<h2 class="text-center">Pregled i promena profila</h2>       
 		<div class="form-group">
@@ -55,7 +56,8 @@ Vue.component('pacijentProfil',{
     		<button type="button" class="btn btn-primary btn-block" v-on:click="izmeni()">Izmeni profil</button>
 		</div>
     </form>
-</div>		  		  
+</div>	
+</div>	  		  
 `
 	, 
 	methods : {
@@ -87,7 +89,7 @@ Vue.component('pacijentProfil',{
 	},
 	mounted(){
 		axios
-	    .get('rest/login/getConcreteUser')
+	    .get('rest/login/getConcreteUser/Pacijent')
 	    .then((response) => {
 	    	console.log(response.data);
 	    	this.username = response.data.email;
@@ -104,7 +106,9 @@ Vue.component('pacijentProfil',{
 	    	
 	    	this.brojOsiguranika = response.data.brojOsiguranika;
 	    	console.log(response.data);
-	    	
-	    });
-	}
+		    })
+		    .catch(response => {
+				this.$router.push("/");
+			});
+		}
 });

@@ -1,6 +1,6 @@
 #login {
 		width: 340px;
-    	margin: 50px auto;
+    	margin:50px auto;
 	}
 #login form {
 	margin-bottom: 15px;
@@ -25,4 +25,3 @@
 .celija{
 	display: table-cell
 }
-

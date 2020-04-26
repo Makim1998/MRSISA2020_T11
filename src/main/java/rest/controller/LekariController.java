@@ -59,6 +59,26 @@ public class LekariController {
 			return new ResponseEntity<>(HttpStatus.NOT_FOUND);
 		}
 	}
+	@PutMapping(value="/izmeni",consumes = "application/json")
+	public ResponseEntity<LekarDTO> updateCourse(@RequestBody LekarDTO lekarDTO) {
+
+		// a course must exist
+		Lekar lekar = lekariService.findOne(lekarDTO.getId());
+
+		if (lekar == null) {
+			return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
+		}
+		System.out.println("IDEMO");
+		lekar.setIme(lekarDTO.getIme());
+		lekar.setPrezime(lekarDTO.getPrezime());
+		lekar.setAdresa(lekarDTO.getAdresa());
+		lekar.setGrad(lekarDTO.getGrad());
+		lekar.setDrzava(lekarDTO.getDrzava());
+		lekar.setPassword(lekarDTO.getPassword());
+
+		lekar = lekariService.save(lekar);
+		return new ResponseEntity<>(new LekarDTO(lekar), HttpStatus.OK);
+	}
 	@PostMapping(value="/dodaj",consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
 	public ResponseEntity<User> login(@RequestBody LekarDTO lekarDTO) throws ParseException{
 		lekariService.addLekar(lekarDTO);
