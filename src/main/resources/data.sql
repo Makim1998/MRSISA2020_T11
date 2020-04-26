@@ -21,3 +21,5 @@ insert into administrator_klinike (id,klinika_id) values (2,1);
 insert into user (id,ime,prezime,email,password,uloga) values (3,'Marko','Markovic','Lekar1','lekar1',1);
 insert into lekar (id,od,do,klinika_id) values (3,'1998-12-31 23:59:59','1999-12-31 12:59:59',1);
 
+insert into karton (id,ime,prezime,pol,datum_rodjenja,krvna_grupa) values (1,'Marko','Markovic',0,'1998-12-31 23:59:59','A+');
+update pacijent set karton_id = 1 where id = 4l;

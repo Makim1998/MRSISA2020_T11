@@ -3,11 +3,14 @@ package rest.controller;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
+import rest.domain.Karton;
 import rest.domain.Pacijent;
 import rest.domain.User;
 import rest.dto.PacijentDTO;
@@ -19,6 +22,22 @@ public class PacijentController {
 	@Autowired
 	private PacijentService patientService;
 	
+	@GetMapping(value ="/getKarton", produces = "application/json")
+	public ResponseEntity<Karton> getKarton(@RequestParam String email)
+			throws Exception {
+		System.out.println("pregled kartona - pacijent");
+		System.out.println(email);
+		Pacijent p = patientService.findByEmail(email);
+		
+		System.out.println(email);
+		if(p == null) {
+			System.out.println("nije pronasao korisnicko ime pacijenta");
+
+			return new ResponseEntity<Karton>(HttpStatus.BAD_REQUEST);
+		}
+		
+		return new ResponseEntity<Karton>(p.getKarton(), HttpStatus.OK);
+	}
 	
 	@PutMapping(value ="/profil",consumes = "application/json", produces = "application/json")
 	public ResponseEntity<User> editProfile(@RequestBody PacijentDTO pacijent)

@@ -45,7 +45,7 @@ Vue.component('pacijentProfil',{
     		<input type="text"  id = "drzava" class="form-control" v-model="drzava" placeholder="Drzava">
 		</div>
 		<div class="form-group">
-			<label for="broj">Jeinstveni br. osiguranika: </label>
+			<label for="broj">Jedinstveni br. osiguranika: </label>
     		<input type="text" id = "broj" class="form-control" disabled v-model="brojOsiguranika" placeholder="Jedinstveni broj osiguranika">
 		</div>
 		<div class="form-group" id = "vrsta">
