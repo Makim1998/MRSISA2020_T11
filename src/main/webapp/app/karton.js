@@ -10,7 +10,7 @@ Vue.component('karton',{
 		}
 	},
 	template: ` 
-<div id = "karton">
+<div id = "karton" class="sidenavlogin">
     <form>
 		<h2 class="text-center">Zdravstveni karton</h2>       
 		<div class="form-group">

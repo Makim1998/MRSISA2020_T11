@@ -146,7 +146,7 @@ public class LoginController {
 		System.out.println("Validni podaci");
 		p.setAdresa(pacijent.getAdresa());
 		p.setEmail(pacijent.getEmail());
-		p.setbrojOsiguranika(pacijent.getBrojOsiguranika());
+		p.setBrojOsiguranika(pacijent.getBrojOsiguranika());
 		p.setDrzava(pacijent.getDrzava());
 
 		p.setGrad(pacijent.getGrad());
@@ -191,7 +191,7 @@ public class LoginController {
 		if(logedIn.getUloga()==Uloga.PACIJENT){
 			Pacijent p = patientService.findByEmail(logedIn.getEmail());
 			//System.out.println("Ulogovan pacijent");
-			//System.out.println(p.getAdresa());
+			System.out.println(p.getAdresa()+"SSSSSSSSSS");
 			return new ResponseEntity<User>(p, HttpStatus.OK);
 		}
 		return new ResponseEntity<>(HttpStatus.NOT_FOUND);

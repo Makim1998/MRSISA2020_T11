@@ -20,7 +20,6 @@ Vue.component('pacijentHome',{
 			<a href = "#profil" v-on:click = "component = 'profil'" >Profil</a>
 			<div class="align-self-center mx-auto"> 
                 <button id = "odjavi" class="btn btn-primary btn-sm" v-on:click="odjava()">Odjavi se</button>
-                <button id = "odjavi" class="btn btn-primary btn-sm" v-on:click = "odjavi()">Odjavi se</button>
             </div> 
 			
 		</div>
