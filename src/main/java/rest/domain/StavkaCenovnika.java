@@ -7,8 +7,14 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.ManyToOne;
 
+import org.springframework.beans.factory.annotation.Autowired;
+
+import rest.dto.StavkaCenovnikaDTO;
+import rest.service.CenovnikService;
+
 @Entity
 public class StavkaCenovnika {
+	
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Integer id;
@@ -18,6 +24,7 @@ public class StavkaCenovnika {
 	private String usluga;
 	@ManyToOne
 	private Cenovnik cenovnik;
+	
 	
 	public Cenovnik getCenovnik() {
 		return cenovnik;
@@ -33,6 +40,12 @@ public class StavkaCenovnika {
 	}
 	public StavkaCenovnika() {
 		super();
+	}
+	public StavkaCenovnika(StavkaCenovnikaDTO stavkaCenovnikaDTO,Cenovnik cenovnik) {
+		this.id=stavkaCenovnikaDTO.getId();
+		this.cena=stavkaCenovnikaDTO.getCena();
+		this.usluga=stavkaCenovnikaDTO.getUsluga();
+		this.cenovnik=cenovnik;
 	}
 	public Integer getId() {
 		return id;

@@ -2,18 +2,18 @@ Vue.component('cenovnik', {
 	data: function () {
 	    return {
 	    	 input: {	    		 
-                 sala: ""
+                 naziv: "",
+                 cena:null
              		},
 	    	cenovnik:{
 	    		id:null,
 	    		stavke:[],
-	    		klinika:{
-	    			
-	    		}
+	    		klinika_id:null,
 	    	},
 	    	kc_id:null,
 	    	id:null,
-	    	izmena:""
+	    	naziv:"",
+	    	cena:null
 	    }
 	},
 	template: ` 
@@ -23,7 +23,7 @@ Vue.component('cenovnik', {
 	  <h2>Cenovnik klinike</h2>
 	  <p>Dodavanje, izmena i brisanje.</p> 
 	</div>
-	<input type="text" style="margin-left:10px;margin-bottom:10px;" class="fotrol" id="myInput" placeholder="Naziv sale">
+	<input type="text" style="margin-left:10px;margin-bottom:10px;" class="fotrol" id="myInput" placeholder="Naziv usluge">
 	<input class="btn btn-success" type='button' value='Pretrazi'  v-on:click="fjaPretrage()"/>
    <table align="left" class="table">
 		<tr>
@@ -42,7 +42,8 @@ Vue.component('cenovnik', {
 		</tr>
 		<tr>
 			<td></td>
-			<td><input type="text" class="fotrol" v-model="input.sala" placeholder="Naziv sale"></td>
+			<td><input type="number" min="500" max="100000" class="fotrol" v-model="input.cena" placeholder="Cena"></td>
+			<td><input type="text" class="fotrol" v-model="input.naziv" placeholder="Naziv usluge"></td>
 			<td><input class="btn btn-success" type='button' value='Dodavanje'  v-on:click="dodaj()"/></td>
 			<td><router-link :to="{ name: 'administratorKlinike' }" tag="button" float='right' class="btn btn-primary" >Nazad</router-link></td>
 		</tr>	
@@ -50,7 +51,8 @@ Vue.component('cenovnik', {
    <div id="modaldark">
    <div class="form-popup" id="myForm">
     <h6>Izmena ID:{{this.id}}</h6>
-    <input type="text" class="psw" v-model="izmena" placeholder="Naziv sale">
+    <input type="text" class="psw" v-model="naziv" placeholder="Naziv usluge">
+    <input type="number" min="500" max="100000" class="psw" v-model="cena" placeholder="Cena">
     </br></br>
     <button type="button" class="btn maal leftbutton" v-on:click="izmeni()">Potvrdi</button>
     <button type="button" class="btn zaal rightbutton" v-on:click="otkazi()">Otkazi</button>
@@ -69,7 +71,7 @@ Vue.component('cenovnik', {
         },
 		izmeni() {      
         	axios
-        	.put('rest/sala/izmeni', {"id":this.id, "naziv":this.izmena})
+        	.put('rest/cenovnik/izmeniStavku', {"c_id":this.cenovnik.id,"id":this.id,"cena":this.cena, "usluga":this.naziv})
 			.then(response => this.$router.replace({ name: "administratorKlinike" }));
 			document.getElementById("myForm").style.display = "none";
 			document.getElementById("modaldark").style.display = "none";
@@ -83,7 +85,7 @@ Vue.component('cenovnik', {
             li = document.getElementsByClassName("filterDiv");
 
             for (i = 0; i < li.length; i++) {
-              a = li[i].getElementsByTagName("td")[1];
+              a = li[i].getElementsByTagName("td")[2];
               txtValue = a.textContent || a.innerText;
               if (txtValue.toUpperCase().indexOf(filter) > -1) {
                 li[i].style.display = "";
@@ -99,12 +101,12 @@ Vue.component('cenovnik', {
         },
 		obrisi(id) {
             axios
-            .delete("rest/sala/"+id,id)
+            .delete("rest/cenovnik/obrisiStavku/"+id,id)
             .then(response => this.$router.replace({ name: "administratorKlinike" }));
         },
 		dodaj() {
         	axios
-        	.post('rest/sala/dodaj', {"id": null, "naziv":this.input.sala})
+        	.post('rest/cenovnik/dodajStavku', {"c_id":this.cenovnik.id,"id:": null,"cena":this.input.cena, "usluga":this.input.naziv})
 			.then(response => this.$router.replace({ name: "administratorKlinike" }));
         }
 	},
@@ -115,7 +117,11 @@ Vue.component('cenovnik', {
 	    	this.kc_id=response.data;
 			axios
 		    .get('rest/cenovnik/'+this.kc_id,this.kc_id)
-		    .then(response => (this.cenovnik=response.data));
+		    .then(response =>{
+		    	this.cenovnik.id=response.data.id;
+		    	this.cenovnik.stavke = response.data.stavke;
+		    	this.cenovnik.klinika_id = response.data.klinikaID;
+		    });
 		})
 		.catch(response => {
 			this.$router.push("/");

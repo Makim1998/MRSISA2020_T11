@@ -8,6 +8,7 @@ import org.springframework.stereotype.Service;
 
 import rest.domain.Cenovnik;
 import rest.domain.Klinika;
+import rest.domain.Sala;
 import rest.domain.StavkaCenovnika;
 import rest.repository.CenovnikRepository;
 import rest.repository.KlinikaRepository;
@@ -28,6 +29,9 @@ public class CenovnikService {
 		Optional<Klinika> optklinika= klinikaRepository.findById(id);
 		Klinika klinika=optklinika.get();
 		return cenovnikRepository.findOneByKlinika(klinika);
+	}
+	public Cenovnik findOne(Integer id) {
+		return cenovnikRepository.findById(id).orElseGet(null);
 	}
 
 }
