@@ -14,6 +14,9 @@ insert into administrator_klinickog_centra (id,kc) values (1,1);
 
 insert into klinika (id,adresa,naziv,opis,klinicki_centar_id) values (1,'Novi Sad','Klinika Centar','Nema opisa',1);
 
+insert into cenovnik (id,klinika_id) values (1,1);
+insert into stavka_cenovnika (cenovnik_id,id,cena,usluga) values (1,1,2000,'Opsti pregled');
+
 insert into user (id,ime,prezime,email,password,uloga,broj_osiguranika) values (2,'Jovan','Jovanovic','AdminK1','admink1',0,324254);
 insert into administrator_klinike (id,klinika_id) values (2,1);
 

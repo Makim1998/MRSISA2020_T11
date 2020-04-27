@@ -16,13 +16,18 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import rest.domain.AdministratorKlinike;
+import rest.domain.Karton;
+import rest.domain.Klinika;
+import rest.domain.Pacijent;
 import rest.domain.Sala;
 import rest.domain.User;
 import rest.dto.AdministratorKlinikeDTO;
 import rest.service.AdminKService;
+import rest.service.KlinikaService;
 
 
 
@@ -31,9 +36,9 @@ import rest.service.AdminKService;
 @RequestMapping("rest/adminK")
 public class AdministratorKlinikeController {
 	@Autowired
-	
 	private AdminKService adminKService;
-
+	@Autowired	
+	private KlinikaService klinikaService;
 	@PutMapping(value="/izmeni",consumes = "application/json")
 	public ResponseEntity<AdministratorKlinikeDTO> updateCourse(@RequestBody AdministratorKlinikeDTO admKDTO) {
 
@@ -56,6 +61,17 @@ public class AdministratorKlinikeController {
 		System.out.println("IDEMO4");
 		return new ResponseEntity<>(new AdministratorKlinikeDTO(admk), HttpStatus.OK);
 	}
+	/*@GetMapping(value ="/getKlinika",consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
+	public ResponseEntity<Klinika> getKlinika(@RequestParam Integer id){
+		System.out.println("9092 "+id);
+		AdministratorKlinike admk = adminKService.findOne(id);
+		
+		if (admk == null) {
+			return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
+		}
+		
+		return new ResponseEntity<Klinika>(admk.getKlinika(), HttpStatus.OK);
+	}*/
 
 }
 

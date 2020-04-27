@@ -21,6 +21,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import rest.domain.AdministratorKlinike;
+import rest.domain.Klinika;
 import rest.domain.Lekar;
 import rest.domain.Pacijent;
 import rest.domain.Uloga;
@@ -197,13 +198,14 @@ public class LoginController {
 		return new ResponseEntity<>(HttpStatus.NOT_FOUND);
 	}
 	@GetMapping(value = "/getConcreteUser/AdminK")
-	public ResponseEntity<User> isLogedAdminK() {
+	public ResponseEntity<AdministratorKlinike> isLogedAdminK() {
 		if(logedIn == null) {
 			return new ResponseEntity<>(HttpStatus.NOT_FOUND);
 		}
 		if(logedIn.getUloga()==Uloga.ADMINISTRATOR_KLINIKE){
 			AdministratorKlinike ak=adminKService.findByEmail(logedIn.getEmail());
-			return new ResponseEntity<User>(ak, HttpStatus.OK);
+			System.out.println("QQQQQQQQQQ");
+			return new ResponseEntity<AdministratorKlinike>(ak, HttpStatus.OK);
 		}
 		return new ResponseEntity<>(HttpStatus.NOT_FOUND);
 	}
@@ -235,6 +237,18 @@ public class LoginController {
 		}
 		if(logedIn.getUloga()==Uloga.MEDICINSKA_SESTRA){
 			return new ResponseEntity<>( HttpStatus.OK);
+		}
+		return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+	}
+	@GetMapping(value = "/getKlinika")
+	public ResponseEntity<Integer> getKlinika() {
+		if(logedIn == null) {
+			return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+		}
+		if(logedIn.getUloga()==Uloga.ADMINISTRATOR_KLINIKE){
+			AdministratorKlinike ak=adminKService.findByEmail(logedIn.getEmail());
+			int id=ak.getKlinika().getId();
+			return new ResponseEntity<>(id, HttpStatus.OK);
 		}
 		return new ResponseEntity<>(HttpStatus.NOT_FOUND);
 	}
