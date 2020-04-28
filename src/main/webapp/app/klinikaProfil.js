@@ -27,7 +27,7 @@ Vue.component("klinikaProfil", {
 		</div>
 		<div class="form-group">
     		<label for="opis">Opis: </label>
-   			<input type="text" id = "adresa" class="form-control" v-model="opis" placeholder="Opis">
+   			<textarea id = "adresa" class="form-control" v-model="opis" placeholder="Opis"></textarea>
 		</div>
 		<div class="form-group">
     		<button type="button" class="btn btn-primary btn-block" v-on:click="izmeni()">Izmeni profil</button>
@@ -40,12 +40,11 @@ Vue.component("klinikaProfil", {
 	methods : {
 		izmeni() {
 			axios
-		    .put('rest/adminK/izmeni',{
+		    .put('rest/klinika/izmeni',{
 		    	"id":this.id,
 		        "naziv": this.naziv,
 		        "adresa": this.adresa,
 		        "opis":this.opis,
-		        "kc_id":this.kc_id,
 		    })
 		    .then((response) => {
 		    	alert("Podaci su izmenjeni");
@@ -53,7 +52,6 @@ Vue.component("klinikaProfil", {
 		    	this.naziv=response.data.naziv;
 		    	this.adresa=response.data.adresa;
 		    	this.opis=response.data.opis;
-		    	this.kc_id=response.klinicki_centar_id;
 		    });
         },
 	},
@@ -65,7 +63,6 @@ Vue.component("klinikaProfil", {
 	    	this.naziv=response.data.naziv;
 	    	this.adresa=response.data.adresa;
 	    	this.opis=response.data.opis;
-	    	this.kc_id=response.klinicki_centar_id;
 		    })
 		    .catch(response => {
 				this.$router.push("/");

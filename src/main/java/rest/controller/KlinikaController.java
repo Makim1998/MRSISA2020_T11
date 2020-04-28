@@ -9,11 +9,14 @@ import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import rest.domain.AdministratorKlinike;
 import rest.domain.Klinika;
+import rest.dto.AdministratorKlinikeDTO;
 import rest.dto.KlinikaDTO;
 import rest.service.KlinikaService;
 
@@ -33,6 +36,21 @@ public class KlinikaController {
 			ret.add(dto);
 		}
 		return new ResponseEntity<>(ret, HttpStatus.OK);
+	}
+	@PutMapping(value="/izmeni",consumes = "application/json")
+	public ResponseEntity<KlinikaDTO> updateCourse(@RequestBody KlinikaDTO kDTO) {
+
+		System.out.println("IDEMO1");
+		Klinika k = service.findOne(kDTO.id);
+
+		if (k == null) {
+			return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
+		}
+		k.setNaziv(kDTO.naziv);
+		k.setAdresa(kDTO.adresa);
+		k.setOpis(kDTO.opis);
+		k= service.save(k);
+		return new ResponseEntity<>(new KlinikaDTO(k), HttpStatus.OK);
 	}
 	
 	@PostMapping(value="/dodaj", consumes=MediaType.APPLICATION_JSON_VALUE, produces=MediaType.APPLICATION_JSON_VALUE)
