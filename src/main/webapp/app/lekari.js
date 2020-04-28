@@ -104,6 +104,7 @@ Vue.component("lekari", {
         		"username":this.input.username,"radnoVremeOd":this.input.rvod,
         		"radnoVremeDo":this.input.rvdo,"kc_id":1})
 			.then(response => this.$router.replace({ name: "administratorKlinike" }));
+        	this.otkazi()
         }
 	},
 	mounted(){

@@ -1,6 +1,7 @@
 package rest.dto;
 
 import java.sql.Time;
+import java.util.StringTokenizer;
 
 import rest.domain.Klinika;
 import rest.domain.Lekar;
@@ -16,6 +17,13 @@ import rest.domain.Lekar;
 		private String radnoVremeDo;
 		private String radnoVremeOd;
 		private int kc_id;
+		
+		public LekarDTO(String linija) {
+			StringTokenizer st = new StringTokenizer(linija, "-");
+			this.ime= st.nextToken().trim();
+			this.prezime= st.nextToken().trim();
+			this.id = Integer.parseInt(st.nextToken().trim().substring(3));
+		}
 		
 		public String getAdresa() {
 			return adresa;

@@ -12,6 +12,8 @@ import javax.persistence.Id;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToOne;
 
+import rest.dto.PregledDTO;
+
 @Entity 
 public class Pregled {
 
@@ -99,5 +101,13 @@ public class Pregled {
 	}
 	public Pregled() {
 		super();
+	}
+	public Pregled(PregledDTO preg,StavkaCenovnika st,Lekar l,Sala s, TipPregleda t) {
+		this.datum=preg.getDatum();
+		this.trajanje=preg.getTrajanje();
+		this.cena=st;
+		this.lekar=l;
+		this.sala=s;
+		this.tip=t;
 	}
 }

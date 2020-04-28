@@ -1,5 +1,7 @@
 package rest.dto;
 
+import java.util.StringTokenizer;
+
 import rest.domain.TipPregleda;
 
 public class TipPregledaDTO {
@@ -10,6 +12,11 @@ public class TipPregledaDTO {
 	public TipPregledaDTO(Long id, String naziv) {
 		this.id = id;
 		this.naziv = naziv;
+	}
+	public TipPregledaDTO(String linija) {
+		StringTokenizer st = new StringTokenizer(linija, "-");
+		this.naziv = st.nextToken().trim();
+		this.id = Long.parseLong(st.nextToken().trim().substring(3));
 	}
 
 	public TipPregledaDTO(TipPregleda tipPregleda) {

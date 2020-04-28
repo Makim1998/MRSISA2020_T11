@@ -20,6 +20,8 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
 import rest.domain.AdministratorKlinike;
 import rest.domain.Klinika;
 import rest.domain.Lekar;
@@ -28,6 +30,7 @@ import rest.domain.Uloga;
 import rest.domain.User;
 import rest.service.AdminKService;
 import rest.service.LekariService;
+import rest.dto.KlinikaDTO;
 import rest.dto.PacijentDTO;
 import rest.service.PacijentService;
 import rest.service.UserService;
@@ -241,14 +244,15 @@ public class LoginController {
 		return new ResponseEntity<>(HttpStatus.NOT_FOUND);
 	}
 	@GetMapping(value = "/getKlinika")
-	public ResponseEntity<Integer> getKlinika() {
+	public ResponseEntity<KlinikaDTO> getKlinika() {
 		if(logedIn == null) {
 			return new ResponseEntity<>(HttpStatus.NOT_FOUND);
 		}
 		if(logedIn.getUloga()==Uloga.ADMINISTRATOR_KLINIKE){
 			AdministratorKlinike ak=adminKService.findByEmail(logedIn.getEmail());
-			int id=ak.getKlinika().getId();
-			return new ResponseEntity<>(id, HttpStatus.OK);
+			Klinika klinika=ak.getKlinika();
+			KlinikaDTO klinikaDTO=new KlinikaDTO(klinika);
+			return new ResponseEntity<KlinikaDTO>(klinikaDTO, HttpStatus.OK);
 		}
 		return new ResponseEntity<>(HttpStatus.NOT_FOUND);
 	}

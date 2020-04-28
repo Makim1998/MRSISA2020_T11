@@ -2,18 +2,22 @@ Vue.component("terminPregleda", {
 	data: function () {
 	    return {
 	    	 input: {	    		 
-                 datum: "",
+                 datum: null,
                  trajanje:null,
-                 tipPregleda: "",
-                 sala: "",
-                 lekar: "",
+                 tipPregleda:"",
+                 sala:"",
+                 lekar:"",
                  cena:""
              		},
 	    	pregledi:[],
 	    	sale:[],
 	    	lekari:[],
 	    	tipoviPregleda:[],
-	    	cenovnik:[],
+	    	cenovnik:{
+	    		id:null,
+	    		stavke:[],
+	    		klinika_id:null,
+	    	},
 	    	id:null,
 	    }
 	},
@@ -37,12 +41,12 @@ Vue.component("terminPregleda", {
 		   <th>Brisanje</th>
 		</tr>
 		<tr v-for="tp in pregledi" class="filterDiv ">
-			<td class="myclass">{{tp.datum}}</td>
-			<td class="myclass">{{tp.tip}}</td>
+			<td class="myclass">{{tp.datum.substring(0,10)}} {{tp.datum.substring(11,16)}}</td>
+			<td class="myclass">{{tp.tip.naziv}}</td>
 			<td class="myclass">{{tp.trajanje}}</td>
-			<td class="myclass">{{tp.sala}}</td>
-			<td class="myclass">{{tp.lekar}}</td>
-			<td class="myclass">{{tp.cena}}</td>
+			<td class="myclass">{{tp.sala.naziv}}</td>
+			<td class="myclass">{{tp.lekar.username}}</td>
+			<td class="myclass">{{tp.cena.cena}}</td>
 			<td><input class="btn btn-danger btn-lg" value='Obrisi' type='button' v-on:click="obrisi(tp.id)"/></td>
 		</tr>
 		<tr>
@@ -59,7 +63,7 @@ Vue.component("terminPregleda", {
     <label for="od">Datum:<input type="datetime-local" id="od" class="psw" v-model="input.datum" placeholder="Datum" required></label>
     <label for="tpa">Tip pregleda:<br>
 		<select id="tpa" v-model="input.tipPregleda">
-			<option v-for="tpa in tipoviPregleda">{{tpa.naziv}}</option>
+			<option v-for="tpa in tipoviPregleda">{{tpa.naziv}}-ID:{{tpa.id}}</option>
 		</select>
 	</label>
 	<br>
@@ -69,18 +73,18 @@ Vue.component("terminPregleda", {
     <br>
     <label for="sal">Sala:<br>
 		<select id="sal" v-model="input.sala">
-			<option v-for="sal in sale">{{sal.naziv}}</option>
+			<option v-for="sal in sale">{{sal.naziv}}-ID:{{sal.id}}</option>
 		</select>
 	</label>
     <label for="la">Lekar:<br>
 		<select id="la" v-model="input.lekar">
-			<option v-for="la in lekari">{{la.ime}},{{la.prezime}} ({{la.username}})</option>
+			<option v-for="la in lekari">{{la.ime}}-{{la.prezime}}-ID:{{la.id}}</option>
 		</select>
 	</label>
 	<br>
 	<label for="ca">Cena:<br>
 		<select id="ca" v-model="input.cena">
-			<option v-for="ca in cenovnik">{{ca.cena}},{{ca.usluga}}</option>
+			<option v-for="ca in cenovnik.stavke">{{ca.usluga}}-{{ca.cena}}DIN-ID:{{ca.id}}</option>
 		</select>
 	</label>
     </br></br>
@@ -105,7 +109,7 @@ Vue.component("terminPregleda", {
         },
 		obrisi(id) {
             axios
-            .delete("rest/terminiPregleda/"+id,id)
+            .delete("rest/Pregled/"+id,id)
             .then(response => this.$router.replace({ name: "administratorKlinike" }));
         },
         fjaPretrage() {
@@ -126,10 +130,10 @@ Vue.component("terminPregleda", {
         },
 		dodaj() {
         	axios
-        	.post('rest/terminiPregleda/dodaj', {"id":null,"datum":this.input.datum,
-        		"trajanje":this.input.ime,"tip":this.input.prezime,"sala":this.input.password,
-        		"lekar":this.input.username,"cena":this.input.rvod})
-			.then(response => this.$router.replace({ name: "administratorKlinike" }));
+        	.post('rest/Pregled/dodaj', {"id":null,"datum":this.input.datum,
+        		"trajanje":this.input.trajanje,"tip":this.input.tipPregleda,"cena":this.input.cena,
+        		"sala":this.input.sala,"lekar":this.input.lekar,});
+        	this.otkazi()
         }
 	},
 	mounted(){
@@ -143,7 +147,7 @@ Vue.component("terminPregleda", {
 			this.$router.push("/");
 		});
 		axios
-	    .get('rest/terminPregleda')
+	    .get('rest/Pregled/slobodni')
 	    .then(response => (this.pregledi=response.data));
 		axios
 	    .get('rest/lekari')
@@ -155,7 +159,19 @@ Vue.component("terminPregleda", {
 	    .get('rest/tipPregleda')
 	    .then(response => (this.tipoviPregleda=response.data));
 		axios
-	    .get('rest/Cenovnik')
-	    .then(response => (this.cenovnik=response.data));
+	    .get('rest/login/getKlinika')
+	    .then((response) => {;
+	    	this.kc_id=response.data;
+			axios
+		    .get('rest/cenovnik/'+this.kc_id,this.kc_id)
+		    .then(response =>{
+		    	this.cenovnik.id=response.data.id;
+		    	this.cenovnik.stavke = response.data.stavke;
+		    	this.cenovnik.klinika_id = response.data.klinikaID;
+		    });
+		})
+		.catch(response => {
+			this.$router.push("/");
+		});
 	},
 });

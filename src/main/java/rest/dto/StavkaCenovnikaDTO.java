@@ -1,6 +1,8 @@
 package rest.dto;
 
 
+import java.util.StringTokenizer;
+
 import rest.domain.StavkaCenovnika;
 
 public class StavkaCenovnikaDTO {
@@ -10,12 +12,21 @@ public class StavkaCenovnikaDTO {
 	private int cena;
 	private String usluga;
 	
+	public StavkaCenovnikaDTO(String linija) {
+		StringTokenizer st = new StringTokenizer(linija, "-");
+		this.usluga= st.nextToken().trim();
+		String cena= st.nextToken().trim();
+		this.cena=Integer.parseInt(cena.substring(0,cena.length()-3));
+		this.id = Integer.parseInt(st.nextToken().trim().substring(3));
+	}
+	
 	public StavkaCenovnikaDTO(StavkaCenovnika next) {
 		this.c_id=next.getCenovnik().getId();
 		this.id=next.getId();
 		this.cena=next.getCena();
 		this.usluga=next.getUsluga();
 	}
+	
 	
 	public StavkaCenovnikaDTO() {
 		super();
