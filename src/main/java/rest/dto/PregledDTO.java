@@ -36,7 +36,7 @@ public class PregledDTO {
 		this.tip=new TipPregledaDTO(s.getTip());
 		this.karton=null;
 		this.cena=new StavkaCenovnikaDTO(s.getCena());
-		this.sala=new SalaDTO(s.getSala());
+		this.sala=new SalaDTO(s.getSala().getId(),s.getSala().getKlinika().getId(),s.getSala().getNaziv());
 		this.lekar=new LekarDTO(s.getLekar());
 		this.dijagnoza=null;
 	}

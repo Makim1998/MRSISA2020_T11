@@ -6,28 +6,28 @@ import rest.domain.TipPregleda;
 
 public class TipPregledaDTO {
 
-	private Long id;
+	public Integer id;
 	public String naziv;
 
-	public TipPregledaDTO(Long id, String naziv) {
+	public TipPregledaDTO(Integer id, String naziv) {
 		this.id = id;
 		this.naziv = naziv;
 	}
 	public TipPregledaDTO(String linija) {
 		StringTokenizer st = new StringTokenizer(linija, "-");
 		this.naziv = st.nextToken().trim();
-		this.id = Long.parseLong(st.nextToken().trim().substring(3));
+		this.id = Integer.parseInt(st.nextToken().trim().substring(3));
 	}
 
 	public TipPregledaDTO(TipPregleda tipPregleda) {
 		this(tipPregleda.getId(),tipPregleda.getNaziv());
 	}
 
-	public Long getId() {
+	public Integer getId() {
 		return id;
 	}
 
-	public void setId(Long id) {
+	public void setId(Integer id) {
 		this.id = id;
 	}
 

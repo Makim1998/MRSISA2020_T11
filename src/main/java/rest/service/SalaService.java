@@ -6,6 +6,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import rest.domain.Sala;
+import rest.pk.SalaPK;
 import rest.repository.SalaRepository;
 
 @Service
@@ -14,7 +15,7 @@ public class SalaService {
 	@Autowired
 	private SalaRepository salaRepository;
 	
-	public Sala findOne(Integer id) {
+	public Sala findOne(SalaPK id) {
 		return salaRepository.findById(id).orElseGet(null);
 	}
 
@@ -26,7 +27,7 @@ public class SalaService {
 		return salaRepository.save(sala);
 	}
 
-	public void remove(Integer id) {
+	public void remove(SalaPK id) {
 		salaRepository.deleteById(id);
 	}
 

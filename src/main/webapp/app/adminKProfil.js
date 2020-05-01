@@ -62,33 +62,62 @@ Vue.component('adminKProfil',{
 	, 
 	methods : {
 		izmeni() {
-			axios
-		    .put('rest/adminK/izmeni',{
-		    	"id":this.id,
-		        "ime": this.ime,
-		        "prezime": this.prezime,
-		        "username":this.username,
-		        "password": this.lozinka,
-		        "adresa": this.adresa,
-		        "grad": this.grad,
-		        "drzava": this.drzava,
-		        "kc_id":this.kc_id
-		    })
-		    .then((response) => {
-		    	alert("Podaci su izmenjeni");
-		    	this.id=response.data.id;
-		    	this.username = response.data.username;
-		    	this.ime = response.data.ime;
-		    	this.lozinka = response.data.password;
-		    	this.ponovljena = response.data.password;
-		    	this.prezime = response.data.prezime;
-		    	this.adresa = response.data.adresa;
-		    	this.grad = response.data.grad;
-		    	this.drzava = response.data.drzava;		    	
-		    	this.brojOsiguranika = response.data.brojOsiguranika;
-		    	this.kc_id=response.data.kc_id;
+			if(this.proveraPolja()){
+				axios
+			    .put('rest/adminK/izmeni',{
+			    	"id":this.id,
+			        "ime": this.ime,
+			        "prezime": this.prezime,
+			        "username":this.username,
+			        "password": this.lozinka,
+			        "adresa": this.adresa,
+			        "grad": this.grad,
+			        "drzava": this.drzava,
+			        "kc_id":this.kc_id
+			    })
+			    .then((response) => {
+			    	alert("Podaci su izmenjeni");
+			    	this.id=response.data.id;
+			    	this.username = response.data.username;
+			    	this.ime = response.data.ime;
+			    	this.lozinka = response.data.password;
+			    	this.ponovljena = response.data.password;
+			    	this.prezime = response.data.prezime;
+			    	this.adresa = response.data.adresa;
+			    	this.grad = response.data.grad;
+			    	this.drzava = response.data.drzava;		    	
+			    	this.kc_id=response.data.kc_id;
 		    });
+	    	}
+	    	else{
+	    		alert("Popunite ispravno sva polja");
+	    	}
         },
+        proveraPolja(){
+        	if(this.lozinka !== this.ponovljena){
+        		alert("Niste dobro ponovili lozinku")
+        		return false;
+        	}
+        	if(this.ime == ""){
+        		return false;
+        	}
+        	if(this.prezime == ""){
+        		return false;
+        	}
+        	if(this.adresa == ""){
+        		return false;
+        	}
+        	if(this.grad == ""){
+        		return false;
+        	}
+        	if(this.drzava == ""){
+        		return false;
+        	}
+        	if(this.lozinka == ""){
+        		return false;
+        	}
+        	return true;     	
+        }
 	},
 	mounted(){
 		axios

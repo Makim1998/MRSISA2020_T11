@@ -72,7 +72,15 @@ Vue.component('cenovnik', {
 		izmeni() {      
         	axios
         	.put('rest/cenovnik/izmeniStavku', {"c_id":this.cenovnik.id,"id":this.id,"cena":this.cena, "usluga":this.naziv})
-			.then(response => this.$router.replace({ name: "administratorKlinike" }));
+			.then(response =>{
+				axios
+			    .get('rest/cenovnik/'+this.kc_id,this.kc_id)
+			    .then(response =>{
+			    	this.cenovnik.id=response.data.id;
+			    	this.cenovnik.stavke = response.data.stavke;
+			    	this.cenovnik.klinika_id = response.data.klinikaID;
+			    });
+			});
 			document.getElementById("myForm").style.display = "none";
 			document.getElementById("modaldark").style.display = "none";
 			document.getElementById("modaldark").style.opacity="0";
@@ -102,19 +110,35 @@ Vue.component('cenovnik', {
 		obrisi(id) {
             axios
             .delete("rest/cenovnik/obrisiStavku/"+id,id)
-            .then(response => this.$router.replace({ name: "administratorKlinike" }));
+            .then(response =>{
+				axios
+			    .get('rest/cenovnik/'+this.kc_id,this.kc_id)
+			    .then(response =>{
+			    	this.cenovnik.id=response.data.id;
+			    	this.cenovnik.stavke = response.data.stavke;
+			    	this.cenovnik.klinika_id = response.data.klinikaID;
+			    });
+			});
         },
 		dodaj() {
         	axios
         	.post('rest/cenovnik/dodajStavku', {"c_id":this.cenovnik.id,"id:": null,"cena":this.input.cena, "usluga":this.input.naziv})
-			.then(response => this.$router.replace({ name: "administratorKlinike" }));
+			.then(response => {
+				axios
+			    .get('rest/cenovnik/'+this.kc_id,this.kc_id)
+			    .then(response =>{
+			    	this.cenovnik.id=response.data.id;
+			    	this.cenovnik.stavke = response.data.stavke;
+			    	this.cenovnik.klinika_id = response.data.klinikaID;
+			    });
+			});
         }
 	},
 	mounted(){
 		axios
 	    .get('rest/login/getKlinika')
-	    .then((response) => {;
-	    	this.kc_id=response.data;
+	    .then((response) => {
+	    	this.kc_id=response.data.id;
 			axios
 		    .get('rest/cenovnik/'+this.kc_id,this.kc_id)
 		    .then(response =>{

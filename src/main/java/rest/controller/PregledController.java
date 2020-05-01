@@ -23,6 +23,7 @@ import rest.domain.StavkaCenovnika;
 import rest.domain.TipPregleda;
 import rest.domain.User;
 import rest.dto.PregledDTO;
+import rest.pk.SalaPK;
 import rest.service.LekariService;
 import rest.service.PregledService;
 import rest.service.SalaService;
@@ -88,7 +89,8 @@ public class PregledController {
 	public ResponseEntity<User> login(@RequestBody PregledDTO pregledDTO){
 		StavkaCenovnika st=stavkaCenovnikaService.findOne(pregledDTO.getCena().getId());
 		Lekar l=lekarService.findOne(pregledDTO.getLekar().getId());
-		Sala s=salaService.findOne(pregledDTO.getSala().getId());
+		SalaPK pk=new SalaPK(pregledDTO.getSala().getBrojSale(),pregledDTO.getSala().getKlinika());
+		Sala s=salaService.findOne(pk);
 		TipPregleda t=tipPregledaService.findOne(pregledDTO.getTip().getId());
 		Pregled pregled=new Pregled(pregledDTO,st,l,s,t);
 		pregledService.save(pregled);

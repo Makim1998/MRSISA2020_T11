@@ -79,7 +79,11 @@ Vue.component("lekari", {
 		obrisi(id) {
             axios
             .delete("rest/lekari/"+id,id)
-            .then(response => this.$router.replace({ name: "administratorKlinike" }));
+            .then(response =>{		
+				axios
+			    .get('rest/lekari')
+			    .then(response => (this.tipovi=response.data));
+				});
         },
         fjaPretrage() {
           var input, filter, ul, li, a, i, txtValue;
@@ -103,7 +107,11 @@ Vue.component("lekari", {
         		"ime":this.input.ime,"prezime":this.input.prezime,"password":this.input.password,
         		"username":this.input.username,"radnoVremeOd":this.input.rvod,
         		"radnoVremeDo":this.input.rvdo,"kc_id":1})
-			.then(response => this.$router.replace({ name: "administratorKlinike" }));
+			.then(response => {	
+				axios
+			    .get('rest/lekari')
+			    .then(response => (this.tipovi=response.data));
+				});
         	this.otkazi()
         }
 	},

@@ -6,29 +6,32 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+
 @Entity
 public class TipPregleda {
 
 	@Id
 	@Column(name = "id")
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
-	private Long id;
-	@Column(name = "naziv")
+	private Integer id;
+	
+	@Column(name = "naziv",unique = false, nullable = false)
 	public String naziv;
 	
 	public TipPregleda() {
-		this.id =1l;
-		this.naziv = "NEEEE";
+		this.id =1;
+		this.naziv = "Nema naziva";
 	}
-	public TipPregleda(Long id2, String naziv2) {
+	public TipPregleda(Integer id2, String naziv2) {
 		id=id2;
 		naziv=naziv2;
 	}
-	public Long getId() {
+	public Integer getId() {
 		return id;
 	}
 
-	public void setId(Long id) {
+	public void setId(Integer id) {
 		this.id = id;
 	}
 

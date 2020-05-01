@@ -61,7 +61,11 @@ Vue.component("tipPregleda", {
 		izmeni() {     
         	axios
         	.put('rest/tipPregleda/izmeni', {"id":this.id, "naziv":this.izmena})
-			.then(response => this.$router.replace({ name: "administratorKlinike" }));
+			.then(response => {
+				axios
+			    .get('rest/tipPregleda')
+			    .then(response => (this.tipovi=response.data));
+			});
 			document.getElementById("myForm").style.display = "none";
 			document.getElementById("modaldark").style.display = "none";
 			document.getElementById("modaldark").style.opacity="0";
@@ -91,12 +95,20 @@ Vue.component("tipPregleda", {
 		obrisi(id) {
             axios
             .delete("rest/tipPregleda/"+id,id)
-            .then(response => this.$router.replace({ name: "administratorKlinike" }));
+            .then(response =>{
+				axios
+			    .get('rest/tipPregleda')
+			    .then(response => (this.tipovi=response.data));
+			});
         },
 		dodaj() {
         	axios
         	.post('rest/tipPregleda/dodaj', {"id": null, "naziv":this.input.pregled})
-			.then(response => this.$router.replace({ name: "administratorKlinike" }));
+			.then(response =>{
+				axios
+			    .get('rest/tipPregleda')
+			    .then(response => (this.tipovi=response.data));
+			});
         }
 	},
 	mounted(){

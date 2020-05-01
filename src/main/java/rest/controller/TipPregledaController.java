@@ -55,7 +55,7 @@ public class TipPregledaController {
 		return new ResponseEntity<>(new TipPregledaDTO(tipPregleda), HttpStatus.OK);
 	}
 	@DeleteMapping(value = "/{id}")
-	public ResponseEntity<Void> deleteCourse(@PathVariable Long id) {
+	public ResponseEntity<Void> deleteCourse(@PathVariable Integer id) {
 
 		TipPregleda tip = tipPregledaService.findOne(id);
 		System.out.println("brisanje");

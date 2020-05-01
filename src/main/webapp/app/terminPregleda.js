@@ -110,7 +110,11 @@ Vue.component("terminPregleda", {
 		obrisi(id) {
             axios
             .delete("rest/Pregled/"+id,id)
-            .then(response => this.$router.replace({ name: "administratorKlinike" }));
+            .then(response =>{
+            	axios
+            	.get('rest/Pregled/slobodni')
+            	.then(response => (this.pregledi=response.data));
+            });
         },
         fjaPretrage() {
           var input, filter, ul, li, a, i, txtValue;
@@ -132,7 +136,12 @@ Vue.component("terminPregleda", {
         	axios
         	.post('rest/Pregled/dodaj', {"id":null,"datum":this.input.datum,
         		"trajanje":this.input.trajanje,"tip":this.input.tipPregleda,"cena":this.input.cena,
-        		"sala":this.input.sala,"lekar":this.input.lekar,});
+        		"sala":this.input.sala,"lekar":this.input.lekar,})
+            .then(response =>{
+            	axios
+            	.get('rest/Pregled/slobodni')
+            	.then(response => (this.pregledi=response.data));
+            });
         	this.otkazi()
         }
 	},
@@ -161,7 +170,7 @@ Vue.component("terminPregleda", {
 		axios
 	    .get('rest/login/getKlinika')
 	    .then((response) => {;
-	    	this.kc_id=response.data;
+	    	this.kc_id=response.data.id;
 			axios
 		    .get('rest/cenovnik/'+this.kc_id,this.kc_id)
 		    .then(response =>{
