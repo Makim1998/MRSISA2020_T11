@@ -6,27 +6,30 @@ import java.util.Date;
 import java.util.HashSet;
 import java.util.Set;
 
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 
 import rest.dto.LekarDTO;
 
 @Entity
-
-
 @Table(name="lekar")
 public class Lekar extends User{
 
-	@OneToMany(mappedBy="lekar")
+	
+	@OneToMany(mappedBy="lekar",fetch = FetchType.LAZY, cascade = CascadeType.ALL)
+	@JsonIgnore
 	private Set<Pregled> pregledi=new HashSet<Pregled>();
 
 	
-	@OneToMany(mappedBy="lekar")
+	@OneToMany(mappedBy="lekar", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
 	private Set<GodisnjiOdmor> godisnji= new HashSet<GodisnjiOdmor>();
 	
 	@ManyToOne

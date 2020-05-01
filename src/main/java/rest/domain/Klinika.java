@@ -28,7 +28,7 @@ public class Klinika {
 	@ManyToOne(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
 	private KlinickiCentar klinickiCentar;
 	
-	@Column(name ="adresa", unique = true, nullable = false)
+	@Column(name ="adresa",unique = true, nullable = false)
 	private String adresa;
 	
 	@Column(name ="opis", nullable = false)

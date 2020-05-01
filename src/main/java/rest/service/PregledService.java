@@ -6,6 +6,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import rest.domain.Pregled;
+import rest.domain.Sala;
+import rest.pk.SalaPK;
 import rest.repository.PregledRepository;
 
 @Service 
@@ -34,6 +36,11 @@ public class PregledService {
 	public Pregled save(Pregled pregled) {
 		return pregledRepository.save(pregled);
 		
+	}
+
+	public List<Pregled> findZauzete(Sala id) {
+		// TODO Auto-generated method stub
+		return pregledRepository.findByKartonIsNotNullAndSala(id);
 	}
 
 }

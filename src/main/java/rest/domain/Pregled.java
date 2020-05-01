@@ -9,8 +9,12 @@ import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToOne;
+
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 
 import rest.dto.PregledDTO;
 
@@ -21,16 +25,17 @@ public class Pregled {
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Integer id;
 	
-	@Column
+	@Column(name = "datum",unique = false, nullable = false)
 	private Date datum;
 	
-	@Column
+	@Column(name = "trajanje",unique = false, nullable = false)
 	private int trajanje;
 	
-	@ManyToOne(cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+	@ManyToOne
+	@JoinColumn(name="tip_id", referencedColumnName="id", nullable=false)
 	private TipPregleda tip;
 	
-	@ManyToOne(cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+	@ManyToOne
 	private Karton karton;
 	
 	@OneToOne

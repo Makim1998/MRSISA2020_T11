@@ -5,30 +5,36 @@ import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.IdClass;
 import javax.persistence.ManyToOne;
 
+import rest.pk.SalaPK;
+
 @Entity
+@IdClass(SalaPK.class)
 public class Sala {
+	@ManyToOne
 	@Id
-	@GeneratedValue(strategy = GenerationType.IDENTITY)
-	private Integer id;
+	private Klinika klinika;
+	@Id
+	@Column(nullable=false)
+	private Integer brojSale;
 	@Column
 	private String naziv;
-	@ManyToOne
-	private Klinika klinika;
 	
 	public Sala() {
 		super();
 	}
-	public Sala(Integer id2, String naziv2) {
-		id=id2;
+	public Sala(Klinika klinika,Integer id2, String naziv2) {
+		this.klinika=klinika;
+		brojSale=id2;
 		naziv=naziv2;
 	}
 	public Integer getId() {
-		return id;
+		return brojSale;
 	}
 	public void setId(Integer id) {
-		this.id = id;
+		this.brojSale = id;
 	}
 	public String getNaziv() {
 		return naziv;
