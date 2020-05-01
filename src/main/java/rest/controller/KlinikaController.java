@@ -14,9 +14,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import rest.domain.AdministratorKlinike;
 import rest.domain.Klinika;
-import rest.dto.AdministratorKlinikeDTO;
 import rest.dto.KlinikaDTO;
 import rest.service.KlinikaService;
 
@@ -57,7 +55,17 @@ public class KlinikaController {
 	public ResponseEntity<Klinika> dodajKlinika(@RequestBody KlinikaDTO klinikaDto){
 		Klinika klinika = new Klinika(klinikaDto);
 		service.save(klinika);
-		return new ResponseEntity<>(HttpStatus.OK);
+		return new ResponseEntity<>(klinika, HttpStatus.OK);
+	}
+	
+	@GetMapping(value="/ids")
+	public ResponseEntity<List<Integer>> getIds(){
+		List<Klinika> klinike = service.findAll();
+		List<Integer> ids = new ArrayList<Integer>();
+		for (Klinika k: klinike) {
+			ids.add(k.getId());
+		}
+		return new ResponseEntity<>(ids, HttpStatus.OK);
 	}
 
 }

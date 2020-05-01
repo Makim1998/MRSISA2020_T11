@@ -1,7 +1,5 @@
 package rest.controller;
 
-
-import java.text.ParseException;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -9,26 +7,18 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import rest.domain.AdministratorKlinike;
-import rest.domain.Karton;
 import rest.domain.Klinika;
-import rest.domain.Pacijent;
-import rest.domain.Sala;
-import rest.domain.User;
 import rest.dto.AdministratorKlinikeDTO;
 import rest.service.AdminKService;
 import rest.service.KlinikaService;
-
 
 
 @RestController
@@ -37,8 +27,10 @@ import rest.service.KlinikaService;
 public class AdministratorKlinikeController {
 	@Autowired
 	private AdminKService adminKService;
-	@Autowired	
+	
+	@Autowired
 	private KlinikaService klinikaService;
+	
 	@PutMapping(value="/izmeni",consumes = "application/json")
 	public ResponseEntity<AdministratorKlinikeDTO> updateCourse(@RequestBody AdministratorKlinikeDTO admKDTO) {
 
@@ -73,6 +65,25 @@ public class AdministratorKlinikeController {
 		return new ResponseEntity<Klinika>(admk.getKlinika(), HttpStatus.OK);
 	}*/
 
+	@GetMapping(value="/getAll")
+	public ResponseEntity<List<AdministratorKlinikeDTO>> getAdmins(){
+		List<AdministratorKlinikeDTO> ret = new ArrayList<AdministratorKlinikeDTO>();
+		List<AdministratorKlinike> admins = adminKService.findAll();
+		for (AdministratorKlinike a: admins) {
+			AdministratorKlinikeDTO dto = new AdministratorKlinikeDTO(a);
+			ret.add(dto);
+		}
+		return new ResponseEntity<>(ret, HttpStatus.OK);
+	}
+	
+	@PostMapping(value="/dodaj", consumes=MediaType.APPLICATION_JSON_VALUE, produces=MediaType.APPLICATION_JSON_VALUE)
+	public ResponseEntity<AdministratorKlinike> addAdmin(@RequestBody AdministratorKlinikeDTO dto){
+		AdministratorKlinike admin = new AdministratorKlinike(dto);
+		Klinika klinika = klinikaService.findOne(dto.getKc_id());
+		admin.setKlinika(klinika);
+		adminKService.save(admin);
+		klinika.setAdministrator(admin);
+		klinikaService.save(klinika);
+		return new ResponseEntity<>(admin, HttpStatus.OK);
+	}
 }
-
-

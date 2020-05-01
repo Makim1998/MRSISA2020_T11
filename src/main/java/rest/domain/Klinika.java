@@ -10,12 +10,9 @@ import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
-import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 import javax.persistence.OneToOne;
-
-import com.fasterxml.jackson.annotation.JsonBackReference;
 
 import rest.dto.KlinikaDTO;
 
@@ -116,8 +113,8 @@ public class Klinika {
 		this.adresa = dto.adresa;
 		this.naziv = dto.naziv;
 		this.opis = dto.opis;
-		this.administrator = new AdministratorKlinike();
-		this.cenovnik = new Cenovnik();
+		this.administrator = null;
+		this.cenovnik = null;
 	}
 	
 }
