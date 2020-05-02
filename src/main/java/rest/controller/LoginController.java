@@ -140,6 +140,10 @@ public class LoginController {
 			System.out.println("Broj osiguranika zauzet");
 			return new ResponseEntity<User>(HttpStatus.BAD_REQUEST);
 		}
+		if(pacijent.getBrojOsiguranika().length() != 13) {
+			System.out.println("Nevalidan jbr osiguranika!");
+			return new ResponseEntity<User>(HttpStatus.BAD_REQUEST);
+		}
 		
 		Pacijent p= new Pacijent();
 		p.setEmail(pacijent.getEmail());

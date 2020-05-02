@@ -2,12 +2,16 @@ package rest.domain;
 
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashSet;
+import java.util.List;
 import java.util.Set;
 
 import javax.persistence.CascadeType;
+import javax.persistence.CollectionTable;
 import javax.persistence.Column;
+import javax.persistence.ElementCollection;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
 import javax.persistence.JoinColumn;
@@ -16,7 +20,6 @@ import javax.persistence.OneToMany;
 import javax.persistence.Table;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
-import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 
 import rest.dto.LekarDTO;
 
@@ -44,6 +47,13 @@ public class Lekar extends User{
 	@Column(name="do")
 	private Date RadnoVremeDo;
 
+	
+	@ElementCollection
+	@CollectionTable(name = "lekar_ocene",
+    joinColumns = @JoinColumn(name="lekar_id",referencedColumnName = "id") )
+	@Column(name = "ocene")
+	private List<Integer> ocene = new ArrayList<Integer>();
+	
 	public Lekar(String username, String password, String ime, String prezime) {
 		super(username, password, ime, prezime);
 		// TODO Auto-generated constructor stub
@@ -112,5 +122,18 @@ public class Lekar extends User{
 	public void setKlinika(Klinika klinika2) {
 		this.klinika = klinika2;		
 	}
+
+
+
+	public List<Integer> getOcene() {
+		return ocene;
+	}
+
+
+
+	public void setOcene(List<Integer> ocene) {
+		this.ocene = ocene;
+	}
+	
 	
 }

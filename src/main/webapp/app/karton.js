@@ -39,7 +39,7 @@ Vue.component('karton',{
 	, 
 	mounted(){
 		axios
-	    .get('rest/login/getConcreteUser')
+	    .get('rest/login/getConcreteUser/Pacijent')
 	    .then((response) => {
 	    	console.log(response.data);
 	    	this.email = response.data.email;

@@ -16,10 +16,30 @@ import rest.domain.Lekar;
 		private String drzava;
 		private String radnoVremeDo;
 		private String radnoVremeOd;
+		private String prosecnaOcena;
 		private String brojOsiguranika;
 		private int kc_id;
 		private Boolean prviPut;
 		
+		public void setProsek(Lekar l) {
+			if(l.getOcene() == null) {
+				prosecnaOcena = "nema";
+			}
+			else {
+				double prosek = 0.;
+				for(Integer i:l.getOcene()) {
+					prosek += i;
+				}
+				prosek /= l.getOcene().size();
+				prosecnaOcena = String.format("%.2f", prosek);
+			}
+		}
+		public String getProsecnaOcena() {
+			return prosecnaOcena;
+		}
+		public void setProsecnaOcena(String prosecnaOcena) {
+			this.prosecnaOcena = prosecnaOcena;
+		}
 		public LekarDTO(String linija) {
 			StringTokenizer st = new StringTokenizer(linija, "-");
 			this.ime= st.nextToken().trim();

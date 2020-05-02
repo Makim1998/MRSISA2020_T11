@@ -13,9 +13,7 @@ Vue.component('pacijentProfil',{
 		}
 	},
 	template: ` 
-<div class="oneoption">
-<div id = "login" class="sidenavlogin">
-<div id = "register">
+<div id = "pacijentProfil">
     <form>
 		<h2 class="text-center">Pregled i promena profila</h2>       
 		<div class="form-group">
@@ -41,10 +39,10 @@ Vue.component('pacijentProfil',{
    				<label for="grad">Grad: </label>
     			<input type="text" id = "grad" class="form-control" v-model="grad" placeholder="Grad">
     		</div>
-		</div>
-		<div class="form-group">
-			<label for="drzava">Drzava: </label>
-    		<input type="text"  id = "drzava" class="form-control" v-model="drzava" placeholder="Drzava">
+    		<div class = "celija">
+				<label for="drzava">Drzava: </label>
+    			<input type="text"  id = "drzava" class="form-control" v-model="drzava" placeholder="Drzava">
+			</div>
 		</div>
 		<div class="form-group">
 			<label for="broj">Jedinstveni br. osiguranika: </label>
@@ -64,8 +62,7 @@ Vue.component('pacijentProfil',{
     		<button type="button" class="btn btn-primary btn-block" v-on:click="izmeni()">Izmeni profil</button>
 		</div>
     </form>
-</div>	
-</div>	  		  
+</div>		  		  
 `
 	, 
 	methods : {
@@ -156,11 +153,7 @@ Vue.component('pacijentProfil',{
 	    	this.drzava = response.data.drzava;
 	    	
 	    	this.brojOsiguranika = response.data.brojOsiguranika;
-	    	console.log(response.data);
-		    })
-		    .catch(response => {
-				this.$router.push("/");
-			});
-		}
 	    	
 	    });
+	}
+});
