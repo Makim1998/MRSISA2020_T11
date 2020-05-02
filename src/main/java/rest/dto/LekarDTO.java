@@ -16,6 +16,7 @@ import rest.domain.Lekar;
 		private String drzava;
 		private String radnoVremeDo;
 		private String radnoVremeOd;
+		private String brojOsiguranika;
 		private int kc_id;
 		
 		public LekarDTO(String linija) {
@@ -102,6 +103,7 @@ import rest.domain.Lekar;
 			this.setUsername(s.getUsername());
 			this.setPassword(s.getPassword());
 			this.setRadnoVremeDo(s.getRadnoVremeDo().toString().substring(11,16));
+			this.setBrojOsiguranika(s.getBrojOsiguranika());
 			this.setAdresa(s.getAdresa());
 			this.setDrzava(s.getDrzava());
 			this.setGrad(s.getGrad());
@@ -111,5 +113,13 @@ import rest.domain.Lekar;
 		public Klinika getKC() {
 			// TODO Auto-generated method stub
 			return null;
+		}
+
+		public String getBrojOsiguranika() {
+			return brojOsiguranika;
+		}
+
+		public void setBrojOsiguranika(String brojOsiguranika) {
+			this.brojOsiguranika = brojOsiguranika;
 		}
 }

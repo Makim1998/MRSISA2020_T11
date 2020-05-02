@@ -5,8 +5,10 @@ import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import rest.domain.Lekar;
 import rest.domain.Pregled;
 import rest.domain.Sala;
+import rest.domain.TipPregleda;
 import rest.pk.SalaPK;
 import rest.repository.PregledRepository;
 
@@ -41,6 +43,16 @@ public class PregledService {
 	public List<Pregled> findZauzete(Sala id) {
 		// TODO Auto-generated method stub
 		return pregledRepository.findByKartonIsNotNullAndSala(id);
+	}
+
+	public List<Pregled> findZauzete(TipPregleda tip) {
+		// TODO Auto-generated method stub
+		return pregledRepository.findByKartonIsNotNullAndTip(tip);
+	}
+
+	public List<Pregled> findZauzete(Lekar lekar) {
+		// TODO Auto-generated method stub
+		return pregledRepository.findByKartonIsNotNullAndLekar(lekar);
 	}
 
 }

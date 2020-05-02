@@ -5,13 +5,15 @@ Vue.component("lekari", {
                  ime: "",
                  prezime: "",
                  username: "",
+                 brojOsiguranika: "",
                  password: "",
                  rvod: "",
                  rvdo: ""
              		},
 	    	tipovi:[],
 	    	id:null,
-	    	izmena:""
+	    	izmena:"",
+	    	klinika_id:null
 	    }
 	},
 	template: ` 
@@ -29,13 +31,15 @@ Vue.component("lekari", {
 		   <th>Korisnicko ime</th>
 		   <th>Ime</th>
 		   <th>Prezime</th>
+		   <th>Broj osiguranika</th>
 		   <th>Brisanje</th>
 		</tr>
-		<tr v-for="tp in tipovi" class="filterDiv ">
+		<tr v-for="tp in tipovi" v-if="tp.kc_id==klinika_id" class="filterDiv ">
 			<td class="myclass">{{tp.id}}</td>
 			<td class="myclass">{{tp.username}}</td>
 			<td class="myclass">{{tp.ime}}</td>
 			<td class="myclass">{{tp.prezime}}</td>
+			<td class="myclass">{{tp.brojOsiguranika}}</td>
 			<td><input class="btn btn-danger btn-lg" value='Obrisi' type='button' v-on:click="obrisi(tp.id)"/></td>
 		</tr>
 		<tr>
@@ -51,6 +55,7 @@ Vue.component("lekari", {
     <h4>Novi lekar</h4>
     <input type="text" class="psw" v-model="input.ime" placeholder="Ime" required>
     <input type="text" class="psw" v-model="input.prezime" placeholder="Prezime" required>
+    <input type="text" class="psw" v-model="input.brojOsiguranika" placeholder="Broj osiguranika" required>
     <input type="text" class="psw" v-model="input.username" placeholder="Korisnicko ime" required>
     <input type="text" class="psw" v-model="input.password" placeholder="Lozinka" required>
 	<p style="margin:0;padding:0;">Radno vreme lekara</p>
@@ -83,7 +88,10 @@ Vue.component("lekari", {
 				axios
 			    .get('rest/lekari')
 			    .then(response => (this.tipovi=response.data));
-				});
+			})
+			.catch(error => {
+				alert("Lekar se ne moze obrisati,ima zakazan pregled.");
+			});
         },
         fjaPretrage() {
           var input, filter, ul, li, a, i, txtValue;
@@ -104,15 +112,19 @@ Vue.component("lekari", {
 		dodaj() {
         	axios
         	.post('rest/lekari/dodaj', {"id": null,
-        		"ime":this.input.ime,"prezime":this.input.prezime,"password":this.input.password,
+        		"ime":this.input.ime,"prezime":this.input.prezime,
+        		"brojOsiguranika":this.input.brojOsiguranika,"password":this.input.password,
         		"username":this.input.username,"radnoVremeOd":this.input.rvod,
-        		"radnoVremeDo":this.input.rvdo,"kc_id":1})
+        		"radnoVremeDo":this.input.rvdo,"kc_id":this.klinika_id})
 			.then(response => {	
 				axios
 			    .get('rest/lekari')
 			    .then(response => (this.tipovi=response.data));
-				});
-        	this.otkazi()
+				this.otkazi()
+				})
+			.catch(error => {
+				alert("Nevalidan unos. Pokusajte ponovo.");
+			});
         }
 	},
 	mounted(){
@@ -127,5 +139,8 @@ Vue.component("lekari", {
 		axios
 	    .get('rest/lekari')
 	    .then(response => (this.tipovi=response.data));
+		axios
+	    .get('rest/login/getKlinika')
+	    .then(response =>(this.klinika_id=response.data.id));
 	},
 });

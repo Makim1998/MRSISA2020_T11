@@ -19,11 +19,13 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import rest.domain.Lekar;
+import rest.domain.Pregled;
 import rest.domain.Sala;
 import rest.domain.User;
 import rest.dto.LekarDTO;
 import rest.dto.SalaDTO;
 import rest.service.LekariService;
+import rest.service.PregledService;
 import rest.service.SalaService;
 
 
@@ -34,7 +36,9 @@ public class LekariController {
 	@Autowired
 	
 	private LekariService lekariService;
-
+	@Autowired
+	private PregledService pregledService;
+	
 	@GetMapping
 	public ResponseEntity<List<LekarDTO>> getLekari() {
 		
@@ -51,11 +55,16 @@ public class LekariController {
 	public ResponseEntity<Void> deleteCourse(@PathVariable Integer id) {
 
 		Lekar lekar = lekariService.findOne(id);
-		System.out.println("brisanje");
-		if (lekar != null) {
-			lekariService.remove(id);
-			return new ResponseEntity<>(HttpStatus.OK);
-		} else {
+		List<Pregled> ztermini = pregledService.findZauzete(lekar);
+		if (ztermini.isEmpty()){
+			System.out.println("brisanje");
+			if (lekar != null) {
+				lekariService.remove(id);
+				return new ResponseEntity<>(HttpStatus.OK);
+			} else {
+				return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+			}
+		}else {
 			return new ResponseEntity<>(HttpStatus.NOT_FOUND);
 		}
 	}

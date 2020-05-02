@@ -41,10 +41,10 @@ public class Pregled {
 	@OneToOne
 	private StavkaCenovnika cena;
 	
-	@ManyToOne(cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+	@ManyToOne(fetch = FetchType.LAZY)
 	private Sala sala;
 	
-	@ManyToOne(cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+	@ManyToOne(fetch = FetchType.LAZY)
 	private Lekar lekar;
 	
 	@ManyToOne(cascade = CascadeType.ALL, fetch = FetchType.LAZY)

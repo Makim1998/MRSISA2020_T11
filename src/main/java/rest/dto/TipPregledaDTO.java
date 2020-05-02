@@ -8,10 +8,16 @@ public class TipPregledaDTO {
 
 	public Integer id;
 	public String naziv;
+	public Integer klinika;
+	
 
-	public TipPregledaDTO(Integer id, String naziv) {
+	public TipPregledaDTO() {
+		super();
+	}
+	public TipPregledaDTO(Integer id, String naziv,Integer k) {
 		this.id = id;
 		this.naziv = naziv;
+		this.klinika=k;
 	}
 	public TipPregledaDTO(String linija) {
 		StringTokenizer st = new StringTokenizer(linija, "-");
@@ -19,8 +25,8 @@ public class TipPregledaDTO {
 		this.id = Integer.parseInt(st.nextToken().trim().substring(3));
 	}
 
-	public TipPregledaDTO(TipPregleda tipPregleda) {
-		this(tipPregleda.getId(),tipPregleda.getNaziv());
+	public TipPregledaDTO(TipPregleda tipPregleda,Integer k) {
+		this(tipPregleda.getId(),tipPregleda.getNaziv(),k);
 	}
 
 	public Integer getId() {
@@ -40,4 +46,11 @@ public class TipPregledaDTO {
 	public void setNaziv(String naziv) {
 		this.naziv = naziv;
 	}
+	public Integer getKlinika() {
+		return klinika;
+	}
+	public void setKlinika(Integer klinika) {
+		this.klinika = klinika;
+	}
+	
 }

@@ -9,6 +9,8 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.Inheritance;
 
+import org.hibernate.validator.constraints.Length;
+
 
 @Entity
 @Inheritance(strategy=JOINED)
@@ -19,14 +21,17 @@ public class User {
 	private Integer id;
 	@Column(unique = true, nullable = false)
 	private String email;
-	@Column
+	@Column(nullable = false,length = 10)
     private String password;
-	@Column
+	@Column(nullable = false,length = 15)
     private String ime;
-	@Column
+	@Column(nullable = false,length = 15)
     private String prezime;
-	@Column
+	
+	@Column(nullable = false)
+	@Length(min = 13, max = 13)
 	private String brojOsiguranika;
+	
 	@Column
 	private String adresa;
 	@Column

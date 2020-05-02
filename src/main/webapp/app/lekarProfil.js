@@ -142,6 +142,7 @@ Vue.component('lekarProfil',{
 	    	this.adresa = response.data.adresa;
 	    	this.grad = response.data.grad;
 	    	this.drzava = response.data.drzava;
+	    	this.brojOsiguranika = response.data.brojOsiguranika;
 	    	this.radnoVremeDo=response.data.radnoVremeDo;
 	    	this.radnoVremeOd=response.data.radnoVremeOd;
 	    	this.kc_id=response.data.kc_id;
