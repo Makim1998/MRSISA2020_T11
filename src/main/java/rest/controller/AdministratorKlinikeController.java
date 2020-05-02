@@ -65,7 +65,7 @@ public class AdministratorKlinikeController {
 		return new ResponseEntity<Klinika>(admk.getKlinika(), HttpStatus.OK);
 	}*/
 
-	@GetMapping(value="/getAll")
+	@GetMapping
 	public ResponseEntity<List<AdministratorKlinikeDTO>> getAdmins(){
 		List<AdministratorKlinikeDTO> ret = new ArrayList<AdministratorKlinikeDTO>();
 		List<AdministratorKlinike> admins = adminKService.findAll();
