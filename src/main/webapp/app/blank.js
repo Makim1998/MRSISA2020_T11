@@ -1,3 +1,3 @@
 Vue.component('blank',{
-	template:`<div></div>`
+	template:`<div>Dobrodosli.</div>`
 })

@@ -33,7 +33,7 @@ public class Klinika {
 	@ManyToOne(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
 	private KlinickiCentar klinickiCentar;
 	
-	@Column(name ="adresa", unique = true, nullable = false)
+	@Column(name ="adresa",unique = true, nullable = false)
 	private String adresa;
 	
 	@Column(name ="opis", nullable = false)
@@ -49,7 +49,6 @@ public class Klinika {
 	private Set<Sala> sale = new HashSet<Sala>();
 	
 	@OneToMany(mappedBy="klinika",fetch = FetchType.LAZY, cascade = CascadeType.ALL)
-	
 	private Set<Lekar> lekari = new HashSet<Lekar>();
 	
 	@OneToMany(mappedBy="klinika",fetch = FetchType.LAZY, cascade = CascadeType.ALL)
@@ -149,8 +148,8 @@ public class Klinika {
 		this.adresa = dto.adresa;
 		this.naziv = dto.naziv;
 		this.opis = dto.opis;
-		this.administrator = new AdministratorKlinike();
-		this.cenovnik = new Cenovnik();
+		this.administrator = null;
+		this.cenovnik = null;
 	}
 	public int getId() {
 		// TODO Auto-generated method stub

@@ -9,6 +9,8 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.Inheritance;
 
+import org.hibernate.validator.constraints.Length;
+
 
 @Entity
 @Inheritance(strategy=JOINED)
@@ -19,16 +21,74 @@ public class User {
 	private Integer id;
 	@Column(unique = true, nullable = false)
 	private String email;
-	@Column
+	@Column(nullable = false,length = 10)
     private String password;
-	@Column
+	@Column(nullable = false,length = 15)
     private String ime;
-	@Column
+	@Column(nullable = false,length = 15)
     private String prezime;
 	
+	@Column(nullable = false)
+	@Length(min = 13, max = 13)
+	private String brojOsiguranika;
+	
+	@Column
+	private String adresa;
+	@Column
+	private String grad;
+	@Column
+	private String drzava;
 	@Column
 	private Uloga uloga;
+	
     
+	public User(String email, String password, String ime, String prezime, String brojOsiguranika,
+			String adresa, String grad, String drzava, Uloga uloga) {
+		super();
+		this.id = id;
+		this.email = email;
+		this.password = password;
+		this.ime = ime;
+		this.prezime = prezime;
+		this.brojOsiguranika = brojOsiguranika;
+		this.adresa = adresa;
+		this.grad = grad;
+		this.drzava = drzava;
+		this.uloga = uloga;
+	}
+
+	public String getBrojOsiguranika() {
+		return brojOsiguranika;
+	}
+
+	public void setBrojOsiguranika(String brojOsiguranika) {
+		this.brojOsiguranika = brojOsiguranika;
+	}
+
+	public String getAdresa() {
+		return adresa;
+	}
+
+	public void setAdresa(String adresa) {
+		this.adresa = adresa;
+	}
+
+	public String getGrad() {
+		return grad;
+	}
+
+	public void setGrad(String grad) {
+		this.grad = grad;
+	}
+
+	public String getDrzava() {
+		return drzava;
+	}
+
+	public void setDrzava(String drzava) {
+		this.drzava = drzava;
+	}
+
 	public String getEmail() {
 		return email;
 	}

@@ -9,8 +9,8 @@ import rest.domain.Pacijent;
 import rest.repository.PacijentRepository;
 
 @Service
-
 public class PacijentService {
+	
 	@Autowired
 	private PacijentRepository pacijentRepository;
 	

@@ -8,10 +8,12 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
+import javax.persistence.CascadeType;
 import javax.persistence.CollectionTable;
 import javax.persistence.Column;
 import javax.persistence.ElementCollection;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
@@ -22,19 +24,20 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
 import rest.dto.LekarDTO;
 
 @Entity
-
-
 @Table(name="lekar")
 public class Lekar extends User{
 
-	@OneToMany(mappedBy="lekar")
+	
+	@OneToMany(mappedBy="lekar",fetch = FetchType.LAZY, cascade = CascadeType.ALL)
+	@JsonIgnore
 	private Set<Pregled> pregledi=new HashSet<Pregled>();
 
 	
-	@OneToMany(mappedBy="lekar")
+	@OneToMany(mappedBy="lekar", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
 	private Set<GodisnjiOdmor> godisnji= new HashSet<GodisnjiOdmor>();
 	
 	@ManyToOne
+	@JoinColumn(name="klinika",nullable=false)
 	@JsonIgnore
 	private Klinika klinika;
 
@@ -75,6 +78,7 @@ public class Lekar extends User{
 		System.out.println(lekarDTO.getPassword());
 		System.out.println(lekarDTO.getRadnoVremeDo());
 		this.setIme(lekarDTO.getIme());
+		this.setBrojOsiguranika(lekarDTO.getBrojOsiguranika());
 		this.setPrezime(lekarDTO.getPrezime());
 		this.setUsername(lekarDTO.getUsername());
 		this.setPassword(lekarDTO.getPassword());

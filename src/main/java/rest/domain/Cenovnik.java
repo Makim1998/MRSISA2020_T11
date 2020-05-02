@@ -4,6 +4,7 @@ import java.util.HashSet;
 import java.util.Set;
 
 import javax.persistence.CascadeType;
+import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
@@ -23,7 +24,7 @@ public class Cenovnik {
 	private Set<StavkaCenovnika> stavke = new HashSet<StavkaCenovnika>();
 	
 	@OneToOne(cascade = CascadeType.ALL)
-    @JoinColumn(name = "klinika_id", referencedColumnName = "id")
+    @JoinColumn(name = "klinika_id", referencedColumnName = "id",unique = true, nullable = false)
 	private Klinika klinika;
 	
 	public Cenovnik() {
@@ -35,7 +36,7 @@ public class Cenovnik {
 	public void setId(Integer id) {
 		this.id = id;
 	}
-	public Set<StavkaCenovnika> getStavka() {
+	public Set<StavkaCenovnika> getStavke() {
 		return stavke;
 	}
 	public void setStavka(Set<StavkaCenovnika> stavka) {

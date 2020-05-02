@@ -22,6 +22,8 @@ public class LekariService {
 	@Autowired
 	private KlinikaRepository klinikaRepository;
 	
+	
+	
 	public Lekar findOne(Integer id) {
 		return lekarRepository.findById(id).orElseGet(null);
 	}

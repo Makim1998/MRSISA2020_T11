@@ -1,6 +1,8 @@
 package rest.controller;
 
+import java.util.ArrayList;
 import java.util.Collection;
+import java.util.List;
 
 import javax.annotation.PostConstruct;
 
@@ -15,11 +17,20 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
+import rest.domain.AdministratorKlinike;
+import rest.domain.Klinika;
+import rest.domain.Lekar;
 import rest.domain.Pacijent;
 import rest.domain.Uloga;
 import rest.domain.User;
+import rest.service.AdminKService;
+import rest.service.LekariService;
+import rest.dto.KlinikaDTO;
 import rest.dto.PacijentDTO;
 import rest.service.PacijentService;
 import rest.service.UserService;
@@ -37,6 +48,10 @@ public class LoginController {
 	private UserService userService;
 	@Autowired
 	private PacijentService patientService;
+	@Autowired
+	private LekariService lekarService;
+	@Autowired
+	private AdminKService adminKService;
 	
 	private User logedIn;
 	
@@ -101,11 +116,11 @@ public class LoginController {
 			throws Exception {
 		return new ResponseEntity<User>(logedIn, HttpStatus.OK);
 	}
-	@GetMapping(value="/logout")
-	public ResponseEntity<User> logout()
-			throws Exception {
-		logedIn = null;
-		return new ResponseEntity<User>(logedIn, HttpStatus.OK);
+	@GetMapping(value="/odjava")
+	public ResponseEntity<User> Odjava() 
+		throws Exception {
+	logedIn = null;
+	return new ResponseEntity<User>(logedIn, HttpStatus.OK);
 	}
 	@PostMapping(value = "register",consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
 	public ResponseEntity<User> register(@RequestBody PacijentDTO pacijent)
@@ -125,6 +140,10 @@ public class LoginController {
 			System.out.println("Broj osiguranika zauzet");
 			return new ResponseEntity<User>(HttpStatus.BAD_REQUEST);
 		}
+		if(pacijent.getBrojOsiguranika().length() != 13) {
+			System.out.println("Nevalidan jbr osiguranika!");
+			return new ResponseEntity<User>(HttpStatus.BAD_REQUEST);
+		}
 		
 		Pacijent p= new Pacijent();
 		p.setEmail(pacijent.getEmail());
@@ -135,7 +154,7 @@ public class LoginController {
 		System.out.println("Validni podaci");
 		p.setAdresa(pacijent.getAdresa());
 		p.setEmail(pacijent.getEmail());
-		p.setbrojOsiguranika(pacijent.getBrojOsiguranika());
+		p.setBrojOsiguranika(pacijent.getBrojOsiguranika());
 		p.setDrzava(pacijent.getDrzava());
 
 		p.setGrad(pacijent.getGrad());
@@ -172,36 +191,74 @@ public class LoginController {
 	/*
 	 * url: /api/greetings/1 DELETE
 	 */
-	@GetMapping(value = "/getConcreteUser")
-	public ResponseEntity<User> getLoged() {
-		//userService.remove(id);
+	@GetMapping(value = "/getConcreteUser/Pacijent")
+	public ResponseEntity<User> isLogedPacijent() {
 		if(logedIn == null) {
-			return new ResponseEntity<User>(HttpStatus.BAD_REQUEST);
+			return new ResponseEntity<>(HttpStatus.NOT_FOUND);
 		}
-		switch(logedIn.getUloga()) {
-		case ADMINISTRATOR_KLINICKOG_CENTRA:{
-			break;
-		}
-		case LEKAR:{
-			break;
-		}
-		case ADMINISTRATOR_KLINIKE:{
-			break;
-		}
-		case MEDICINSKA_SESTRA:{
-			break;
-		}
-		case PACIJENT:{
+		if(logedIn.getUloga()==Uloga.PACIJENT){
 			Pacijent p = patientService.findByEmail(logedIn.getEmail());
-			System.out.println("Ulogovan pacijent");
-			System.out.println(p.getAdresa());
+			//System.out.println("Ulogovan pacijent");
+			System.out.println(p.getAdresa()+"SSSSSSSSSS");
 			return new ResponseEntity<User>(p, HttpStatus.OK);
 		}
-		default:
-			break;
-			
+		return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+	}
+	@GetMapping(value = "/getConcreteUser/AdminK")
+	public ResponseEntity<AdministratorKlinike> isLogedAdminK() {
+		if(logedIn == null) {
+			return new ResponseEntity<>(HttpStatus.NOT_FOUND);
 		}
-		return new ResponseEntity<User>(HttpStatus.NO_CONTENT);
+		if(logedIn.getUloga()==Uloga.ADMINISTRATOR_KLINIKE){
+			AdministratorKlinike ak=adminKService.findByEmail(logedIn.getEmail());
+			System.out.println("QQQQQQQQQQ");
+			return new ResponseEntity<AdministratorKlinike>(ak, HttpStatus.OK);
+		}
+		return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+	}
+	@GetMapping(value = "/getConcreteUser/AdminKC")
+	public ResponseEntity<User> isLogedAdminKC() {
+		if(logedIn == null) {
+			return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+		}
+		if(logedIn.getUloga()==Uloga.ADMINISTRATOR_KLINICKOG_CENTRA){
+			return new ResponseEntity<>( HttpStatus.OK);
+		}
+		return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+	}
+	@GetMapping(value = "/getConcreteUser/Lekar")
+	public ResponseEntity<User> isLogedLekar() {
+		if(logedIn == null) {
+			return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+		}
+		if(logedIn.getUloga()==Uloga.LEKAR){
+			Lekar l=lekarService.findByEmail(logedIn.getEmail());
+			return new ResponseEntity<User>(l, HttpStatus.OK);
+		}
+		return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+	}
+	@GetMapping(value = "/getConcreteUser/MedicinskaS")
+	public ResponseEntity<User> isLogedMedicinskaS() {
+		if(logedIn == null) {
+			return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+		}
+		if(logedIn.getUloga()==Uloga.MEDICINSKA_SESTRA){
+			return new ResponseEntity<>( HttpStatus.OK);
+		}
+		return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+	}
+	@GetMapping(value = "/getKlinika")
+	public ResponseEntity<KlinikaDTO> getKlinika() {
+		if(logedIn == null) {
+			return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+		}
+		if(logedIn.getUloga()==Uloga.ADMINISTRATOR_KLINIKE){
+			AdministratorKlinike ak=adminKService.findByEmail(logedIn.getEmail());
+			Klinika klinika=ak.getKlinika();
+			KlinikaDTO klinikaDTO=new KlinikaDTO(klinika);
+			return new ResponseEntity<KlinikaDTO>(klinikaDTO, HttpStatus.OK);
+		}
+		return new ResponseEntity<>(HttpStatus.NOT_FOUND);
 	}
 
 }

@@ -12,7 +12,7 @@ Vue.component("klinika", {
 	    }
 	},
 	template: ` 
-<div>
+<div class="oneoption">
 <div>
 	<div class="jumbotron">
 	  <h2>Klinike</h2>
@@ -58,6 +58,14 @@ Vue.component("klinika", {
         }
 	},
 	mounted(){
+		axios
+	    .get('rest/login/getConcreteUser/AdminK')
+	    .then((response) => {
+	    	console.log(response.data);	
+	    })
+	    .catch(response => {
+			this.$router.push("/");
+		});
 		axios
 	    .get('rest/klinika')
 	    .then(response => (this.klinike=response.data));

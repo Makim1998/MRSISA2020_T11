@@ -1,60 +1,65 @@
-Vue.component("lekar", {
+const Pacijenti = { template : '<pacijenti></pacijenti>' }
+const Pregled = { template : '<pregled></pregled>' }
+const RadniKalendar = { template : '<radniKalendar></radniKalendar>' }
+const GodisnjiL = { template : '<godisnjiL></godisnjiL>' }
+const Zakazivanje = { template : '<zakazivanje></zakazivanje>' }
+//const ProfilL = { template : '<profilL></profilL>' }
+
+Vue.component('lekar',{
+	data: function(){
+		return {
+			component:"blank"
+		}
+		
+	},
 	template: ` 
-<div>
-   <div class="jumbotron">
-	  <h2>Lekar</h2>
-	  <p>Ime prezime,datum rodjenja.</p> 
-   </div>
-   <div class="card text-white bg-primary mb-3" style="max-width:25%; min-height:263px; float:left;">
-     <div class="card-header"><router-link :to="{ name: 'homepage' }" tag="button" class="btn btn-secondary btn-lg" >Klikni</router-link></div>
-       <div class="card-body">
-         <h5 class="card-title">Pacijenti</h5>
-         <p class="card-text">Mozete da pogledate listu svih pacijenata klinike i sortirate ih po odredjenom kriterijumu</p>
-       </div>
-     </div>
-    <div class="card text-white bg-warning mb-3" style="max-width:25%; min-height:263px; float:left;">
-     <div class="card-header"><router-link :to="{ name: 'homepage' }" tag="button" class="btn btn-secondary btn-lg">Klikni</router-link></div>
-      <div class="card-body">
-         <h5 class="card-title">Pregled</h5>
-         <p class="card-text">Mozete da zapocnete pregled i unesete informacije o pregledu</p>
-       </div>
-     </div>
-    <div class="card text-white bg-primary mb-3" style="max-width:25%; min-height:263px; float:left;">
-     <div class="card-header"><router-link :to="{ name: 'homepage' }" tag="button" class="btn btn-secondary btn-lg" >Klikni</router-link></div>
-     <div class="card-body">
-        <h5 class="card-title">Radni kalendar </h5>
-        <p class="card-text">Mozete da pogledate svoj radni kalendar gde ce vam se prikazati svi vasi pregledi i operacije.</p>
-	  </div>
+	<div>
+		<div  id="mySidenav" class="sidenav">
+		    <a href = "#pacijenti" v-on:click = "component = 'pacijenti'" >Pacijenti</a>
+	      	<a href = "#pregled" v-on:click = "component = 'pregled'" >Pregled</a>	      	
+			<a href = "#radniKalendar" v-on:click = "component = 'radniKalendar'" >Radni kalendar</a>
+	      	<a href = "#godisnjiL" v-on:click = "component = 'godisnjiL'" >Godisnji</a>
+	      	<a href = "#zakazivanje" v-on:click = "component = 'zakazivanje'" >Zakazivanje</a>
+			<a href = "#lekarProfil" v-on:click = "component = 'lekarProfil'" >Profil</a>
+			<div class="align-self-center mx-auto"> 
+                <button id = "odjavi" class="btn btn-primary btn-sm" v-on:click="odjava()">Odjavi se</button>
+            </div> 
+			
+		</div>
+		<!-- /#sidebar-wrapper -->
+
+	    <!-- Page Content -->
+	    <div id="page-content-wrapper">
+			<component v-bind:is = "component"></component>
+	    </div>
+	    <!-- /#page-content-wrapper -->
 	</div>
-	<div class="card text-white bg-secondary mb-3" style="max-width: 25%; min-height:263px; float:left;">
-	  <div class="card-header"><router-link :to="{ name: 'homepage' }" tag="button" class="btn btn-secondary btn-lg" >Klikni</router-link></div>
-	  <div class="card-body">
-	    <h5 class="card-title">Godisnji odmori/odsustva</h5>
-	    <p class="card-text">Mozete kreirati zahtev za godisnji odmor/odsustvo.</p>
-	  </div>
-	</div>
-	<div class="card text-white bg-info mb-3" style="max-width: 25%; min-height:263px; float:left;">
-	  <div class="card-header"><router-link :to="{ name: 'homepage' }" tag="button" class="btn btn-secondary btn-lg" >Klikni</router-link></div>
-	  <div class="card-body">
-	    <h5 class="card-title">Zakazivanje pregleda/operacije</h5>
-	    <p class="card-text">Omoguceno vam je da zakazete pregled ili operaciju.</p>
-	  </div>
-	</div>
-	<div class="card bg-light mb-3" style="max-width: 25%; min-height:263px; float:left;">
-	  <div class="card-header"><router-link :to="{ name: 'homepage' }" tag="button" class="btn btn-secondary btn-lg" >Klikni</router-link></div>
-	  <div class="card-body">
-	    <h5 class="card-title">Licni podaci</h5>
-	    <p class="card-text">Mozete da pogledate svoj profil i azurirate licne podatke.</p>
-	  </div>
-	</div>
-	<div class="card text-white bg-dark mb-3" style="max-width: 25%; min-height:263px; float:left;">
-	  <div class="card-header"><router-link :to="{ name: 'homepage' }" tag="button" class="btn btn-secondary btn-lg" >Klikni</router-link></div>
-	  <div class="card-body">
-	    <h5 class="card-title">Promena lozinke</h5>
-	    <p class="card-text">Prvi put kada se logujete morate promeniti lozinku.</p>
-	  </div>
-	 </div>	
-</div>	  
-`   
-	,
+`
+	, 
+	components:{
+		'pacijenti': Pacijenti,
+		'radniKalendar': RadniKalendar,
+		'godisnjiL': GodisnjiL,
+		'pregled': Pregled,
+		'zakazivanje': Zakazivanje
+		//'profilL': ProfilL
+	},
+	
+	methods : {
+		odjava() {
+        	axios
+        	.get('rest/login/odjava')
+			.then(response => this.$router.replace({ name: "login" }));
+        }
+	},
+	mounted() {
+		axios
+	    .get('rest/login/getConcreteUser/Lekar')
+	    .then((response) => {
+	    	console.log(response.data);	
+	    })
+	    .catch(response => {
+			this.$router.push("/");
+		});
+	}
 });

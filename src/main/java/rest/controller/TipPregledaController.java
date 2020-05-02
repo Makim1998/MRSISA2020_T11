@@ -16,9 +16,13 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import rest.domain.Klinika;
+import rest.domain.Pregled;
 import rest.domain.TipPregleda;
 import rest.domain.User;
 import rest.dto.TipPregledaDTO;
+import rest.service.KlinikaService;
+import rest.service.PregledService;
 import rest.service.TipPregledaService;
 
 @RestController
@@ -26,15 +30,20 @@ import rest.service.TipPregledaService;
 public class TipPregledaController {
 	@Autowired
 	private TipPregledaService tipPregledaService;
+	@Autowired
+	private KlinikaService klinikaService;
+	@Autowired
+	private PregledService pregledService;
 
 	@GetMapping
 	public ResponseEntity<List<TipPregledaDTO>> getTipPregleda() {
 		
 		List<TipPregleda> tipovi = tipPregledaService.findAll();
-
+		Integer a=0;
 		List<TipPregledaDTO> tipoviDTO = new ArrayList<>();
 		for (TipPregleda s : tipovi) {
-			tipoviDTO.add(new TipPregledaDTO(s));
+			a=s.getKlinika().getId();
+			tipoviDTO.add(new TipPregledaDTO(s,a));
 		}
 
 		return new ResponseEntity<>(tipoviDTO, HttpStatus.OK);
@@ -52,23 +61,30 @@ public class TipPregledaController {
 		tipPregleda.setNaziv(tipPregledaDTO.getNaziv());
 
 		tipPregleda = tipPregledaService.save(tipPregleda);
-		return new ResponseEntity<>(new TipPregledaDTO(tipPregleda), HttpStatus.OK);
+		Integer a=tipPregleda.getKlinika().getId();
+		return new ResponseEntity<>(new TipPregledaDTO(tipPregleda,a), HttpStatus.OK);
 	}
 	@DeleteMapping(value = "/{id}")
-	public ResponseEntity<Void> deleteCourse(@PathVariable Long id) {
+	public ResponseEntity<Void> deleteCourse(@PathVariable Integer id) {
 
 		TipPregleda tip = tipPregledaService.findOne(id);
-		System.out.println("brisanje");
-		if (tip != null) {
-			tipPregledaService.remove(id);
-			return new ResponseEntity<>(HttpStatus.OK);
-		} else {
+		
+		List<Pregled> ztermini = pregledService.findZauzete(tip);
+		if (ztermini.isEmpty()){
+			if (tip != null) {
+				tipPregledaService.remove(id);
+				return new ResponseEntity<>(HttpStatus.OK);
+			} else {
+				return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+			}
+		}else {
 			return new ResponseEntity<>(HttpStatus.NOT_FOUND);
 		}
 	}
 	@PostMapping(value="/dodaj",consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
 	public ResponseEntity<User> login(@RequestBody TipPregledaDTO tipPregledaDTO){
-		TipPregleda tipPregleda=new TipPregleda(tipPregledaDTO.getId(),tipPregledaDTO.getNaziv());
+		Klinika k=klinikaService.findOne(tipPregledaDTO.getKlinika());
+		TipPregleda tipPregleda=new TipPregleda(tipPregledaDTO.getId(),tipPregledaDTO.getNaziv(),k);
 		tipPregledaService.save(tipPregleda);
 		return new ResponseEntity<>(HttpStatus.OK);
 	}

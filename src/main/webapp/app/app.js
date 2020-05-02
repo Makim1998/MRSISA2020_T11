@@ -1,15 +1,10 @@
 const Login = { template: '<login></login>' }
 const Homepage = { template : '<homepage></homepage>' }
 const AdministratorKlinike = { template : '<administratorKlinike></administratorKlinike>' }
-const Pacijent = { template: '<pacijentHome></pacijentHome>' };
-const SdministratorCentra = { template: '<administratorCentra></administratorCentra>' };
-const Sala = { template : '<sala></sala>' }
-const TipPregleda = { template : '<tipPregleda></tipPregleda>' }
+const Pacijent = { template: '<pacijentHome></pacijentHome>' }
+const SdministratorCentra = { template: '<administratorCentra></administratorCentra>' }
 const Register = { template : '<register></register>' }
 const Lekar = { template : '<lekar></lekar>' }
-const Klinika = { template: '<klinika></klinika>' }
-
-const Lekari = { template: '<lekari></lekari>' }
 
 const router = new VueRouter({
 	  mode: 'hash',
@@ -45,29 +40,9 @@ const router = new VueRouter({
 	    	component : AdministratorKlinike
 	    },
 	    {
-	    	path: "/sala",
-	    	name : "sala",
-	    	component : Sala
-	    },
-	    {
 	    	path: "/lekar",
 	    	name : "lekar",
 	    	component : Lekar
-	    },
-	    {
-	    	path: "/tipPregleda",
-	    	name : "tipPregleda",
-	    	component : TipPregleda
-	    },
-	    {
-	    	path: "/klinika",
-	    	name : "klinika",
-	    	component : Klinika
-	    },
-	    {
-	    	path: "/lekari",
-	    	name : "lekari",
-	    	component : Lekari
 	    }
 	  ]
 });

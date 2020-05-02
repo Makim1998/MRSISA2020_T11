@@ -47,7 +47,7 @@ public class PacijentDTO extends UserDTO {
 	}
 	public PacijentDTO(Pacijent p) {
 		super((User) p);
-		this.brojOsiguranika = p.getbrojOsiguranika();
+		this.brojOsiguranika = p.getBrojOsiguranika();
 		this.adresa = p.getAdresa();
 		this.grad = p.getGrad();
 		this.drzava = p.getDrzava();

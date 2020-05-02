@@ -25,11 +25,13 @@ Vue.component("login", {
 		</div>
     </form>
 </div>		  
-`
-	, 
-	mounted() {
-        
-    },
+` 
+		,
+/*	mounted() {
+		console.log("redirekt")
+       this.$router.replace({ name: "pacijentHome" });
+
+    },*/
 	methods : {
 		login() {
             if(this.input.username != "" && this.input.password != "") {
