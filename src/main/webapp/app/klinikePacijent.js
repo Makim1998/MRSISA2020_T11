@@ -11,8 +11,9 @@ Vue.component("klinikePacijent", {
 	    	zaOcenu:"",
 	    	ocena:"",
 	    	filter: {
-	    		grad: "",
-                proskek: ""
+	    		naziv: "",
+	    		adresa: "",
+                prosek: ""
 	    	}
             		
 	    }
@@ -34,15 +35,16 @@ Vue.component("klinikePacijent", {
 		</select>
     </div>
     <div class="col-sm-3 my-1">
-      <label for = "grad" class="col-sm-2 col-form-label">Grad: </label>
-		<select id = "grad" v-model = "filter.grad" class= "form-control">
-			<option value = "">Svi</option>
-			<option value = "Novi Sad">Novi Sad</option>
-			<option value = "Subotica">Subotica</option>
-			<option value = "Zrenjanin">Zrenjanin</option>
-			<option value = "Beograd">Beograd</option>
-			<option value = "Sombor">Sombor</option>
-		</select>
+      <label for = "naziv" class="col-sm-2 col-form-label">Naziv: </label>
+		<input id = "naziv" type = "text" v-model = "filter.naziv" class= "form-control">
+    </div>
+    <div class="col-sm-3 my-1">
+      <label for = "adresa" class="col-sm-2 col-form-label">Adresa: </label>
+		<input id = "adresa" type = "text" v-model = "filter.adresa" class= "form-control">
+    </div>
+    <div class="col-sm-3 my-1">
+		<label for = "b" class="col-sm-2 col-form-label"> </label>
+      <button id = "b" type="button" class="btn btn-primary" v-on:click="ponistiFilter()">Prikazi sve</button>
     </div>
   </div>
 </form>
@@ -121,6 +123,12 @@ Vue.component("klinikePacijent", {
     	    
         	
         },
+        ponistiFilter(){
+        	console.log("klinike");
+        	this.filter.grad = "";
+        	this.filter.prosek = "";
+        	this.filter.naziv = "";
+        },
 		init(){
         	console.log("klinike");
     		axios
@@ -132,11 +140,29 @@ Vue.component("klinikePacijent", {
 		filtriraneKlinike: function(){
 			console.log("prosek");
 			console.log(this.filter.prosek);
+			console.log(this.filter.naziv);
+			console.log(this.filter.adresa);
+			
 			return this.klinike.filter((klinika)=>{
+				console.log("hhha")
+				console.log(klinika.adresa.toLowerCase());
+				console.log(this.filter.adresa.toLowerCase());
+				console.log(klinika.adresa.toLowerCase().match(this.filter.adresa.toLowerCase()) == null)
+				console.log("hhha")
 				if(this.filter.prosek == undefined){
 					return true;
 				}
+
+				if(klinika.adresa.toLowerCase().match(this.filter.adresa.toLowerCase()) == null){
+					return false;
+				}
+				if(klinika.naziv.toLowerCase().match(this.filter.naziv.toLowerCase()) == null){
+					return false;
+				}
 				if(this.filter.prosek == ""){
+					return true;
+				}
+				if(this.filter.prosek == undefined){
 					return true;
 				}
 				return parseFloat(klinika.prosecnaOcena) >= parseFloat(this.filter.prosek) &&

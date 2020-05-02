@@ -132,16 +132,20 @@ public class LoginController {
 		Pacijent p1 = patientService.findByEmail(pacijent.getEmail());
 		Pacijent p2 = patientService.findByBrojOsiguranika(pacijent.getBrojOsiguranika());
 		System.out.println(pacijent.getEmail()+ " " + pacijent.getPassword());
+		User greska = new User();
 		if(p1 != null) {
 			System.out.println("Kor. ime zauzeto");
+			greska.setUsername("Korisnicko ime je zauzeto");
 			return new ResponseEntity<User>(HttpStatus.BAD_REQUEST);
 		}
 		if(p2 != null) {
 			System.out.println("Broj osiguranika zauzet");
+			greska.setUsername("Broj osiguranika zauzet");
 			return new ResponseEntity<User>(HttpStatus.BAD_REQUEST);
 		}
 		if(pacijent.getBrojOsiguranika().length() != 13) {
 			System.out.println("Nevalidan jbr osiguranika!");
+			greska.setUsername("Nevalidan jbr osiguranika!");
 			return new ResponseEntity<User>(HttpStatus.BAD_REQUEST);
 		}
 		

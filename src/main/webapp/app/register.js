@@ -93,7 +93,7 @@ Vue.component("register", {
 			    })
 			    .catch(function(error){
 	    				if(error.response){
-	    					alert("Kor. ime i broj osiguranika moraju da budu jedinstveni");
+	    					alert("Doslo je do greske");
 	    				};
 	    		});
 	    	}
