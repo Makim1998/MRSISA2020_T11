@@ -46,6 +46,7 @@ public class AdministratorKlinike extends User{
 		this.setPrezime(dto.getPrezime());
 		this.setPassword(dto.getPassword());
 		this.setUloga(Uloga.ADMINISTRATOR_KLINIKE);
+		this.setPrviPut(dto.getPrviPut());
 		this.klinika = null;
 	}
 }

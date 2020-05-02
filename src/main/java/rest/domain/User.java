@@ -27,6 +27,8 @@ public class User {
     private String ime;
 	@Column(nullable = false,length = 15)
     private String prezime;
+	@Column(nullable = false)
+    private Boolean prviPut;
 	
 	@Column(nullable = false)
 	@Length(min = 13, max = 13)
@@ -135,6 +137,14 @@ public class User {
 	public void setPassword(String password) {
 		this.password = password;
 	}
+	public Boolean getPrviPut() {
+		return prviPut;
+	}
+
+	public void setPrviPut(Boolean prviPut) {
+		this.prviPut = prviPut;
+	}
+
 
 
 	public Integer getId() {

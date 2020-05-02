@@ -12,7 +12,7 @@ public class AdministratorKlinikeDTO {
 	private String grad;
 	private String drzava;
 	private Integer kc_id;
-	
+	private Boolean prviPut;
 	public AdministratorKlinikeDTO() {
 		super();
 	}
@@ -27,9 +27,19 @@ public class AdministratorKlinikeDTO {
 		this.setDrzava(s.getDrzava());
 		this.setGrad(s.getGrad());
 		this.setKc_id(s.getKlinika().getId());
+		this.setPrviPut(s.getPrviPut());
 	}
 
 
+	public Boolean getPrviPut() {
+		return prviPut;
+	}
+	public void setPrviPut(Boolean prviPut) {
+		this.prviPut = prviPut;
+	}
+	public void setKc_id(Integer kc_id) {
+		this.kc_id = kc_id;
+	}
 	public Integer getId() {
 		return id;
 	}

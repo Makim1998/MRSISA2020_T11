@@ -18,6 +18,7 @@ import rest.domain.Lekar;
 		private String radnoVremeOd;
 		private String brojOsiguranika;
 		private int kc_id;
+		private Boolean prviPut;
 		
 		public LekarDTO(String linija) {
 			StringTokenizer st = new StringTokenizer(linija, "-");
@@ -109,7 +110,17 @@ import rest.domain.Lekar;
 			this.setGrad(s.getGrad());
 			this.setRadnoVremeOd(s.getRadnoVremeOd().toString().substring(11,16));
 			this.setKc_id(s.getKlinika().getId());
+			this.setPrviPut(s.getPrviPut());
 		}
+		
+		public Boolean getPrviPut() {
+			return prviPut;
+		}
+
+		public void setPrviPut(Boolean prviPut) {
+			this.prviPut = prviPut;
+		}
+
 		public Klinika getKC() {
 			// TODO Auto-generated method stub
 			return null;

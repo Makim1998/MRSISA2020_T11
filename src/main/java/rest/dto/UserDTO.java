@@ -10,7 +10,16 @@ public class UserDTO {
     private String ime;
     private String prezime;
 	private Uloga uloga;
+	private Boolean prviPut;
 	
+	
+	
+	public Boolean getPrviPut() {
+		return prviPut;
+	}
+	public void setPrviPut(Boolean prviPut) {
+		this.prviPut = prviPut;
+	}
 	public Integer getId() {
 		return id;
 	}
@@ -57,6 +66,7 @@ public class UserDTO {
 		this.prezime = u.getPrezime();
 		this.id = u.getId();
 		this.uloga = u.getUloga();
+		this.prviPut=u.getPrviPut();
 	}
 	
 	public UserDTO(String email) {

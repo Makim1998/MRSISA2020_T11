@@ -78,6 +78,7 @@ public class LekariController {
 			return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
 		}
 		System.out.println("IDEMO");
+		lekar.setPrviPut(lekarDTO.getPrviPut());
 		lekar.setIme(lekarDTO.getIme());
 		lekar.setPrezime(lekarDTO.getPrezime());
 		lekar.setAdresa(lekarDTO.getAdresa());
@@ -90,6 +91,7 @@ public class LekariController {
 	}
 	@PostMapping(value="/dodaj",consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
 	public ResponseEntity<User> login(@RequestBody LekarDTO lekarDTO) throws ParseException{
+		lekarDTO.setPrviPut(true);
 		lekariService.addLekar(lekarDTO);
 		return new ResponseEntity<>(HttpStatus.OK);
 	}

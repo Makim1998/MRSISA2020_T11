@@ -1,6 +1,7 @@
 package rest.service;
 
 import java.util.Collection;
+import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -14,7 +15,7 @@ public class PacijentService {
 	@Autowired
 	private PacijentRepository pacijentRepository;
 	
-	public Collection<Pacijent> findAll() {
+	public List<Pacijent> findAll() {
 		return pacijentRepository.findAll();
 	}
 

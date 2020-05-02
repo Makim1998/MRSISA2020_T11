@@ -11,7 +11,8 @@ Vue.component('adminKProfil',{
             lozinka: "",
             ponovljena: "",
             brojOsiguranika: "",
-			kc_id:null
+			kc_id:null,
+			prviPut:null
 		}
 	},
 	template: ` 
@@ -73,7 +74,8 @@ Vue.component('adminKProfil',{
 			        "adresa": this.adresa,
 			        "grad": this.grad,
 			        "drzava": this.drzava,
-			        "kc_id":this.kc_id
+			        "kc_id":this.kc_id,
+			        "prviPut":this.prviPut
 			    })
 			    .then((response) => {
 			    	alert("Podaci su izmenjeni");
@@ -134,6 +136,7 @@ Vue.component('adminKProfil',{
 	    	this.drzava = response.data.drzava;		    	
 	    	this.brojOsiguranika = response.data.brojOsiguranika;
 	    	this.kc_id=response.data.kc_id;
+	    	this.prviPut = response.data.prviPut;
 		    })
 		    .catch(response => {
 				this.$router.push("/");

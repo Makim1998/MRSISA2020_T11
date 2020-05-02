@@ -1,5 +1,8 @@
 package rest.controller;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -11,8 +14,10 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import rest.domain.Karton;
+import rest.domain.Lekar;
 import rest.domain.Pacijent;
 import rest.domain.User;
+import rest.dto.LekarDTO;
 import rest.dto.PacijentDTO;
 import rest.service.PacijentService;
 
@@ -21,6 +26,19 @@ import rest.service.PacijentService;
 public class PacijentController {
 	@Autowired
 	private PacijentService patientService;
+	
+	@GetMapping(value ="/svi", produces = "application/json")
+	public ResponseEntity<List<PacijentDTO>> getPacijenti() {
+		
+		List<Pacijent> pacijenti = patientService.findAll();
+
+		List<PacijentDTO> pacijentiDTO = new ArrayList<>();
+		for (Pacijent s : pacijenti) {
+			pacijentiDTO.add(new PacijentDTO(s));
+		}
+
+		return new ResponseEntity<>(pacijentiDTO, HttpStatus.OK);
+	}
 	
 	@GetMapping(value ="/getKarton", produces = "application/json")
 	public ResponseEntity<Karton> getKarton(@RequestParam String email)

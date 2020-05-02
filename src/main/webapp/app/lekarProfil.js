@@ -13,7 +13,8 @@ Vue.component('lekarProfil',{
             brojOsiguranika: "",
             radnoVremeDo:"",
 			radnoVremeOd:"",
-			kc_id:null
+			kc_id:null,
+			prviPut:null
 		}
 	},
 	template: ` 
@@ -78,7 +79,8 @@ Vue.component('lekarProfil',{
 			        "radnoVremeDo":this.radnoVremeDo,
 			        "radnoVremeOd":this.radnoVremeOd,
 			        "brojOsiguranika":this.brojOsiguranika,
-			        "kc_id":this.kc_id
+			        "kc_id":this.kc_id,
+			        "prviPut":this.prviPut
 			        
 			    })
 			    .then((response) => {
@@ -146,6 +148,7 @@ Vue.component('lekarProfil',{
 	    	this.radnoVremeDo=response.data.radnoVremeDo;
 	    	this.radnoVremeOd=response.data.radnoVremeOd;
 	    	this.kc_id=response.data.kc_id;
+	    	this.prviPut = response.data.prviPut;
 		    })
 		    .catch(response => {
 				this.$router.push("/");

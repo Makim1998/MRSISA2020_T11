@@ -69,6 +69,7 @@ public class Lekar extends User{
 		System.out.println(lekarDTO.getRadnoVremeDo());
 		this.setIme(lekarDTO.getIme());
 		this.setBrojOsiguranika(lekarDTO.getBrojOsiguranika());
+		this.setPrviPut(lekarDTO.getPrviPut());
 		this.setPrezime(lekarDTO.getPrezime());
 		this.setUsername(lekarDTO.getUsername());
 		this.setPassword(lekarDTO.getPassword());
