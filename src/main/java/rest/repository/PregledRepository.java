@@ -7,6 +7,7 @@ import org.springframework.data.jpa.repository.JpaRepository;
 import rest.domain.Lekar;
 import rest.domain.Pregled;
 import rest.domain.Sala;
+import rest.domain.StavkaCenovnika;
 import rest.domain.TipPregleda;
 import rest.pk.SalaPK;
 
@@ -18,5 +19,7 @@ public interface PregledRepository extends JpaRepository<Pregled,Integer> {
 	List<Pregled> findByKartonIsNotNullAndTip(TipPregleda tip);
 
 	List<Pregled> findByKartonIsNotNullAndLekar(Lekar lekar);
+
+	List<Pregled> findByKartonIsNotNullAndCena(StavkaCenovnika stavka);
 
 }

@@ -18,9 +18,9 @@ public class StavkaCenovnika {
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Integer id;
-	@Column
+	@Column(nullable = false)
 	private int cena;
-	@Column 
+	@Column (nullable = false)
 	private String usluga;
 	@ManyToOne
 	private Cenovnik cenovnik;

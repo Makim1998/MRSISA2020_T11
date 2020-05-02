@@ -17,11 +17,14 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import rest.domain.Cenovnik;
+import rest.domain.Pregled;
 import rest.domain.StavkaCenovnika;
+import rest.domain.TipPregleda;
 import rest.domain.User;
 import rest.dto.CenovnikDTO;
 import rest.dto.StavkaCenovnikaDTO;
 import rest.service.CenovnikService;
+import rest.service.PregledService;
 import rest.service.StavkaCenovnikaService;
 
 
@@ -29,6 +32,8 @@ import rest.service.StavkaCenovnikaService;
 
 @RequestMapping("rest/cenovnik")
 public class CenovnikController {
+	@Autowired
+	private PregledService pregledService;
 	@Autowired
 	private CenovnikService cenovnikService;
 	@Autowired
@@ -61,13 +66,18 @@ public class CenovnikController {
 	}
 	@DeleteMapping(value = "/obrisiStavku/{id}")
 	public ResponseEntity<Void> deleteCourse(@PathVariable Integer id) {
-
 		StavkaCenovnika stavka= stavkaCenovnikaService.findOne(id);
-		System.out.println("brisanje");
-		if (stavka != null) {
-			stavkaCenovnikaService.remove(id);
-			return new ResponseEntity<>(HttpStatus.OK);
-		} else {
+		List<Pregled> ztermini = pregledService.findZauzete(stavka);
+		if (ztermini.isEmpty()){
+			System.out.println("brisanje");
+			if (stavka != null) {
+				stavkaCenovnikaService.remove(id);
+				return new ResponseEntity<>(HttpStatus.OK);
+			} else {
+				return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+			}
+		}else {
+			System.out.println("sds");
 			return new ResponseEntity<>(HttpStatus.NOT_FOUND);
 		}
 	}

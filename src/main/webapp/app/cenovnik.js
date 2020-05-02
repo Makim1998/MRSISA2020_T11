@@ -37,7 +37,7 @@ Vue.component('cenovnik', {
 			<td class="myclass">{{tp.id}}</td>
 			<td class="myclass">{{tp.cena}}</td>
 			<td class="myclass">{{tp.usluga}}</td>
-			<td><input class="btn btn-warning btn-lg" value='Izmeni' type='button'  v-on:click="uredi(tp.id)"/></td>
+			<td><input class="btn btn-warning btn-lg" value='Izmeni' type='button'  v-on:click="uredi(tp.id,tp.cena,tp.usluga)"/></td>
 			<td><input class="btn btn-danger btn-lg" value='Obrisi' type='button' v-on:click="obrisi(tp.id)"/></td>
 		</tr>
 		<tr>
@@ -63,8 +63,10 @@ Vue.component('cenovnik', {
 `
 	, 
 	methods : {
-		uredi(id) {
+		uredi(id,cena,naziv) {
 			this.id=id;
+			this.cena=cena;
+			this.naziv=naziv;
 			document.getElementById("myForm").style.display = "block";
 			document.getElementById("modaldark").style.display = "block";
 			document.getElementById("modaldark").style.opacity="1";
@@ -79,7 +81,10 @@ Vue.component('cenovnik', {
 			    	this.cenovnik.id=response.data.id;
 			    	this.cenovnik.stavke = response.data.stavke;
 			    	this.cenovnik.klinika_id = response.data.klinikaID;
-			    });
+			    })
+				.catch(error => {
+					alert("Nevalidan unos. Pokusajte ponovo.");
+				});
 			});
 			document.getElementById("myForm").style.display = "none";
 			document.getElementById("modaldark").style.display = "none";
@@ -118,6 +123,9 @@ Vue.component('cenovnik', {
 			    	this.cenovnik.stavke = response.data.stavke;
 			    	this.cenovnik.klinika_id = response.data.klinikaID;
 			    });
+			})
+			.catch(error => {
+				alert("Stavka cenovnika se nalazi u zakazanom pregledu.");
 			});
         },
 		dodaj() {
@@ -131,7 +139,12 @@ Vue.component('cenovnik', {
 			    	this.cenovnik.stavke = response.data.stavke;
 			    	this.cenovnik.klinika_id = response.data.klinikaID;
 			    });
+			})
+			.catch(error => {
+				alert("Nevalidan unos. Pokusajte ponovo.");
 			});
+	        this.input.cena=null;
+	        this.input.naziv="";
         }
 	},
 	mounted(){

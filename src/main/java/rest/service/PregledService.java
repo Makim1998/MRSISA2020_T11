@@ -8,6 +8,7 @@ import org.springframework.stereotype.Service;
 import rest.domain.Lekar;
 import rest.domain.Pregled;
 import rest.domain.Sala;
+import rest.domain.StavkaCenovnika;
 import rest.domain.TipPregleda;
 import rest.pk.SalaPK;
 import rest.repository.PregledRepository;
@@ -53,6 +54,11 @@ public class PregledService {
 	public List<Pregled> findZauzete(Lekar lekar) {
 		// TODO Auto-generated method stub
 		return pregledRepository.findByKartonIsNotNullAndLekar(lekar);
+	}
+
+	public List<Pregled> findZauzete(StavkaCenovnika stavka) {
+		// TODO Auto-generated method stub
+		return pregledRepository.findByKartonIsNotNullAndCena(stavka);
 	}
 
 }

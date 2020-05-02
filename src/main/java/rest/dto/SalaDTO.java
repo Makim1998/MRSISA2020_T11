@@ -26,7 +26,10 @@ public class SalaDTO {
 	public SalaDTO(String linija) {
 		StringTokenizer st = new StringTokenizer(linija, "-");
 		this.naziv = st.nextToken().trim();
-		//this.brojSale = Integer.parseInt(st.nextToken().trim().substring(3));
+		String a=st.nextToken().trim().substring(3);
+		st= new StringTokenizer(a, ",");
+		this.klinika=Integer.parseInt(st.nextToken().trim());
+		this.brojSale=Integer.parseInt(st.nextToken().trim());
 	}
 	public String getNaziv() {
 		return naziv;

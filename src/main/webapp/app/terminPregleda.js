@@ -53,7 +53,9 @@ Vue.component("terminPregleda", {
 			<td></td>
 			<td><input class="btn btn-success" type='button' value='Dodajte novi termin'  v-on:click="otvori()"/></td>
 			<td></td>
-			<td><router-link :to="{ name: 'administratorKlinike' }" tag="button" float='right' class="btn btn-primary" >Nazad</router-link></td>
+			<td></td>
+			<td></td>
+			<td></td>
 			<td></td>
 		</tr>	
    </table>
@@ -63,7 +65,7 @@ Vue.component("terminPregleda", {
     <label for="od">Datum:<input type="datetime-local" id="od" class="psw" v-model="input.datum" placeholder="Datum" required></label>
     <label for="tpa">Tip pregleda:<br>
 		<select id="tpa" v-model="input.tipPregleda">
-			<option v-for="tpa in tipoviPregleda">{{tpa.naziv}}-ID:{{tpa.id}}</option>
+			<option v-for="tpa in tipoviPregleda" v-if="tpa.klinika==cenovnik.klinika_id" >{{tpa.naziv}}-ID:{{tpa.id}}</option>
 		</select>
 	</label>
 	<br>
@@ -73,12 +75,12 @@ Vue.component("terminPregleda", {
     <br>
     <label for="sal">Sala:<br>
 		<select id="sal" v-model="input.sala">
-			<option v-for="sal in sale">{{sal.naziv}}-ID:{{sal.id}}</option>
+			<option v-for="sal in sale" v-if="sal.klinika==cenovnik.klinika_id" >{{sal.naziv}}-ID:{{sal.klinika}},{{sal.brojSale}}</option>
 		</select>
 	</label>
     <label for="la">Lekar:<br>
 		<select id="la" v-model="input.lekar">
-			<option v-for="la in lekari">{{la.ime}}-{{la.prezime}}-ID:{{la.id}}</option>
+			<option v-for="la in lekari" v-if="la.kc_id==cenovnik.klinika_id">{{la.ime}}-{{la.prezime}}-ID:{{la.id}}</option>
 		</select>
 	</label>
 	<br>
@@ -141,8 +143,11 @@ Vue.component("terminPregleda", {
             	axios
             	.get('rest/Pregled/slobodni')
             	.then(response => (this.pregledi=response.data));
-            });
-        	this.otkazi()
+            	this.otkazi()
+            })
+			.catch(error => {
+				alert("Nevalidan unos. Pokusajte ponovo.");
+			});
         }
 	},
 	mounted(){
