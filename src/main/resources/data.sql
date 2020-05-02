@@ -23,3 +23,9 @@ insert into lekar (id,od,do,klinika_id) values (3,'1998-12-31 23:59:59','1999-12
 
 insert into karton (id,ime,prezime,pol,datum_rodjenja,krvna_grupa) values (1,'Marko','Markovic',0,'1998-12-31 23:59:59','A+');
 update pacijent set karton_id = 1 where id = 4l;
+
+insert into klinika_ocene (klinika_id,ocene) values (1,4);
+insert into klinika_ocene (klinika_id,ocene) values (1,2);
+
+insert into lekar_ocene (lekar_id,ocene) values (3,4);
+insert into lekar_ocene (lekar_id,ocene) values (3,5);

@@ -1,4 +1,6 @@
-const Klinike = { template: '<klinike></klinike>' }
+const Klinike = { template: '<klinikePacijent></klinikePacijent>' }
+const LekariPacijent = { template: '<lekariPacijent></lekariPacijent>' }
+
 const Pregledi = {template: '<pregledi></pregledi>'}
 const Karton = {template: '<karton></karton>'}
 const Profil = {template: '<pacijentProfil></pacijentProfil>'}
@@ -12,9 +14,10 @@ Vue.component('pacijentHome',{
 		
 	},
 	template: ` 
-	<div>
+	<div id = "pacijentHome">
 		<div  id="mySidenav" class="sidenav">
 	      	<a href = "#klinike"v-on:click = "component = 'klinike'"  >Klinike</a>
+	      	<a href = "#lekari" v-on:click = "component = 'lekari'"  >Lekari</a>
 			<a href = "#pregledi" v-on:click = "component = 'pregledi'">Pregledi</a>
 			<a href = "#karton" v-on:click = "component = 'karton'">Zdravstveni karton</a>
 			<a href = "#profil" v-on:click = "component = 'profil'" >Profil</a>
@@ -38,6 +41,7 @@ Vue.component('pacijentHome',{
 		'pregledi': Pregledi,
 		'karton': Karton,
 		'profil': Profil,
+		'lekari': LekariPacijent,
 		'blank':Empty
 	},
 	

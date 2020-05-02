@@ -10,13 +10,9 @@ import org.springframework.stereotype.Service;
 
 import rest.domain.Klinika;
 import rest.domain.Lekar;
-import rest.domain.Sala;
-import rest.domain.TipPregleda;
 import rest.dto.LekarDTO;
 import rest.repository.KlinikaRepository;
 import rest.repository.LekarRepository;
-import rest.repository.SalaRepository;
-import rest.repository.TipPregledaRepository;
 
 @Service
 public class LekariService {
@@ -28,6 +24,10 @@ public class LekariService {
 	
 	public Lekar findOne(Integer id) {
 		return lekarRepository.findById(id).orElseGet(null);
+	}
+
+	public Lekar findByEmail(String email) {
+		return lekarRepository.findOneByEmail(email);
 	}
 
 	public List<Lekar> findAll() {

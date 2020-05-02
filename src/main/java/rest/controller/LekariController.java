@@ -13,18 +13,15 @@ import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import rest.domain.Lekar;
-import rest.domain.Sala;
 import rest.domain.User;
 import rest.dto.LekarDTO;
-import rest.dto.SalaDTO;
 import rest.service.LekariService;
-import rest.service.SalaService;
 
 
 @RestController
@@ -42,7 +39,10 @@ public class LekariController {
 
 		List<LekarDTO> lekariDTO = new ArrayList<>();
 		for (Lekar s : lekari) {
-			lekariDTO.add(new LekarDTO(s));
+			LekarDTO l = new LekarDTO(s);
+			l.setProsek(s);
+			lekariDTO.add(l);
+			
 		}
 
 		return new ResponseEntity<>(lekariDTO, HttpStatus.OK);
@@ -62,6 +62,25 @@ public class LekariController {
 	@PostMapping(value="/dodaj",consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
 	public ResponseEntity<User> login(@RequestBody LekarDTO lekarDTO) throws ParseException{
 		lekariService.addLekar(lekarDTO);
+		return new ResponseEntity<>(HttpStatus.OK);
+	}
+	@PostMapping(value="/ocena",  produces=MediaType.APPLICATION_JSON_VALUE)
+	public ResponseEntity<LekarDTO> ocene(@RequestParam String lekar,@RequestParam String ocena){
+		Lekar l = lekariService.findByEmail(lekar);
+		System.out.println("Ocenjivanje lekara");
+		System.out.println(ocena);
+		System.out.println(lekar);
+		if(l == null) {
+			System.out.println("Ne postoji lekar");
+			return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
+		}
+		if(ocena.equals("")) {
+			System.out.println("Ocena nevalidna");
+			return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
+		}
+		l.getOcene().add(Integer.parseInt(ocena));
+		lekariService.save(l);
+		System.out.println("Ocena uspesno dodata");
 		return new ResponseEntity<>(HttpStatus.OK);
 	}
 }

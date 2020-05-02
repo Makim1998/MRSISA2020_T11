@@ -6,5 +6,6 @@ import rest.domain.Lekar;
 
 
 public interface LekarRepository extends JpaRepository<Lekar,Integer>{
+	Lekar findOneByEmail(String email);
 
 }

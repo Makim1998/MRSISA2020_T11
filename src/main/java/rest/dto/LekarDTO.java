@@ -12,7 +12,28 @@ import rest.domain.Lekar;
 		private String password;
 		private String radnoVremeDo;
 		private String radnoVremeOd;
+		private String prosecnaOcena;
 		private int kc_id;
+		
+		public void setProsek(Lekar l) {
+			if(l.getOcene() == null) {
+				prosecnaOcena = "nema";
+			}
+			else {
+				double prosek = 0.;
+				for(Integer i:l.getOcene()) {
+					prosek += i;
+				}
+				prosek /= l.getOcene().size();
+				prosecnaOcena = String.format("%.2f", prosek);
+			}
+		}
+		public String getProsecnaOcena() {
+			return prosecnaOcena;
+		}
+		public void setProsecnaOcena(String prosecnaOcena) {
+			this.prosecnaOcena = prosecnaOcena;
+		}
 		public String getRadnoVremeDo() {
 			return radnoVremeDo;
 		}

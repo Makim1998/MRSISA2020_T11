@@ -13,6 +13,7 @@ import org.springframework.web.bind.annotation.RestController;
 import rest.domain.Karton;
 import rest.domain.Pacijent;
 import rest.domain.User;
+import rest.dto.KartonDTO;
 import rest.dto.PacijentDTO;
 import rest.service.PacijentService;
 
@@ -23,7 +24,7 @@ public class PacijentController {
 	private PacijentService patientService;
 	
 	@GetMapping(value ="/getKarton", produces = "application/json")
-	public ResponseEntity<Karton> getKarton(@RequestParam String email)
+	public ResponseEntity<KartonDTO> getKarton(@RequestParam String email)
 			throws Exception {
 		System.out.println("pregled kartona - pacijent");
 		System.out.println(email);
@@ -33,10 +34,10 @@ public class PacijentController {
 		if(p == null) {
 			System.out.println("nije pronasao korisnicko ime pacijenta");
 
-			return new ResponseEntity<Karton>(HttpStatus.BAD_REQUEST);
+			return new ResponseEntity<KartonDTO>(HttpStatus.BAD_REQUEST);
 		}
 		
-		return new ResponseEntity<Karton>(p.getKarton(), HttpStatus.OK);
+		return new ResponseEntity<KartonDTO>(new KartonDTO(p.getKarton()), HttpStatus.OK);
 	}
 	
 	@PutMapping(value ="/profil",consumes = "application/json", produces = "application/json")

@@ -1,10 +1,14 @@
 package rest.domain;
 
+import java.util.ArrayList;
 import java.util.HashSet;
+import java.util.List;
 import java.util.Set;
 
 import javax.persistence.CascadeType;
+import javax.persistence.CollectionTable;
 import javax.persistence.Column;
+import javax.persistence.ElementCollection;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
@@ -14,8 +18,6 @@ import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 import javax.persistence.OneToOne;
-
-import com.fasterxml.jackson.annotation.JsonBackReference;
 
 import rest.dto.KlinikaDTO;
 
@@ -53,18 +55,20 @@ public class Klinika {
 	@OneToMany(mappedBy="klinika",fetch = FetchType.LAZY, cascade = CascadeType.ALL)
 	private Set<MedicinskaSestra> medicinskeSestre = new HashSet<MedicinskaSestra>();
 	
+	@ElementCollection
+	@CollectionTable(name = "klinika_ocene",
+    joinColumns = @JoinColumn(name="klinika_id",referencedColumnName = "id") )
+	@Column(name = "ocene")
+	private List<Integer> ocene = new ArrayList<Integer>();
+	
 	public AdministratorKlinike getAdministrator() {
 		return administrator;
 	}
 	public void setAdministrator(AdministratorKlinike administrator) {
 		this.administrator = administrator;
 	}
-	public int getId() {
-		return id;
-	}
-	public void setId(int id) {
-		this.id = id;
-	}
+	
+	
 	public String getNaziv() {
 		return naziv;
 	}
@@ -96,6 +100,35 @@ public class Klinika {
 		this.sale = sale;
 	}
 	
+	
+	public KlinickiCentar getKlinickiCentar() {
+		return klinickiCentar;
+	}
+	public void setKlinickiCentar(KlinickiCentar klinickiCentar) {
+		this.klinickiCentar = klinickiCentar;
+	}
+	public Set<Lekar> getLekari() {
+		return lekari;
+	}
+	public void setLekari(Set<Lekar> lekari) {
+		this.lekari = lekari;
+	}
+	public Set<MedicinskaSestra> getMedicinskeSestre() {
+		return medicinskeSestre;
+	}
+	public void setMedicinskeSestre(Set<MedicinskaSestra> medicinskeSestre) {
+		this.medicinskeSestre = medicinskeSestre;
+	}
+	
+	public List<Integer> getOcene() {
+		return ocene;
+	}
+	public void setOcene(List<Integer> ocene) {
+		this.ocene = ocene;
+	}
+	public void setId(Integer id) {
+		this.id = id;
+	}
 	public Klinika(int id, String naziv, String adresa, String opis, Cenovnik cenovnik,
 			AdministratorKlinike administrator, Set<Sala> sale) {
 		super();
@@ -118,6 +151,10 @@ public class Klinika {
 		this.opis = dto.opis;
 		this.administrator = new AdministratorKlinike();
 		this.cenovnik = new Cenovnik();
+	}
+	public int getId() {
+		// TODO Auto-generated method stub
+		return id;
 	}
 	
 }
