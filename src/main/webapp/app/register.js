@@ -93,7 +93,7 @@ Vue.component("register", {
 			    })
 			    .catch(function(error){
 	    				if(error.response){
-	    					alert("Doslo je do greske");
+	    					alert(error.response.data);
 	    				};
 	    		});
 	    	}
