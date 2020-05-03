@@ -73,6 +73,11 @@ Vue.component("klinikePacijent", {
   </tbody>
 </table>
 
+<div>
+<h5 class="text-center" id = "rezultatiPretrage"></h5>
+<h3 class="text-center" v-if="rezultati" ></h3>
+</div>
+
 <!-- Modal -->
 <div class="modal fade" id="oceniKlinikuModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
   <div class="modal-dialog" role="document">
@@ -148,10 +153,7 @@ Vue.component("klinikePacijent", {
 				console.log(klinika.adresa.toLowerCase());
 				console.log(this.filter.adresa.toLowerCase());
 				console.log(klinika.adresa.toLowerCase().match(this.filter.adresa.toLowerCase()) == null)
-				console.log("hhha")
-				if(this.filter.prosek == undefined){
-					return true;
-				}
+				console.log("hhha");
 
 				if(klinika.adresa.toLowerCase().match(this.filter.adresa.toLowerCase()) == null){
 					return false;
@@ -168,6 +170,19 @@ Vue.component("klinikePacijent", {
 				return parseFloat(klinika.prosecnaOcena) >= parseFloat(this.filter.prosek) &&
 				parseFloat(klinika.prosecnaOcena) <= parseFloat(this.filter.prosek) + 1;
 			});
+		},
+		rezultati: function(){
+			console.log(this.filtriraneKlinike.length)
+			console.log(this.filtriraneKlinike.length == 0)
+			if(this.filtriraneKlinike.length == 0){
+				console.log("nema nadjenih");
+				$("#rezultatiPretrage").html("Nema rezultata pretrage");
+				return true;
+			}
+			this.bulean = false;
+			$("#rezultatiPretrage").html("");
+			return false;
+
 		}
 	
 	},

@@ -5,13 +5,47 @@ Vue.component("lekariPacijent", {
 	    	zaOcenu: "",
 	    	ocena: "",
 	    	ime: "",
-	    	prezime: ""
+	    	prezime: "",
+	    	filter: {
+	    		ime: "",
+	    		prezime: "",
+                prosek: ""
+	    	},
+	    	bulean: false
 	    	
 	    }
 	},
 	template: ` 
 <div id = "lekariPacijent">
 <h2 class="text-center">Lekari</h2>
+<div id = "filterLekari">
+<form>
+  <div class="form-row">
+    <div class="col-sm-2 my-1">
+      <label for = "prosecnaOcena" class="col-form-label">Prosecna ocena: </label>
+		<select id = "prosecnaOcena" v-model = "filter.prosek" class= "form-control">
+			<option value = "">Sve</option>
+			<option value = "1">1-2</option>
+			<option value = "2">2-3</option>
+			<option value = "3">3-4</option>
+			<option value = "4">4-5</option>
+		</select>
+    </div>
+    <div class="col-sm-3 my-1">
+      <label for = "ime" class="col-sm-2 col-form-label">Ime: </label>
+		<input id = "ime" type = "text" v-model = "filter.ime" class= "form-control">
+    </div>
+    <div class="col-sm-3 my-1">
+      <label for = "prezime" class="col-sm-2 col-form-label">Prezime: </label>
+		<input id = "prezime" type = "text" v-model = "filter.prezime" class= "form-control">
+    </div>
+    <div class="col-sm-3 my-1">
+		<label for = "b" class="col-sm-2 col-form-label"> </label>
+      <button id = "b" type="button" class="btn btn-primary" v-on:click="ponistiFilter()">Prikazi sve</button>
+    </div>
+  </div>
+</form>
+</div><br>
 <table class="table">
   <thead>
     <tr>
@@ -22,7 +56,7 @@ Vue.component("lekariPacijent", {
     </tr>
   </thead>
   <tbody>
-		<tr v-for="l in lekari">
+		<tr v-for="l in filtriraniLekari">
 			<td >{{l.ime}}</td>
 			<td >{{l.prezime}}</td>
 			<td >{{l.username}}</td>
@@ -35,6 +69,11 @@ Vue.component("lekariPacijent", {
 		</tr>
   </tbody>
 </table>
+
+<div>
+<h5 class="text-center" id = "rezultatiPretrage"></h5>
+<h3 class="text-center" v-if="rezultati" ></h3>
+</div>
 
 <!-- Modal -->
 <div class="modal fade" id="oceniLekaraModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
@@ -81,6 +120,12 @@ Vue.component("lekariPacijent", {
 		    .then(response => (this.lekari=response.data));
 			
 		},
+		ponistiFilter(){
+        	console.log("svi lekari");
+        	this.filter.ime = "";
+        	this.filter.prosek = "";
+        	this.filter.prezime = "";
+        },
 		oceni(){
 			console.log("ocena");
         	console.log(this.zaOcenu);
@@ -96,6 +141,45 @@ Vue.component("lekariPacijent", {
     	    	this.init()});
 		}
 		
+	
+	},
+	computed: {
+		filtriraniLekari: function(){
+			console.log("prosek");
+			console.log(this.filter.prosek);
+			console.log(this.filter.ime);
+			console.log(this.filter.prezime);
+			
+			return this.lekari.filter((lekar)=>{
+				if(lekar.ime.toLowerCase().match(this.filter.ime.toLowerCase()) == null){
+					return false;
+				}
+				if(lekar.prezime.toLowerCase().match(this.filter.prezime.toLowerCase()) == null){
+					return false;
+				}
+				if(this.filter.prosek == ""){
+					return true;
+				}
+				if(this.filter.prosek == undefined){
+					return true;
+				}
+				return parseFloat(lekar.prosecnaOcena) >= parseFloat(this.filter.prosek) &&
+				parseFloat(lekar.prosecnaOcena) <= parseFloat(this.filter.prosek) + 1;
+			});
+		},
+		rezultati: function(){
+			console.log(this.filtriraniLekari.length)
+			console.log(this.filtriraniLekari.length == 0)
+			if(this.filtriraniLekari.length == 0){
+				console.log("nema nadjenih");
+				$("#rezultatiPretrage").html("Nema rezultata pretrage");
+				return true;
+			}
+			this.bulean = false;
+			$("#rezultatiPretrage").html("");
+			return false;
+
+		}
 	
 	},
 	mounted(){
