@@ -78,12 +78,13 @@ public class AdministratorKlinikeController {
 	
 	@PostMapping(value="/dodaj", consumes=MediaType.APPLICATION_JSON_VALUE, produces=MediaType.APPLICATION_JSON_VALUE)
 	public ResponseEntity<AdministratorKlinike> addAdmin(@RequestBody AdministratorKlinikeDTO dto){
+		dto.setPrviPut(true);
 		AdministratorKlinike admin = new AdministratorKlinike(dto);
 		Klinika klinika = klinikaService.findOne(dto.getKc_id());
 		admin.setKlinika(klinika);
-		adminKService.save(admin);
+		admin = adminKService.save(admin);
 		klinika.setAdministrator(admin);
-		klinikaService.save(klinika);
+		klinika = klinikaService.save(klinika);
 		return new ResponseEntity<>(admin, HttpStatus.OK);
 	}
 }
