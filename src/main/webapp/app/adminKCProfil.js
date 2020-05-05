@@ -1,4 +1,4 @@
-Vue.component('MSProfil',{
+Vue.component('adminKCProfil',{
 	data:function(){
 		return{
 			id:null,
@@ -11,8 +11,6 @@ Vue.component('MSProfil',{
             lozinka: "",
             ponovljena: "",
             brojOsiguranika: "",
-            radnoVremeDo:"",
-			radnoVremeOd:"",
 			kc_id:null,
 			prviPut:null
 		}
@@ -67,7 +65,7 @@ Vue.component('MSProfil',{
 		izmeni() {
 			if(this.proveraPolja()){
 				axios
-			    .put('rest/medSestre/izmeni',{
+			    .put('rest/adminKC/izmeni',{
 			    	"id":this.id,
 			        "ime": this.ime,
 			        "prezime": this.prezime,
@@ -76,15 +74,11 @@ Vue.component('MSProfil',{
 			        "adresa": this.adresa,
 			        "grad": this.grad,
 			        "drzava": this.drzava,
-			        "radnoVremeDo":this.radnoVremeDo,
-			        "radnoVremeOd":this.radnoVremeOd,
-			        "brojOsiguranika":this.brojOsiguranika,
 			        "kc_id":this.kc_id,
 			        "prviPut":this.prviPut
-			        
 			    })
 			    .then((response) => {
-			    	alert("Podaci su uspesno izmenjeni");
+			    	alert("Podaci su izmenjeni");
 			    	this.id=response.data.id;
 			    	this.username = response.data.username;
 			    	this.ime = response.data.ime;
@@ -94,46 +88,42 @@ Vue.component('MSProfil',{
 			    	this.adresa = response.data.adresa;
 			    	this.grad = response.data.grad;
 			    	this.drzava = response.data.drzava;		    	
-			    	this.brojOsiguranika = response.data.brojOsiguranika;
-			    	this.radnoVremeDo=response.data.radnoVremeDo;
-			    	this.radnoVremeOd=response.data.radnoVremeOd;
 			    	this.kc_id=response.data.kc_id;
-			    	
-			    });
+		    });
 	    	}
 	    	else{
 	    		alert("Popunite ispravno sva polja");
 	    	}
-	    },
-	    proveraPolja(){
-	    	if(this.lozinka !== this.ponovljena){
-	    		alert("Niste dobro ponovili lozinku")
-	    		return false;
-	    	}
-	    	if(this.ime == ""){
-	    		return false;
-	    	}
-	    	if(this.prezime == ""){
-	    		return false;
-	    	}
-	    	if(this.adresa == ""){
-	    		return false;
-	    	}
-	    	if(this.grad == ""){
-	    		return false;
-	    	}
-	    	if(this.drzava == ""){
-	    		return false;
-	    	}
-	    	if(this.lozinka == ""){
-	    		return false;
-	    	}
-	    	return true;     	
-	    }
+        },
+        proveraPolja(){
+        	if(this.lozinka !== this.ponovljena){
+        		alert("Niste dobro ponovili lozinku")
+        		return false;
+        	}
+        	if(this.ime == ""){
+        		return false;
+        	}
+        	if(this.prezime == ""){
+        		return false;
+        	}
+        	if(this.adresa == ""){
+        		return false;
+        	}
+        	if(this.grad == ""){
+        		return false;
+        	}
+        	if(this.drzava == ""){
+        		return false;
+        	}
+        	if(this.lozinka == ""){
+        		return false;
+        	}
+        	return true;     	
+        }
 	},
 	mounted(){
 		axios
-	    .get('rest/login/getConcreteUser/MedicinskaS')
+	    .get('rest/login/getConcreteUser/AdminKC')
 	    .then((response) => {
 	    	this.id=response.data.id;
 	    	this.username = response.data.email;
@@ -143,10 +133,8 @@ Vue.component('MSProfil',{
 	    	this.prezime = response.data.prezime;
 	    	this.adresa = response.data.adresa;
 	    	this.grad = response.data.grad;
-	    	this.drzava = response.data.drzava;
+	    	this.drzava = response.data.drzava;		    	
 	    	this.brojOsiguranika = response.data.brojOsiguranika;
-	    	this.radnoVremeDo=response.data.radnoVremeDo;
-	    	this.radnoVremeOd=response.data.radnoVremeOd;
 	    	this.kc_id=response.data.kc_id;
 	    	this.prviPut = response.data.prviPut;
 		    })

@@ -2,7 +2,8 @@ const Login = { template: '<login></login>' }
 const Homepage = { template : '<homepage></homepage>' }
 const AdministratorKlinike = { template : '<administratorKlinike></administratorKlinike>' }
 const Pacijent = { template: '<pacijentHome></pacijentHome>' }
-const SdministratorCentra = { template: '<administratorCentra></administratorCentra>' }
+const AdministratorCentra = { template: '<administratorCentra></administratorCentra>' }
+const MedicinskaSestra = { template: '<MSHome></MSHome>' }
 const Register = { template : '<register></register>' }
 const Lekar = { template : '<lekar></lekar>' }
 
@@ -38,6 +39,16 @@ const router = new VueRouter({
 	    	path: "/administratorKlinike",
 	    	name : "administratorKlinike",
 	    	component : AdministratorKlinike
+	    },
+	    {
+	    	path: "/MSHome",
+	    	name : "MSHome",
+	    	component : MedicinskaSestra
+	    },
+	    {
+	    	path: "/administratorCentra",
+	    	name : "administratorCentra",
+	    	component : AdministratorCentra
 	    },
 	    {
 	    	path: "/lekar",

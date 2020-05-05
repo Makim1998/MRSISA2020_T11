@@ -55,7 +55,12 @@ Vue.component('karton',{
 		    	this.datumRodj = response.data.datumRodjenja;
 		    	console.log(this.datumRodj);
 		    	this.pol = response.data.pol;
-		    });
+		    })
+	    	 .catch(function(error){
+ 				if(error.response){
+ 					alert("Jos uvek nije kreiran karton za pacijenta.");
+ 				};
+	    	 });
 	    });
 		
 		

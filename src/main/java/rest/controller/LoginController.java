@@ -123,26 +123,30 @@ public class LoginController {
 	return new ResponseEntity<User>(logedIn, HttpStatus.OK);
 	}
 	@PostMapping(value = "register",consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
-	public ResponseEntity<User> register(@RequestBody PacijentDTO pacijent)
+	public ResponseEntity<String> register(@RequestBody PacijentDTO pacijent)
 			throws Exception {
 		System.out.println("registrovanje pacijenta");
 		if(pacijent == null) {
-			return new ResponseEntity<User>(HttpStatus.BAD_REQUEST);
+			return new ResponseEntity<>("Pacijent nije validan.",HttpStatus.BAD_REQUEST);
 		}
 		Pacijent p1 = patientService.findByEmail(pacijent.getEmail());
 		Pacijent p2 = patientService.findByBrojOsiguranika(pacijent.getBrojOsiguranika());
 		System.out.println(pacijent.getEmail()+ " " + pacijent.getPassword());
+		User greska = new User();
 		if(p1 != null) {
 			System.out.println("Kor. ime zauzeto");
-			return new ResponseEntity<User>(HttpStatus.BAD_REQUEST);
+			greska.setUsername("Korisnicko ime je zauzeto");
+			return new ResponseEntity<>("Korisnicko ime je zauzeto",HttpStatus.BAD_REQUEST);
 		}
 		if(p2 != null) {
 			System.out.println("Broj osiguranika zauzet");
-			return new ResponseEntity<User>(HttpStatus.BAD_REQUEST);
+			greska.setUsername("Broj osiguranika zauzet");
+			return new ResponseEntity<>("Broj osiguranika zauzet",HttpStatus.BAD_REQUEST);
 		}
 		if(pacijent.getBrojOsiguranika().length() != 13) {
 			System.out.println("Nevalidan jbr osiguranika!");
-			return new ResponseEntity<User>(HttpStatus.BAD_REQUEST);
+			greska.setUsername("Nevalidan jbr osiguranika!");
+			return new ResponseEntity<>("Nevalidan jbr osiguranika",HttpStatus.BAD_REQUEST);
 		}
 		
 		Pacijent p= new Pacijent();
@@ -159,9 +163,10 @@ public class LoginController {
 
 		p.setGrad(pacijent.getGrad());
 		p.setPassword(pacijent.getPassword());
+		p.setPrviPut(true);
 		System.out.println(p.getEmail());
 		patientService.save(p);
-		return new ResponseEntity<User>(p, HttpStatus.OK);
+		return new ResponseEntity<>("ok", HttpStatus.OK);
 	}
 
 	

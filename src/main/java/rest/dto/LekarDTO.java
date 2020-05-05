@@ -22,7 +22,7 @@ import rest.domain.Lekar;
 		private Boolean prviPut;
 		
 		public void setProsek(Lekar l) {
-			if(l.getOcene() == null) {
+			if(l.getOcene().size() == 0) {
 				prosecnaOcena = "nema";
 			}
 			else {

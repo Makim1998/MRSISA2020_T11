@@ -47,5 +47,15 @@ public class KlinickiCentar {
 
 	@OneToMany(mappedBy="klinickiCentar", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
 	private Set<Klinika> klinike = new HashSet<Klinika>();
+
+	public KlinickiCentar(Integer id, String naziv) {
+		super();
+		this.id = id;
+		this.naziv = naziv;
+	}
+
+	public KlinickiCentar() {
+	}
+	
 }
 

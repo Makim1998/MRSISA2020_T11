@@ -13,6 +13,8 @@ import javax.persistence.Table;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 
+import rest.dto.AdministratorKCentraDTO;
+
 @Entity
 @Table(name="administratorKlinickogCentra")
 public class AdministratorKlinickogCentra extends User{
@@ -44,4 +46,17 @@ public class AdministratorKlinickogCentra extends User{
 	public AdministratorKlinickogCentra() {
 	}
 	
+	public AdministratorKlinickogCentra(AdministratorKCentraDTO dto) {
+		this.setAdresa(dto.getAdresa());
+		this.setDrzava(dto.getDrzava());
+		this.setUsername(dto.getUsername());
+		this.setGrad(dto.getGrad());
+		this.setId(dto.getId());
+		this.setIme(dto.getIme());
+		this.setPrezime(dto.getPrezime());
+		this.setPassword(dto.getPassword());
+		this.setUloga(Uloga.ADMINISTRATOR_KLINICKOG_CENTRA);
+		this.setPrviPut(dto.getPrviPut());
+		this.klinickiCentar = null;
+	}
 }

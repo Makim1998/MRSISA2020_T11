@@ -54,6 +54,10 @@ public class PacijentController {
 
 			return new ResponseEntity<KartonDTO>(HttpStatus.BAD_REQUEST);
 		}
+		if(p.getKarton() == null) {
+			System.out.println("nije kreiran karton za pacijenta");
+			return new ResponseEntity<KartonDTO>(HttpStatus.BAD_REQUEST);
+		}
 		
 		return new ResponseEntity<KartonDTO>(new KartonDTO(p.getKarton()), HttpStatus.OK);
 	}
@@ -81,6 +85,10 @@ public class PacijentController {
 		p.setAdresa(pacijent.getAdresa());
 		p.setDrzava(pacijent.getDrzava());
 		p.setGrad(pacijent.getGrad());
+		if(p.getKarton()!= null) {
+			p.getKarton().setIme(pacijent.getIme());
+			p.getKarton().setPrezime(pacijent.getPrezime());
+		}
 		patientService.save(p);
 		
 		return new ResponseEntity<User>(p, HttpStatus.OK);
