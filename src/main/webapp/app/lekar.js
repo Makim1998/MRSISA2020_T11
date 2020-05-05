@@ -29,10 +29,10 @@ Vue.component('lekar',{
 	template: ` 
 	<div>
 		<div  id="mySidenav" class="sidenav">
-		    <a href = "#pacijenti" v-on:click = "component = 'pacijenti'" >Pacijenti</a>
+		    <a href = "#pacijenti" v-on:click = "component = 'pacijenti'" >Pacijenti   </a>
 	      	<a href = "#pregled" v-on:click = "component = 'pregled'" >Pregled</a>	      	
-			<a href = "#radniKalendar" v-on:click = "component = 'radniKalendar'" >Radni kalendar</a>
-	      	<a href = "#godisnjiL" v-on:click = "component = 'godisnjiL'" >Godisnji</a>
+			<a href = "#radniKalendar" v-on:click = "component = 'radniKalendar'" >Radni  kalendar</a>
+	      	<a href = "#godisnjiL" v-on:click = "component = 'godisnjiL'" >Godisnji odmor</a>
 	      	<a href = "#zakazivanje" v-on:click = "component = 'zakazivanje'" >Zakazivanje</a>
 			<a href = "#lekarProfil" v-on:click = "component = 'lekarProfil'" >Profil</a>
 			<div class="align-self-center mx-auto"> 

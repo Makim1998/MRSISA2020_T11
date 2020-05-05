@@ -15,18 +15,18 @@ Vue.component("pacijenti", {
 	template: ` 
 <div class="oneoption">
 <div>
-	<div class="jumbotron">
+	<div class="jumbotron" style="width:105%;">
 	  <h2>Pacijenti</h2>
 	  <p>Pretraga i filtriranje.</p> 
 	</div>
    <table align="left" class="table">
    		<tr>
 		   <th><input type="text" style="margin-left:10px;margin-bottom:10px;" class="fotrol" id="myInput1" placeholder="Ime"></th>
-		   <input class="btn btn-success" type='button' value='Pretrazi'  v-on:click="fjaPretrage(0)"/>
-		   <th><input type="text" style="margin-left:10px;margin-bottom:10px;" class="fotrol" id="myInput2" placeholder="Ime"></th>
-		   <input class="btn btn-success" type='button' value='Pretrazi'  v-on:click="fjaPretrage(2)"/>
-		   <th><input type="text" style="margin-left:10px;margin-bottom:10px;" class="fotrol" id="myInput3" placeholder="Ime"></th>
-		   <input class="btn btn-success" type='button' value='Pretrazi'  v-on:click="fjaPretrage(4)"/>
+		   <input class="btn btn-success" style="margin-top:10px;" type='button' value='Pretrazi'  v-on:click="fjaPretrage(0)"/>
+		   <th><input type="text" style="margin-left:10px;margin-bottom:10px;" class="fotrol" id="myInput2" placeholder="Prezime"></th>
+		   <input class="btn btn-success" style="margin-top:10px;" type='button' value='Pretrazi'  v-on:click="fjaPretrage(2)"/>
+		   <th><input type="text" style="margin-left:10px;margin-bottom:10px;" class="fotrol" id="myInput3" placeholder="Broj osiguranika"></th>
+		   <input class="btn btn-success" style="margin-top:10px;" type='button' value='Pretrazi'  v-on:click="fjaPretrage(4)"/>
 		</tr>
 		<tr>
 		   <th>Ime</th>

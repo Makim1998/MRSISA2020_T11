@@ -97,6 +97,9 @@ public class MedicinskaSestraDTO {
 		this.prviPut = prviPut;
 	}
 	
+	public MedicinskaSestraDTO() {
+		super();
+	}
 	public MedicinskaSestraDTO(MedicinskaSestra s) {
 		this.setId(s.getId());
 		this.setIme(s.getIme());

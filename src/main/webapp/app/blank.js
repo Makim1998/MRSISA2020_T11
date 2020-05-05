@@ -1,3 +1,8 @@
 Vue.component('blank',{
-	template:`<div>Dobrodosli.</div>`
+	template:`<div class="jumbotron">
+  <h1 class="display-4">Dobrodosli!</h1>
+  <p class="lead">Informacioni sistem klinickog centra</p>
+  <hr class="my-4">
+  <p></p>
+</div>`
 })

@@ -28,7 +28,7 @@ Vue.component("terminPregleda", {
 	  <h2>Slobodni termini za pregelede</h2>
 	  <p>Dodavanje i brisanje.</p> 
 	</div>
-	<input type="text" style="margin-left:10px;margin-bottom:10px;" class="fotrol" id="myInput" placeholder="Korisnicko ime">
+	<input type="text" style="margin-left:10px;margin-bottom:10px;" class="fotrol" id="myInput" placeholder="Tip pregleda">
 	<input class="btn btn-success" type='button' value='Pretrazi'  v-on:click="fjaPretrage()"/>
    <table align="left" class="table">
 		<tr>

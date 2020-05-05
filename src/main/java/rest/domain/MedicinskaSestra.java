@@ -23,6 +23,7 @@ import rest.dto.MedicinskaSestraDTO;
 @Table(name="medicinskaSestra")
 public class MedicinskaSestra extends User {
 	
+	
 	@OneToMany(mappedBy="sestra",fetch = FetchType.LAZY, cascade = CascadeType.ALL)
 	private Set<Recept> recepti=new HashSet<Recept>();
 

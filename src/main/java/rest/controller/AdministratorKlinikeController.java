@@ -48,6 +48,7 @@ public class AdministratorKlinikeController {
 		admk.setGrad(admKDTO.getGrad());
 		admk.setDrzava(admKDTO.getDrzava());
 		admk.setPassword(admKDTO.getPassword());
+		admk.setPrviPut(admKDTO.getPrviPut());
 		System.out.println("IDEMO3");
 		admk= adminKService.save(admk);
 		System.out.println("IDEMO4");

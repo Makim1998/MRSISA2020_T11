@@ -29,5 +29,10 @@ public class MSService {
 	public void remove(Integer id) {
 		repository.deleteById(id);
 	}
+
+	public MedicinskaSestra findByEmail(String email) {
+		// TODO Auto-generated method stub
+		return repository.findOneByEmail(email);
+	}
 	
 }
