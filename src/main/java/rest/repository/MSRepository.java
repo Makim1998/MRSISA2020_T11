@@ -6,4 +6,6 @@ import rest.domain.MedicinskaSestra;
 
 public interface MSRepository extends JpaRepository<MedicinskaSestra, Integer>{
 
+	MedicinskaSestra findOneByEmail(String email);
+
 }

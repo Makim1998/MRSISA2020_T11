@@ -1,6 +1,6 @@
-const RadniKalendar = { template : '<radniKalendar></radniKalendar>' }
-const GodisnjiL = { template : '<godisnjiL></godisnjiL>' }
-const Overavanje = { template : '<overavanje></overavanje>' }
+//const RadniKalendar = { template : '<radniKalendar></radniKalendar>' }
+//const GodisnjiL = { template : '<godisnjiL></godisnjiL>' }
+//const Overavanje = { template : '<overavanje></overavanje>' }
 
 Vue.component("MSHome", {
 	data: function(){
@@ -26,7 +26,7 @@ Vue.component("MSHome", {
 	template: ` 
 	<div>
 		<div  id="mySidenav" class="sidenav">
-	      	<a href = "#pacijenti" v-on:click = "component = 'pacijenti'"  >Pacijenti</a>
+	      	<a href = "#pacijentiMS" v-on:click = "component = 'pacijentiMS'"  >Pacijenti</a>
 	      	<a href = "#radniKalendar" v-on:click = "component = 'radniKalendar'" >Radni kalendar</a>
 			<a href = "#godisnjiL" v-on:click = "component = 'godisnjiL'" >Godisnji</a>
 			<a href = "#MSProfil" v-on:click = "component = 'MSProfil'" >Profil</a>
@@ -43,13 +43,21 @@ Vue.component("MSHome", {
 			<component v-bind:is = "component"></component>
 	    </div>
 	    <!-- /#page-content-wrapper -->
+	   <div id="modaldark">
+	   <div class="form-popup" id="myForm">
+	    <h4>Promenite lozinku</h4>
+	    <input type="password" class="psw" v-model="lozinka" placeholder="Lozinka" required>
+	    <input type="password" class="psw" v-model="ponovljena" placeholder="Ponovljena lozinka" required>
+	    <button type="button" class="btn maal leftbutton" v-on:click="dodajLoz()">Potvrdi</button>
+	   </div>
+	   </div>
 	</div>
 `
 		, 
 		components:{
-			'radniKalendar': RadniKalendar,
-			'godisnjiL': GodisnjiL,
-			'overavanje': Overavanje
+			//'radniKalendar': RadniKalendar,
+			//'godisnjiL': GodisnjiL,
+			//'overavanje': Overavanje
 		},
 		
 		methods : {
