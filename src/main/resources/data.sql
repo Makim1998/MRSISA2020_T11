@@ -21,7 +21,7 @@ insert into tip_pregleda (id,naziv,klinika) values (3,'Oftamoloski',2);
 insert into cenovnik (id,klinika_id) values (1,1);
 insert into stavka_cenovnika (cenovnik_id,id,cena,usluga) values (1,1,2000,'Opsti pregled');
 
-insert into user (id,ime,prezime,email,password,uloga,broj_osiguranika,prvi_put) values (2,'Jovan','Jovanovic','AdminK1','admink1',0,3242543242541,true);
+insert into user (id,ime,prezime,email,password,uloga,broj_osiguranika,prvi_put) values (2,'Jovan','Jovanovic','AdminK1','admink1',0,3242543242541,false);
 insert into administrator_klinike (id,klinika_id) values (2,1);
 
 insert into user (id,ime,prezime,email,password,uloga,broj_osiguranika,prvi_put) values (3,'Marko','Markovic','Lekar1','lekar1',1,3424234242212,true);
