@@ -1,5 +1,5 @@
 //const Pacijenti = { template : '<pacijenti></pacijenti>' }
-const Pregled = { template : '<pregled></pregled>' }
+//const Pregled = { template : '<pregled></pregled>' }
 const RadniKalendar = { template : '<radniKalendar></radniKalendar>' }
 const GodisnjiL = { template : '<godisnjiL></godisnjiL>' }
 const Zakazivanje = { template : '<zakazivanje></zakazivanje>' }
@@ -30,7 +30,7 @@ Vue.component('lekar',{
 	<div>
 		<div  id="mySidenav" class="sidenav">
 		    <a href = "#pacijenti" v-on:click = "component = 'pacijenti'" >Pacijenti   </a>
-	      	<a href = "#pregled" v-on:click = "component = 'pregled'" >Pregled</a>	      	
+	      	<a href = "#zakazaniPregledi" v-on:click = "component = 'zakazaniPregledi'" >Pregled</a>	      	
 			<a href = "#radniKalendar" v-on:click = "component = 'radniKalendar'" >Radni  kalendar</a>
 	      	<a href = "#godisnjiL" v-on:click = "component = 'godisnjiL'" >Godisnji odmor</a>
 	      	<a href = "#zakazivanje" v-on:click = "component = 'zakazivanje'" >Zakazivanje</a>
@@ -62,7 +62,7 @@ Vue.component('lekar',{
 		//'pacijenti': Pacijenti,
 		'radniKalendar': RadniKalendar,
 		'godisnjiL': GodisnjiL,
-		'pregled': Pregled,
+		//'pregled': Pregled,
 		'zakazivanje': Zakazivanje
 		//'profilL': ProfilL
 	},

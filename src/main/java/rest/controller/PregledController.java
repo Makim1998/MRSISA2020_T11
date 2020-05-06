@@ -1,5 +1,6 @@
 package rest.controller;
 
+import java.text.ParseException;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -14,6 +15,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import rest.domain.Lekar;
@@ -22,6 +24,7 @@ import rest.domain.Sala;
 import rest.domain.StavkaCenovnika;
 import rest.domain.TipPregleda;
 import rest.domain.User;
+import rest.dto.LekarDTO;
 import rest.dto.PregledDTO;
 import rest.pk.SalaPK;
 import rest.service.LekariService;
@@ -47,9 +50,20 @@ public class PregledController {
 	@GetMapping
 	(value="/slobodni")
 	public ResponseEntity<List<PregledDTO>> getSlobodniTerminiPregleda() {
-		System.out.println("kiko1");
 		List<Pregled> sltermini = pregledService.findSlobodne();
-		System.out.println("kiko2");
+		System.out.println(sltermini.isEmpty());
+		List<PregledDTO> slterminiDTO = new ArrayList<>();
+		for (Pregled s : sltermini) {
+			slterminiDTO.add(new PregledDTO(s));
+		}
+		return new ResponseEntity<>(slterminiDTO, HttpStatus.OK);
+	}
+	@GetMapping
+	(value = "/zakazani/{id}")
+	public ResponseEntity<List<PregledDTO>> getZakazaniTerminiPregleda(@PathVariable Integer id) throws ParseException {
+		System.out.println("kiko1");
+		Lekar l=lekarService.findOne(id);
+		List<Pregled> sltermini = pregledService.findZakazane(l);
 		System.out.println(sltermini.isEmpty());
 		List<PregledDTO> slterminiDTO = new ArrayList<>();
 		for (Pregled s : sltermini) {
@@ -57,6 +71,18 @@ public class PregledController {
 		}
 		System.out.println("kiko3");
 		return new ResponseEntity<>(slterminiDTO, HttpStatus.OK);
+	}
+	@GetMapping
+	(value="/svi")
+	public ResponseEntity<List<PregledDTO>> getSviPregledi() {
+		List<Pregled> svi = pregledService.findAll();
+		List<PregledDTO> sviDTO = new ArrayList<>();
+		for (Pregled s : svi) {
+			sviDTO.add(new PregledDTO(s));
+			System.out.println("imaam");
+		}
+		System.out.println("kiko3");
+		return new ResponseEntity<>(sviDTO, HttpStatus.OK);
 	}/*
 	@PutMapping(value="/izmeni",consumes = "application/json")
 	public ResponseEntity<TipPregledaDTO> updateCourse(@RequestBody TipPregledaDTO tipPregledaDTO) {

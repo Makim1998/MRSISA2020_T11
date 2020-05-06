@@ -34,11 +34,19 @@ public class PregledDTO {
 		this.datum=s.getDatum();
 		this.trajanje=s.getTrajanje();
 		this.tip=new TipPregledaDTO(s.getTip(),s.getSala().getKlinika().getId());
-		this.karton=null;
+		try {
+			this.karton=new KartonDTO(s.getKarton());
+		}catch (Exception e) {
+			this.karton=null;
+		}
 		this.cena=new StavkaCenovnikaDTO(s.getCena());
 		this.sala=new SalaDTO(s.getSala().getId(),s.getSala().getKlinika().getId(),s.getSala().getNaziv());
 		this.lekar=new LekarDTO(s.getLekar());
-		this.dijagnoza=null;
+		try {
+			this.dijagnoza=new DijagnozaDTO(s.getDijagnoza());
+		}catch (Exception e) {
+			this.dijagnoza=null;
+		}
 	}
 
 	public PregledDTO() {
