@@ -1,6 +1,6 @@
 const Zahtevi = { template : '<zahtevi></zahtevi>' }
 
-Vue.component('adminKC',{
+Vue.component('administratorCentra',{
 	data: function(){
 		return {
 			component:"blank",

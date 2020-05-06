@@ -1,4 +1,4 @@
-Vue.component("adminiKlinika", {
+Vue.component("adminiKCentara", {
 	data: function(){
 		return{
 			input:{
