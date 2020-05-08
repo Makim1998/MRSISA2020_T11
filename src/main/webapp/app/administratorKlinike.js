@@ -2,7 +2,7 @@
 //const TipPregleda = { template : '<lekari></godisnji>' }
 //const Klinika = { template : '<klinika></klinka>' }
 //const Lekari = { template : '<lekari></lekari>' }
-const Godisnji = { template : '<godisnji></godisnji>' }
+//const Godisnji = { template : '<godisnji></godisnji>' }
 //const TerminPregleda = { template : '<terminPregleda></terminPregleda>' }
 const Izvestaji = { template : '<izvestaji></izvestaji>' }
 //const ProfilAK = { template : '<adminKProfil></adminKProfil>' }
@@ -34,7 +34,7 @@ Vue.component('administratorKlinike',{
 			<a href = "#tipPregleda" v-on:click = "component = 'tipPregleda'" >TipPregleda</a>
 	      	<a href = "#sala" v-on:click = "component = 'sala'" >Sala</a>
 	      	<a href = "#cenovnik" v-on:click = "component = 'cenovnik'" >Cenovnik klinike</a>
-	      	<a href = "#godisnji" v-on:click = "component = 'godisnji'" >Godisnji</a>
+	      	<a href = "#godisnjiPrihvatanje" v-on:click = "component = 'godisnjiPrihvatanje'" >Godisnji</a>
 	      	<a href = "#terminPregleda" v-on:click = "component = 'terminPregleda'" >Termini za pregled</a>
 			<a href = "#izvestaji" v-on:click = "component = 'izvestaji'">Izvestaji o poslovanju</a>
 			<a href = "#adminKProfil" v-on:click = "component = 'adminKProfil'" >Profil</a>
@@ -65,7 +65,7 @@ Vue.component('administratorKlinike',{
 		//'sala': Sala,
 		//'tipPregleda': TipPregleda,
 		//'klinika': Klinika,
-		'godisnji': Godisnji,
+		//'godisnji': Godisnji,
 		//'terminPregleda': TerminPregleda,
 		//'lekari': Lekari,
 		'izvestaji': Izvestaji,

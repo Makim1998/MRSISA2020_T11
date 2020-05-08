@@ -27,7 +27,7 @@ public class MedicinskaSestra extends User {
 	@OneToMany(mappedBy="sestra",fetch = FetchType.LAZY, cascade = CascadeType.ALL)
 	private Set<Recept> recepti=new HashSet<Recept>();
 
-	@OneToMany(mappedBy="sestra",fetch = FetchType.LAZY, cascade = CascadeType.ALL)
+	@OneToMany(mappedBy="medOsoblje",fetch = FetchType.LAZY, cascade = CascadeType.ALL)
 	private Set<GodisnjiOdmor> godisnji= new HashSet<GodisnjiOdmor>();
 	
 	@Column(name="od")
