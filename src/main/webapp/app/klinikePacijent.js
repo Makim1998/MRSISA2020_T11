@@ -130,7 +130,7 @@ Vue.component("klinikePacijent", {
         },
         ponistiFilter(){
         	console.log("klinike");
-        	this.filter.grad = "";
+        	this.filter.adresa = "";
         	this.filter.prosek = "";
         	this.filter.naziv = "";
         },

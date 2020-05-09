@@ -2,6 +2,9 @@
 insert into user (id, email,  password,  ime,  prezime,uloga,broj_osiguranika, adresa, grad, drzava ,prvi_put) values (4l,'pacijent','pacijent','Marko','Markovic',3,'1111123224321','Radiceva 6','Novi Sad','Srbija',false);
 insert into pacijent (id) values (4l);
 
+insert into user (id, email,  password,  ime,  prezime,uloga,broj_osiguranika, adresa, grad, drzava ,prvi_put) values (6l,'ana@gmail.com','pacijent','Marko','Markovic',3,'1111123224320','Radiceva 6','Novi Sad','Srbija',false);
+insert into pacijent (id) values (6l);
+
 insert into klinicki_centar (id,naziv) values (1,'Klinicki centar Novi Sad');
 
 insert into user (id,ime,prezime,email,password,uloga,broj_osiguranika,prvi_put) values (1,'Ivan','Ivanovic','AdminKC1','adminkc1',4,2322432322432,false);

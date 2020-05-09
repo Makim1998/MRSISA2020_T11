@@ -145,8 +145,8 @@ public class LoginController {
 		}
 		if(pacijent.getBrojOsiguranika().length() != 13) {
 			System.out.println("Nevalidan jbr osiguranika!");
-			greska.setUsername("Nevalidan jbr osiguranika!");
-			return new ResponseEntity<>("Nevalidan jbr osiguranika",HttpStatus.BAD_REQUEST);
+			greska.setUsername("Nevalidan jbr osiguranika! (13 znakova)");
+			return new ResponseEntity<>("Nevalidan jbr osiguranika - treba tacno 13 karaktera!",HttpStatus.BAD_REQUEST);
 		}
 		
 		Pacijent p= new Pacijent();
