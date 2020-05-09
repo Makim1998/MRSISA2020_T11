@@ -129,6 +129,7 @@ import rest.domain.Lekar;
 			this.setDrzava(s.getDrzava());
 			this.setGrad(s.getGrad());
 			this.setRadnoVremeOd(s.getRadnoVremeOd().toString().substring(11,16));
+			System.out.println("USER:"+s.getKlinika().getId());
 			this.setKc_id(s.getKlinika().getId());
 			this.setPrviPut(s.getPrviPut());
 		}

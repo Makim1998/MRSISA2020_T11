@@ -43,9 +43,7 @@ Vue.component('sala', {
    </table>
    <div id="modaldark">
    <div class="form-popup" id="myForm">
-    <h6>Broj sale:{{this.id}}</h6>
-    <input type="text" class="psw" v-model="izmena" placeholder="Naziv sale">
-    </br></br>
+   
     <button type="button" class="btn maal leftbutton" v-on:click="izmeni()">Potvrdi</button>
     <button type="button" class="btn zaal rightbutton" v-on:click="otkazi()">Otkazi</button>
    </div>

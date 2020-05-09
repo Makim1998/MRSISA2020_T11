@@ -48,6 +48,7 @@ public class AdministratorKlinikeController {
 		admk.setGrad(admKDTO.getGrad());
 		admk.setDrzava(admKDTO.getDrzava());
 		admk.setPassword(admKDTO.getPassword());
+		admk.setPrviPut(admKDTO.getPrviPut());
 		System.out.println("IDEMO3");
 		admk= adminKService.save(admk);
 		System.out.println("IDEMO4");
@@ -77,13 +78,14 @@ public class AdministratorKlinikeController {
 	}
 	
 	@PostMapping(value="/dodaj", consumes=MediaType.APPLICATION_JSON_VALUE, produces=MediaType.APPLICATION_JSON_VALUE)
-	public ResponseEntity<AdministratorKlinike> addAdmin(@RequestBody AdministratorKlinikeDTO dto){
+	public ResponseEntity<Void> addAdmin(@RequestBody AdministratorKlinikeDTO dto){
+		dto.setPrviPut(true);
 		AdministratorKlinike admin = new AdministratorKlinike(dto);
 		Klinika klinika = klinikaService.findOne(dto.getKc_id());
 		admin.setKlinika(klinika);
-		adminKService.save(admin);
+		admin = adminKService.save(admin);
 		klinika.setAdministrator(admin);
-		klinikaService.save(klinika);
-		return new ResponseEntity<>(admin, HttpStatus.OK);
+		klinika = klinikaService.save(klinika);
+		return new ResponseEntity<>(HttpStatus.OK);
 	}
 }

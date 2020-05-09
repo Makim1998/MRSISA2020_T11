@@ -1,7 +1,7 @@
 //const Pacijenti = { template : '<pacijenti></pacijenti>' }
-const Pregled = { template : '<pregled></pregled>' }
+//const Pregled = { template : '<pregled></pregled>' }
 const RadniKalendar = { template : '<radniKalendar></radniKalendar>' }
-const GodisnjiL = { template : '<godisnjiL></godisnjiL>' }
+//const GodisnjiL = { template : '<godisnjiL></godisnjiL>' }
 const Zakazivanje = { template : '<zakazivanje></zakazivanje>' }
 //const ProfilL = { template : '<profilL></profilL>' }
 
@@ -29,10 +29,10 @@ Vue.component('lekar',{
 	template: ` 
 	<div>
 		<div  id="mySidenav" class="sidenav">
-		    <a href = "#pacijenti" v-on:click = "component = 'pacijenti'" >Pacijenti</a>
-	      	<a href = "#pregled" v-on:click = "component = 'pregled'" >Pregled</a>	      	
-			<a href = "#radniKalendar" v-on:click = "component = 'radniKalendar'" >Radni kalendar</a>
-	      	<a href = "#godisnjiL" v-on:click = "component = 'godisnjiL'" >Godisnji</a>
+		    <a href = "#pacijenti" v-on:click = "component = 'pacijenti'" >Pacijenti   </a>
+	      	<a href = "#zakazaniPregledi" v-on:click = "component = 'zakazaniPregledi'" >Pregled</a>	      	
+			<a href = "#radniKalendar" v-on:click = "component = 'radniKalendar'" >Radni  kalendar</a>
+	      	<a href = "#godisnjiSlanje" v-on:click = "component = 'godisnjiSlanje'" >Godisnji odmor</a>
 	      	<a href = "#zakazivanje" v-on:click = "component = 'zakazivanje'" >Zakazivanje</a>
 			<a href = "#lekarProfil" v-on:click = "component = 'lekarProfil'" >Profil</a>
 			<div class="align-self-center mx-auto"> 
@@ -61,8 +61,8 @@ Vue.component('lekar',{
 	components:{
 		//'pacijenti': Pacijenti,
 		'radniKalendar': RadniKalendar,
-		'godisnjiL': GodisnjiL,
-		'pregled': Pregled,
+		//'godisnjiL': GodisnjiL,
+		//'pregled': Pregled,
 		'zakazivanje': Zakazivanje
 		//'profilL': ProfilL
 	},

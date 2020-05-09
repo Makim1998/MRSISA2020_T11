@@ -1,4 +1,4 @@
-Vue.component("adminiKlinika", {
+Vue.component("adminiKCentara", {
 	data: function(){
 		return{
 			input:{
@@ -16,7 +16,7 @@ Vue.component("adminiKlinika", {
 		<div class="oneoption">
 		<div>
 			<div class="jumbotron">
-			  <h2>Administratori klinika</h2> 
+			  <h2>Administratori klinickih centara</h2> 
 			</div>
 		   <table align="left" class="table">
 				<tr>
@@ -33,9 +33,9 @@ Vue.component("adminiKlinika", {
 				</tr>
 				<tr>
 					<td></td>
-					<td><input class="btn btn-success" type='button' value='Dodajte novog administratora klinike'  v-on:click="otvori()"/></td>
+					<td><input class="btn btn-success" type='button' value='Dodajte novog admina klinickog centra'  v-on:click="otvori()"/></td>
 					<td></td>
-					<td><router-link :to="{ name: 'administratorKlinike' }" tag="button" float='right' class="btn btn-primary" >Nazad</router-link></td>
+					<td><router-link :to="{ name: 'administratorCentra' }" tag="button" float='right' class="btn btn-primary" >Nazad</router-link></td>
 					<td></td>
 				</tr>	
 		   </table>
@@ -68,12 +68,12 @@ Vue.component("adminiKlinika", {
 	        },
 			dodaj() {
 	        	axios
-	        	.post('rest/adminK/dodaj', {"id": null,
+	        	.post('rest/adminKC/dodaj', {"id": null,
 	        		"ime":this.input.ime,"prezime":this.input.prezime,"password":this.input.password,
 	        		"username":this.input.username})
 				.then(response => {	
 					axios
-				    .get('rest/adminK')
+				    .get('rest/adminKC')
 				    .then(response => (this.tipovi=response.data));
 					});
 	        	this.otkazi()
@@ -89,7 +89,7 @@ Vue.component("adminiKlinika", {
 				this.$router.push("/");
 			});
 			axios
-		    .get('rest/adminK')
+		    .get('rest/adminKC')
 		    .then(response => (this.tipovi=response.data));
 		}
 });

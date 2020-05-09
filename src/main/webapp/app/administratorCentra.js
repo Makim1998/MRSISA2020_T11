@@ -1,13 +1,6 @@
-//const Sala = { template : '<sala></sala>' }
-//const TipPregleda = { template : '<lekari></godisnji>' }
-//const Klinika = { template : '<klinika></klinka>' }
-//const Lekari = { template : '<lekari></lekari>' }
-//const Godisnji = { template : '<godisnji></godisnji>' }
-//const TerminPregleda = { template : '<terminPregleda></terminPregleda>' }
-const Izvestaji = { template : '<izvestaji></izvestaji>' }
-//const ProfilAK = { template : '<adminKProfil></adminKProfil>' }
+const Zahtevi = { template : '<zahtevi></zahtevi>' }
 
-Vue.component('administratorKlinike',{
+Vue.component('administratorCentra',{
 	data: function(){
 		return {
 			component:"blank",
@@ -29,15 +22,12 @@ Vue.component('administratorKlinike',{
 	template: ` 
 	<div>
 		<div  id="mySidenav" class="sidenav">
-		    <a href = "#klinikaProfil" v-on:click = "component = 'klinikaProfil'" >Klinika</a>
-	      	<a href = "#lekari" v-on:click = "component = 'lekari'" >Lekari</a>	      	
-			<a href = "#tipPregleda" v-on:click = "component = 'tipPregleda'" >TipPregleda</a>
-	      	<a href = "#sala" v-on:click = "component = 'sala'" >Sala</a>
-	      	<a href = "#cenovnik" v-on:click = "component = 'cenovnik'" >Cenovnik klinike</a>
-	      	<a href = "#godisnjiPrihvatanje" v-on:click = "component = 'godisnjiPrihvatanje'" >Godisnji</a>
-	      	<a href = "#terminPregleda" v-on:click = "component = 'terminPregleda'" >Termini za pregled</a>
-			<a href = "#izvestaji" v-on:click = "component = 'izvestaji'">Izvestaji o poslovanju</a>
-			<a href = "#adminKProfil" v-on:click = "component = 'adminKProfil'" >Profil</a>
+		    <a href = "#klinika" v-on:click = "component = 'klinika'" >Klinike</a>
+		    <a href = "#adminiKlinika" v-on:click = "component = 'adminiKlinika'" >Administratori klinika</a>
+		    <a href = "#adminiKCentara" v-on:click = "component = 'adminiKCentara'" >Administratori klinickih centara</a>
+		    <a href = "#sifarnik" v-on:click = "component = 'sifarnik'" >Sifarnik</a>
+		    <a href = "#zahtevi" v-on:click = "component = 'zahtevi'" >Zahtevi za registracije</a>
+			<a href = "#adminKCProfil" v-on:click = "component = 'adminKCProfil'" >Profil</a>
 			<div class="align-self-center mx-auto"> 
                 <button id = "odjavi" class="btn btn-primary btn-sm" v-on:click="odjava()">Odjavi se</button>
             </div> 
@@ -62,14 +52,7 @@ Vue.component('administratorKlinike',{
 `
 	, 
 	components:{
-		//'sala': Sala,
-		//'tipPregleda': TipPregleda,
-		//'klinika': Klinika,
-		//'godisnji': Godisnji,
-		//'terminPregleda': TerminPregleda,
-		//'lekari': Lekari,
-		'izvestaji': Izvestaji,
-		//'profilAK': ProfilAK
+		'zahtevi': Zahtevi
 	},
 	
 	methods : {
@@ -91,7 +74,7 @@ Vue.component('administratorKlinike',{
         dodajLoz(){
         	if(this.lozinka==this.ponovljena && this.lozinka.length>5){
 				axios
-			    .put('rest/adminK/izmeni',{
+			    .put('rest/adminKC/izmeni',{
 			    	"id":this.id,
 			        "ime": this.ime,
 			        "prezime": this.prezime,
@@ -115,7 +98,7 @@ Vue.component('administratorKlinike',{
 	},
 	mounted() {
 		axios
-	    .get('rest/login/getConcreteUser/AdminK')
+	    .get('rest/login/getConcreteUser/AdminKC')
 	    .then((response) => {
 	    	this.id=response.data.id;
 	    	this.username = response.data.email;

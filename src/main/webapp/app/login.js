@@ -65,7 +65,7 @@ Vue.component("login", {
     				}
     				else{
     					console.log("Ulogovala se medicinska sestra");
-    					this.$router.replace({ name: "pacijentHome" }) 
+    					this.$router.replace({ name: "MSHome" }) 
     				}
     			 })
     			

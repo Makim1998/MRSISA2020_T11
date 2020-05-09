@@ -25,11 +25,13 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
 import rest.domain.AdministratorKlinike;
 import rest.domain.Klinika;
 import rest.domain.Lekar;
+import rest.domain.MedicinskaSestra;
 import rest.domain.Pacijent;
 import rest.domain.Uloga;
 import rest.domain.User;
 import rest.service.AdminKService;
 import rest.service.LekariService;
+import rest.service.MSService;
 import rest.dto.KlinikaDTO;
 import rest.dto.PacijentDTO;
 import rest.service.PacijentService;
@@ -52,6 +54,8 @@ public class LoginController {
 	private LekariService lekarService;
 	@Autowired
 	private AdminKService adminKService;
+	@Autowired
+	private MSService msService;
 	
 	private User logedIn;
 	
@@ -244,11 +248,16 @@ public class LoginController {
 	}
 	@GetMapping(value = "/getConcreteUser/MedicinskaS")
 	public ResponseEntity<User> isLogedMedicinskaS() {
+		System.out.println("ZASTOOOO");
 		if(logedIn == null) {
+			System.out.println("ZATOOOO");
 			return new ResponseEntity<>(HttpStatus.NOT_FOUND);
 		}
+		System.out.println("ZASTOO");
 		if(logedIn.getUloga()==Uloga.MEDICINSKA_SESTRA){
-			return new ResponseEntity<>( HttpStatus.OK);
+			MedicinskaSestra ms=msService.findByEmail(logedIn.getEmail());
+			System.out.println("SESTROO:"+ms.getIme());
+			return new ResponseEntity<>(ms,HttpStatus.OK);
 		}
 		return new ResponseEntity<>(HttpStatus.NOT_FOUND);
 	}
