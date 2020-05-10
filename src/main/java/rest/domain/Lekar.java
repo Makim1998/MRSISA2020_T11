@@ -33,7 +33,7 @@ public class Lekar extends User{
 	private Set<Pregled> pregledi=new HashSet<Pregled>();
 
 	
-	@OneToMany(mappedBy="lekar", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
+	@OneToMany(mappedBy="medOsoblje", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
 	private Set<GodisnjiOdmor> godisnji= new HashSet<GodisnjiOdmor>();
 	
 	@ManyToOne

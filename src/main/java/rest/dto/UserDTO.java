@@ -11,9 +11,16 @@ public class UserDTO {
     private String prezime;
 	private Uloga uloga;
 	private Boolean prviPut;
+	private Integer kc_id;
 	
 	
 	
+	public Integer getKc_id() {
+		return kc_id;
+	}
+	public void setKc_id(Integer kc_id) {
+		this.kc_id = kc_id;
+	}
 	public Boolean getPrviPut() {
 		return prviPut;
 	}

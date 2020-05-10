@@ -27,10 +27,20 @@ public class GodisnjiOdmor {
 	private Boolean prihvacenOdbijen;
 	
 	@ManyToOne(cascade = CascadeType.ALL, fetch = FetchType.LAZY)
-	private Lekar lekar;
+	private User medOsoblje;
 	
-	@ManyToOne(cascade = CascadeType.ALL, fetch = FetchType.LAZY)
-	private MedicinskaSestra sestra;
+	
+	
+	public GodisnjiOdmor(Integer id, Date datumPocetka, Date datumKraja, Boolean prihvacenOdbijen, User medOsoblje) {
+		super();
+		this.id = id;
+		this.datumPocetka = datumPocetka;
+		this.datumKraja = datumKraja;
+		this.prihvacenOdbijen = prihvacenOdbijen;
+		this.medOsoblje = medOsoblje;
+	}
+	/*@ManyToOne(cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+	private MedicinskaSestra sestra;*/
 	
 	public GodisnjiOdmor() {
 		super();
@@ -59,7 +69,14 @@ public class GodisnjiOdmor {
 	public void setPrihvacenOdbijen(Boolean prihvacenOdbijen) {
 		this.prihvacenOdbijen = prihvacenOdbijen;
 	}
-	public Lekar getLekar() {
+	public User getMedOsoblje() {
+		return medOsoblje;
+	}
+	public void setMedOsoblje(User medOsoblje) {
+		this.medOsoblje = medOsoblje;
+	}
+	
+	/*public Lekar getLekar() {
 		return lekar;
 	}
 	public void setLekar(Lekar lekar) {
@@ -70,7 +87,7 @@ public class GodisnjiOdmor {
 	}
 	public void setSestra(MedicinskaSestra sestra) {
 		this.sestra = sestra;
-	}
+	}*/
 	
 
 
