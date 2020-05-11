@@ -1,0 +1,21 @@
+@charset "ISO-8859-1";
+.godisnjidiv{
+	width:40% !important;
+}
+
+.odcelija, .docelija{
+	display:block;
+	margin-bottom:20px;
+}
+
+.odcelija{
+	float:left;
+}
+
+.docelija{
+	float:right;
+}
+.zahtevbtn{
+	margin:0 auto;
+	width:50%;
+}

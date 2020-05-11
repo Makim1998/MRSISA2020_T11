@@ -11,21 +11,21 @@ Vue.component('godisnjiSlanje',{
 	},
 	template: ` 
 <div class="oneoption">
-<div id = "login" class="sidenavlogin">
-    <form style="width:150%;">
+<div id = "login" class="godisnjidiv">
+    <form>
 		<h2 class="text-center">Slanje zahteva za godisnji odmor/odsustvo</h2>       
-		<div class="form-group" id = "vrsta">
-			<div class = "celija">
+		<div class="form-group">
+			<div class = "celija odcelija">
 				<label for="ime">Od: </label>
-   				<input type="date" id = "ime" class="form-control" v-model="pocetak" placeholder="Datum">
+   				<input type="date" id="od" class="form-control" v-model="pocetak"  required>
    			</div>
-   			<div class = "celija">
+   			<div class = "celija docelija">
    				<label for="prezime">Do: </label>
-    			<input type="date" id = "prezime" class="form-control" v-model="kraj" placeholder="Datum">
+    			<input type="date" id = "do" class="form-control" v-model="kraj" placeholder="Datum" required>
     		</div>
     	</div>
 		<div class="form-group">
-    		<button type="button" class="btn btn-primary btn-block" v-on:click="posalji()">Posalji zahtev</button>
+    		<button type="button" class="btn btn-primary btn-block zahtevbtn" v-on:click="posalji()">Posalji zahtev</button>
 		</div>
     </form>
 </div>	
@@ -57,8 +57,15 @@ Vue.component('godisnjiSlanje',{
 	    	}
 	    },
 	    proveraPolja(){
-	    	return true;
-	    	//alert("Niste dobro ponovili lozinku") 	
+	    	var od = document.getElementById('od').value; 
+    		var dos = document.getElementById('do').value; 
+    		var odDate = new Date(od); 
+    		var doDate = new Date(dos); 
+            var currDate = new Date();
+            if(odDate<=currDate || doDate<=currDate || odDate>=doDate){
+            	return false;
+            }
+	    	return true;	
 	    }
 	},
 	mounted(){
@@ -72,5 +79,8 @@ Vue.component('godisnjiSlanje',{
 		    .catch(response => {
 				this.$router.push("/");
 			});
+		document.getElementById('od').valueAsDate = new Date();
+		document.getElementById('do').valueAsDate = new Date();
 		}
+	
 });
