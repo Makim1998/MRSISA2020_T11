@@ -25,9 +25,7 @@ import rest.service.KlinikaService;
 public class KlinikaController {
 	
 	@Autowired
-	private KlinikaService service;
-	
-	
+	private KlinikaService service;	
 	
 	@GetMapping
 	public ResponseEntity<List<KlinikaDTO>> getKlinike(){
@@ -40,6 +38,7 @@ public class KlinikaController {
 		}
 		return new ResponseEntity<>(ret, HttpStatus.OK);
 	}
+	
 	@PutMapping(value="/izmeni",consumes = "application/json")
 	public ResponseEntity<KlinikaDTO> updateCourse(@RequestBody KlinikaDTO kDTO) {
 
@@ -57,18 +56,30 @@ public class KlinikaController {
 	}
 	
 	@PostMapping(value="/dodaj", consumes=MediaType.APPLICATION_JSON_VALUE, produces=MediaType.APPLICATION_JSON_VALUE)
-	public ResponseEntity<Klinika> dodajKlinika(@RequestBody KlinikaDTO klinikaDto){
+	public ResponseEntity<KlinikaDTO> dodajKlinika(@RequestBody KlinikaDTO klinikaDto){
 		Klinika klinika = new Klinika(klinikaDto);
 		service.save(klinika);
-		return new ResponseEntity<>(klinika, HttpStatus.OK);
+		return new ResponseEntity<>(new KlinikaDTO(klinika), HttpStatus.OK);
 	}
 	
-	@GetMapping(value="/ids")
-	public ResponseEntity<List<Integer>> getIds(){
+	@GetMapping(value="/adminIds")
+	public ResponseEntity<List<Integer>> getAdminss(){
 		List<Klinika> klinike = service.findAll();
 		List<Integer> ids = new ArrayList<Integer>();
 		for (Klinika k: klinike) {
-			ids.add(k.getId());
+			if (k.getAdministrator() == null)
+				ids.add(k.getId());
+		}
+		return new ResponseEntity<>(ids, HttpStatus.OK);
+	}
+	
+	@GetMapping(value="/cenovnikIds")
+	public ResponseEntity<List<Integer>> getCenovnici(){
+		List<Klinika> klinike = service.findAll();
+		List<Integer> ids = new ArrayList<Integer>();
+		for (Klinika k: klinike) {
+			if (k.getCenovnik() == null)
+				ids.add(k.getId());
 		}
 		return new ResponseEntity<>(ids, HttpStatus.OK);
 	}
