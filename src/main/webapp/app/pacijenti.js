@@ -26,26 +26,21 @@ Vue.component("pacijenti", {
    <table align="left" class="table">
    		<tr>
 		   <th><input type="text" style="margin-left:10px;margin-bottom:10px;" class="fotrol" id="myInput1" placeholder="Ime"></th>
-		   <input class="btn btn-success" style="margin-top:10px;" type='button' value='Pretrazi'  v-on:click="fjaPretrage(0)"/>
 		   <th><input type="text" style="margin-left:10px;margin-bottom:10px;" class="fotrol" id="myInput2" placeholder="Prezime"></th>
-		   <input class="btn btn-success" style="margin-top:10px;" type='button' value='Pretrazi'  v-on:click="fjaPretrage(2)"/>
 		   <th><input type="text" style="margin-left:10px;margin-bottom:10px;" class="fotrol" id="myInput3" placeholder="Broj osiguranika"></th>
-		   <input class="btn btn-success" style="margin-top:10px;" type='button' value='Pretrazi'  v-on:click="fjaPretrage(4)"/>
+		   <th><input class="btn btn-success"  type='button' value='Pretrazi'  v-on:click="fjaPretrage()"/></th>
+		   <th><input class="btn btn-success"  type='button' value='Prikazi sve'  v-on:click="prikaziSve()"/></th>
 		</tr>
 		<tr>
 		   <th>Ime</th>
-		   <th></th>
 		   <th>Prezime</th>
-		   <th></th>
 		   <th>Broj osiguranika</th>
 		   <th></th>
 		   <th>Profil</th>
 		</tr>
 		<tr v-for="tp in tipovi" v-if="tp.kc_id==klinika_id" class="filterDiv ">
 			<td class="myclass">{{tp.ime}}</td>
-			<td></td>
 			<td class="myclass">{{tp.prezime}}</td>
-			<td></td>
 			<td class="myclass">{{tp.brojOsiguranika}}</td>
 			<td></td>
 			<td><input class="btn btn-success" style="margin-top:10px;" type='button' value='Pacijent'  v-on:click="prikaziPacijenta(tp,tp.karton)"/></td>
@@ -173,28 +168,46 @@ Vue.component("pacijenti", {
 				alert("Lekar se ne moze obrisati,ima zakazan pregled.");
 			});
         },
-        fjaPretrage(n) {
-          var input, filter, ul, li, a, i, txtValue,n;
-          if(n==0){
-        	  input = document.getElementById('myInput1');
-        	  alert(input);
-          }else if(n==2){
-        	  input = document.getElementById('myInput2');
-          }else{
-        	  input = document.getElementById('myInput3');
-          }
-          filter = input.value.toUpperCase();
-          li = document.getElementsByClassName("filterDiv");
-
-          for (i = 0; i < li.length; i++) {
-            a = li[i].getElementsByTagName("td")[n];
-            txtValue = a.textContent || a.innerText;
-            if (txtValue.toUpperCase().indexOf(filter) > -1) {
-              li[i].style.display = "";
-            } else {
-              li[i].style.display = "none";
+        prikaziSve(){
+            var i,li;
+            li = document.getElementsByClassName("filterDiv");
+            for (i = 0; i < li.length; i++) {
+          	  li[i].style.display = "";
             }
+        },
+        fjaPretrage() {
+          var lista=[0,1,2];
+          var listaduz=lista.length;
+          var n,li,i;
+          li = document.getElementsByClassName("filterDiv");
+          for (i = 0; i < li.length; i++) {
+        	  li[i].style.display = "";
           }
+          for(var z=0; z<lista.length;z++){       	  
+	          var input, filter, ul, a, txtValue;
+	          n=lista[z];
+	          if(n==0){
+	        	  input = document.getElementById('myInput1');
+	          }else if(n==1){
+	        	  input = document.getElementById('myInput2');
+	          }else{
+	        	  input = document.getElementById('myInput3');
+	          }
+	          filter = input.value.toUpperCase();
+	          li = document.getElementsByClassName("filterDiv");
+	
+	          for (i = 0; i < li.length; i++) {
+	            a = li[i].getElementsByTagName("td")[n];
+	            txtValue = a.textContent || a.innerText;
+	            if (txtValue.toUpperCase().indexOf(filter) > -1) {
+	              if(li[i].style.display != "none"){
+	            	  li[i].style.display = "";
+	              }
+	            } else {
+	              li[i].style.display = "none";
+	            }
+	          }
+        	}
         }
 	},
 	mounted(){

@@ -59,7 +59,7 @@ Vue.component("klinika", {
 	},
 	mounted(){
 		axios
-	    .get('rest/login/getConcreteUser/AdminK')
+	    .get('rest/login/getConcreteUser/AdminKC')
 	    .then((response) => {
 	    	console.log(response.data);	
 	    })

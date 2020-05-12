@@ -9,7 +9,8 @@ Vue.component('godisnjiPrihvatanje', {
 	    	salaPK:{
 	    		brojSale:null,
 	    		klinika:null
-	    	}
+	    	},
+	    	klinika_id:null
 	    }
 	},
 	template: ` 
@@ -41,7 +42,7 @@ Vue.component('godisnjiPrihvatanje', {
    </table>
    <div id="modaldark">
    <div class="form-popup" id="myForm">
-    <input type="textarea" id = "prezime" class="form-control" v-model="razlog" placeholder="Navedite razlog prihvatanja/odbijanja..">
+    <textarea style="height:300px;" id = "prezime" class="form-control" v-model="razlog" placeholder="Navedite razlog prihvatanja/odbijanja.."></textarea>
     <button type="button" class="btn maal leftbutton" v-on:click="potvrdi()">Potvrdi</button>
     <button type="button" class="btn zaal rightbutton" v-on:click="otkazi()">Otkazi</button>
    </div>
@@ -79,7 +80,7 @@ Vue.component('godisnjiPrihvatanje', {
 			    })
 			    .then((response) => {
 			    	axios
-				    .get('rest/godisnji/svi/'+response.data.id,response.data.id)
+				    .get('rest/godisnji/svi/'+this.klinika_id,this.klinika_id)
 				    .then(response => (this.tipovi=response.data));
 					document.getElementById("myForm").style.display = "none";
 					document.getElementById("modaldark").style.display = "none";
@@ -99,9 +100,11 @@ Vue.component('godisnjiPrihvatanje', {
 		axios
 	    .get('rest/login/getKlinika')
 	    .then(response =>{
+	    	this.klinika_id=response.data.id;
 	    	axios
 		    .get('rest/godisnji/svi/'+response.data.id,response.data.id)
 		    .then(response => (this.tipovi=response.data));
+	    	
 	    });
 	}
 });

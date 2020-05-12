@@ -5,9 +5,11 @@ Vue.component("adminiKlinika", {
 				ime: "",
 				prezime: "",
 				username: "",
-                password: ""
+                password: "",
+                kc_id: null
                 	},
 			tipovi:[],
+			klinike:[],
 			id:null,
 			izmena:""
 		}
@@ -46,6 +48,9 @@ Vue.component("adminiKlinika", {
 		    <input type="text" class="psw" v-model="input.prezime" placeholder="Prezime" required>
 		    <input type="text" class="psw" v-model="input.username" placeholder="Korisnicko ime" required>
 		    <input type="text" class="psw" v-model="input.password" placeholder="Lozinka" required>
+		    <select v-for="k in klinike" v-model="input.kc_id" required>
+		    	<option>{{k}}</option>
+		    </select>
 		    </br></br>
 		    <button type="button" class="btn maal leftbutton" v-on:click="dodaj()">Potvrdi</button>
 		    <button type="button" class="btn zaal rightbutton" v-on:click="otkazi()">Otkazi</button>
@@ -91,5 +96,8 @@ Vue.component("adminiKlinika", {
 			axios
 		    .get('rest/adminK')
 		    .then(response => (this.tipovi=response.data));
+			axios
+			.get('rest/klinika/adminIds')
+			.then(response => (this.klinike=response.data));
 		}
 });

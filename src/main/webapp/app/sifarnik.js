@@ -8,7 +8,10 @@ Vue.component("sifarnik", {
             		},
 	    	stavke:[],
 	    	id:null,
-	    	izmena:""
+	    	izmena: {
+	    		id: null,
+	    		sifra: ""
+	    	}
 	    }
 	},
 	template: ` 
@@ -33,19 +36,23 @@ Vue.component("sifarnik", {
 		</tr>
 		<tr>
 			<td></td>
-			<td><input type="text" class="fotrol" v-model="input.naziv" placeholder="Naziv"></td>
-			<td><input type="text" class="fotrol" v-model="input.adresa" placeholder="Adresa"></td>
-			<td><input type="text" class="fotrol" v-model="input.opis" placeholder="Opis"></td>
+			<td><input type="text" class="fotrol" v-model="input.sifra" placeholder="Sifra"></td>
+			<td><input type="text" class="fotrol" v-model="input.stavkaId" placeholder="StavkaId"></td>
+			<td><select v-model="input.tip">
+				<option>LEK</option>
+				<option>DIJAGNOZA</option>
+			</select></td>
 			<td><input class="btn btn-success" type='button' value='Dodavanje'  v-on:click="dodaj()"/></td>
-		</tr>	
+		</tr>
+		<tr>
+			<td><select v-for="s in stavke" v-model="izmena.id">
+				<option>{{s.id}}</option>
+			</select></td>
+			<td>Nova sifra: </td>
+			<td><input type="text" class="fotrol" v-model="izmena.sifra" placeholder="StavkaId"></td>
+			<td><input class="btn btn-success" type='button' value='Izmena' v-on:click="izmeni()"/></td>
+		</tr>
    </table>
-   <div class="form-popup" id="myForm">
-    <h6>Izmena ID:{{this.id}}</h6>
-    <input type="text" class="psw" v-model="izmena" placeholder="Naziv pregleda">
-    </br></br>
-	<button type="button" class="btn maal leftbutton" v-on:click="izmeni()">Potvrdi</button>
-	<button type="button" class="btn zaal rightbutton" v-on:click="otkazi()">Otkazi</button>
-   </div>
 </div>
 </div>		  
 `
@@ -55,6 +62,11 @@ Vue.component("sifarnik", {
         	axios
         	.post('rest/sifarnik/dodaj', {"id": null, "sifra":this.input.sifra, "stavkaId":this.input.stavkaId, "tip":this.input.tip})
 			.then(response => this.$router.replace({ name: "administratorCentra" }));
+        },
+        izmeni(){
+        	axios
+        	.put('rest/sifarnik/izmeni', {"id": this.izmena.id, "novaSifra": this.izmena.sifra})
+        	.then(response => this.$router.replace({ name: "administratorCentra" }));
         }
 	},
 	mounted(){

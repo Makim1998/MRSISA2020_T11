@@ -12,6 +12,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import rest.domain.StavkaSifarnika;
@@ -43,16 +44,12 @@ public class SifarnikController {
 		return new ResponseEntity<>(HttpStatus.OK);
 	}
 	
-	@PutMapping(value="/izmeni",consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
-	public ResponseEntity<StavkaSifarnikaDTO> izmeni(@RequestBody StavkaSifarnikaDTO dto){
-		StavkaSifarnika stavka = service.findOne(dto.getId());
-		if (stavka == null) {
-			return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
-		}
-		stavka.setSifra(dto.getSifra());
-		stavka.setStavkaId(dto.getStavkaId());
-		stavka.setTip(dto.getTip());
+	@PutMapping(value="/izmeni", produces = MediaType.APPLICATION_JSON_VALUE)
+	public ResponseEntity<StavkaSifarnikaDTO> izmeni(@RequestParam Integer id, @RequestParam String novaSifra){
+		StavkaSifarnika stavka = service.findOne(id);
+		stavka.setSifra(novaSifra);
 		stavka = service.save(stavka);
 		return new ResponseEntity<>(new StavkaSifarnikaDTO(stavka), HttpStatus.OK);
 	}
+	
 }
