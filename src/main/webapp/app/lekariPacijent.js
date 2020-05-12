@@ -1,4 +1,5 @@
 Vue.component("lekariPacijent", {
+	props : ['klinika'],
 	data: function () {
 	    return {
 	    	lekari:[],
@@ -125,6 +126,9 @@ Vue.component("lekariPacijent", {
         	this.filter.ime = "";
         	this.filter.prosek = "";
         	this.filter.prezime = "";
+        	axios
+		    .get('rest/lekari')
+		    .then(response => (this.lekari=response.data));
         },
 		oceni(){
 			console.log("ocena");
@@ -183,8 +187,27 @@ Vue.component("lekariPacijent", {
 	
 	},
 	mounted(){
-		axios
-	    .get('rest/lekari')
-	    .then(response => (this.lekari=response.data));
+		console.log(this.klinika);
+		if (this.klinika == null){
+			console.log("Dosao iz navbara")
+			axios
+		    .get('rest/lekari')
+		    .then(response => (this.lekari=response.data));
+		}
+		else{
+			console.log("Dosao pomocu skoka")
+			if (this.klinika.lekari == null){
+				console.log("Lekari null")
+				axios
+			    .get('rest/lekari')
+			    .then(response => (this.lekari=response.data));
+			}
+			else{
+				console.log("Lekari nisu null");
+				this.lekari = this.klinika.lekari;
+			}
+			
+		}
+		
 	},
 });

@@ -1,6 +1,10 @@
 package rest.dto;
 
+import java.util.ArrayList;
+
+import javassist.expr.NewArray;
 import rest.domain.Klinika;
+import rest.domain.Lekar;
 
 public class KlinikaDTO {
 	
@@ -9,14 +13,22 @@ public class KlinikaDTO {
 	public String adresa;
 	public String opis;
 	public String prosecnaOcena;
+	public ArrayList<LekarDTO> lekari;
 	
 	public KlinikaDTO(Klinika klinika) {
 		this.id = klinika.getId();
 		this.naziv = klinika.getNaziv();
 		this.adresa = klinika.getAdresa();
 		this.opis = klinika.getOpis();
+		this.lekari = new ArrayList<LekarDTO>();
+		for (Lekar l: klinika.getLekari()) {
+			LekarDTO dto =new LekarDTO(l);
+			dto.setProsek(l);
+			this.lekari.add(dto);
+		}
 	}
 	
+
 	public void setProsek(Klinika klinika) {
 		System.out.println(klinika.getOcene());
 		if(klinika.getOcene().size() == 0) {
@@ -66,6 +78,15 @@ public class KlinikaDTO {
 
 	public void setOpis(String opis) {
 		this.opis = opis;
+	}
+	
+	public ArrayList<LekarDTO> getLekari() {
+		return lekari;
+	}
+
+
+	public void setLekari(ArrayList<LekarDTO> lekari) {
+		this.lekari = lekari;
 	}
 	
 

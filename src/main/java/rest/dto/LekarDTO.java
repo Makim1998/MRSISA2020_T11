@@ -19,7 +19,9 @@ import rest.domain.Lekar;
 		private String prosecnaOcena;
 		private String brojOsiguranika;
 		private int kc_id;
+		private String klinika;
 		private Boolean prviPut;
+		
 		
 		public void setProsek(Lekar l) {
 			if(l.getOcene().size() == 0) {
@@ -34,6 +36,15 @@ import rest.domain.Lekar;
 				prosecnaOcena = String.format("%.2f", prosek);
 			}
 		}
+		
+		public String getKlinika() {
+			return klinika;
+		}
+
+		public void setKlinika(String klinika) {
+			this.klinika = klinika;
+		}
+
 		public String getProsecnaOcena() {
 			return prosecnaOcena;
 		}
@@ -132,6 +143,7 @@ import rest.domain.Lekar;
 			System.out.println("USER:"+s.getKlinika().getId());
 			this.setKc_id(s.getKlinika().getId());
 			this.setPrviPut(s.getPrviPut());
+			this.setKlinika( s.getKlinika().getNaziv());
 		}
 		
 		public Boolean getPrviPut() {

@@ -1,6 +1,7 @@
 Vue.component("klinikePacijent", {
 	data: function () {
 	    return {
+	    	tipovi: [],
 	    	input: {	    		 
                 naziv: "",
                 opis: "",
@@ -13,7 +14,9 @@ Vue.component("klinikePacijent", {
 	    	filter: {
 	    		naziv: "",
 	    		adresa: "",
-                prosek: ""
+                prosek: "",
+                tip: "",
+                datum: ""
 	    	}
             		
 	    }
@@ -21,6 +24,7 @@ Vue.component("klinikePacijent", {
 	template: ` 
 <div id = "klinikePacijent">
 <h2 class="text-center">Klinike</h2>
+
 <div id = "filterKlinike">
 <form>
   <div class="form-row">
@@ -34,7 +38,7 @@ Vue.component("klinikePacijent", {
 			<option value = "4">4-5</option>
 		</select>
     </div>
-    <div class="col-sm-3 my-1">
+    <div class="col-sm-2 my-1">
       <label for = "naziv" class="col-sm-2 col-form-label">Naziv: </label>
 		<input id = "naziv" type = "text" v-model = "filter.naziv" class= "form-control">
     </div>
@@ -42,13 +46,16 @@ Vue.component("klinikePacijent", {
       <label for = "adresa" class="col-sm-2 col-form-label">Adresa: </label>
 		<input id = "adresa" type = "text" v-model = "filter.adresa" class= "form-control">
     </div>
-    <div class="col-sm-3 my-1">
-		<label for = "b" class="col-sm-2 col-form-label"> </label>
+    <div class="col-sm-1 my-1">
+		<button id = "b" type="button" class="btn btn-primary" data-toggle="modal" data-target="#pretraziKlinikuModal"">Pretrazi</button>
+    </div>
+    <div class="col-sm-2 my-1">
       <button id = "b" type="button" class="btn btn-primary" v-on:click="ponistiFilter()">Prikazi sve</button>
     </div>
   </div>
 </form>
 </div><br>
+
 <table class="table">
   <thead>
     <tr>
@@ -69,6 +76,11 @@ Vue.component("klinikePacijent", {
 				Oceni kliniku
 			</button>
 			</td>
+			<td>
+			<button type="button" v-on:click = "skok(k)" class="btn btn-primary">
+				Odaberi kliniku
+			</button>
+			</td>
 		</tr>
   </tbody>
 </table>
@@ -77,6 +89,40 @@ Vue.component("klinikePacijent", {
 <h5 class="text-center" id = "rezultatiPretrage"></h5>
 <h3 class="text-center" v-if="rezultati" ></h3>
 </div>
+
+<!-- Modal -->
+<div class="modal fade" id="pretraziKlinikuModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+  <div class="modal-dialog" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" >Pretraga klinika</h5>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body">
+		<form>
+			<div class="form-group">
+		      	<label for = "datetimepicker4">Datum i vreme: </label>
+				<input  type='text' class="form-control"  id='datetimepicker4' required />
+		    </div>
+		    <div class="form-group">
+		      	<label for = "tip">Tip pregleda: </label>
+				<select id = "tip" v-model = "filter.tip" class= "form-control" required>
+					<option v-for="tip in tipovi" :value="tip.naziv">{{tip.naziv}}</option>
+				</select>
+		    </div>
+		</form>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" data-dismiss="modal">Zatvori</button>
+        <button type="button" class="btn btn-primary" v-on:click="pretraga()">Pretrazi klinike</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+
 
 <!-- Modal -->
 <div class="modal fade" id="oceniKlinikuModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
@@ -128,11 +174,40 @@ Vue.component("klinikePacijent", {
     	    
         	
         },
+        pretraga() {
+        	console.log("pretraga");
+        	console.log(this.filter.datum);
+        	console.log($("#datetimepicker4").val())
+        	if(!moment( $("#datetimepicker4").val(), 'YYYY-MM-DD HH:mm', true).isValid()){
+        		alert("Datum nije u ispravnom formatu!\n (YYYY-MM-DD HH:mm)");
+        		return;
+        	}
+        	if(this.filter.tip == undefined || this.filter.tip === ""){
+        		alert("Unesite ispravno tip pregleda!");
+        		return;
+        	}
+        	axios
+    	    .get('rest/klinika/pretraga?datum='+$("#datetimepicker4").val() +'&tip='+this.filter.tip +'&naziv='+this.filter.naziv +'&adresa='+this.filter.adresa +'&prosek='+this.filter.prosek)
+    	    .then(response => {
+    	    	$('#pretraziKlinikuModal').modal('hide');
+            	$('.modal-backdrop').remove();
+    	    	console.log("uspeh");
+    	    	this.klinike = response.data});
+    	    
+        	
+        },
         ponistiFilter(){
         	console.log("klinike");
         	this.filter.adresa = "";
         	this.filter.prosek = "";
         	this.filter.naziv = "";
+        	axios
+    	    .get('rest/klinika')
+    	    .then(response => (this.klinike=response.data));
+        },
+        skok(klinika){
+        	console.log("skok");
+        	this.$emit('skok',klinika);
         },
 		init(){
         	console.log("klinike");
@@ -188,8 +263,13 @@ Vue.component("klinikePacijent", {
 	},
 	mounted(){
 		console.log("klinike");
+		console.log(this.$parent.component);
+		$('#datetimepicker4').datetimepicker();
 		axios
 	    .get('rest/klinika')
 	    .then(response => (this.klinike=response.data));
+		axios
+	    .get('rest/tipPregleda')
+	    .then(response => (this.tipovi=response.data));
 	},	
 });

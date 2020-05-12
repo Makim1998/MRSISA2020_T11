@@ -54,6 +54,11 @@ public class Lekar extends User{
 	@Column(name = "ocene")
 	private List<Integer> ocene = new ArrayList<Integer>();
 	
+	@ManyToOne
+	@JoinColumn(name="tip_pregleda")
+	@JsonIgnore
+	private TipPregleda tipPregleda;
+	
 	public Lekar(String username, String password, String ime, String prezime) {
 		super(username, password, ime, prezime);
 		// TODO Auto-generated constructor stub
@@ -134,6 +139,31 @@ public class Lekar extends User{
 	public void setOcene(List<Integer> ocene) {
 		this.ocene = ocene;
 	}
+
+
+
+	public Set<GodisnjiOdmor> getGodisnji() {
+		return godisnji;
+	}
+
+
+
+	public void setGodisnji(Set<GodisnjiOdmor> godisnji) {
+		this.godisnji = godisnji;
+	}
+
+
+
+	public TipPregleda getTipPregleda() {
+		return tipPregleda;
+	}
+
+
+
+	public void setTipPregleda(TipPregleda tipPregleda) {
+		this.tipPregleda = tipPregleda;
+	}
+	
 	
 	
 }

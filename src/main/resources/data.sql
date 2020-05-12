@@ -19,8 +19,8 @@ insert into pacijent (id) values (9);
 insert into karton (id,ime,prezime,pol,datum_rodjenja,krvna_grupa) values (4,'Marina','Marin',0,'1988-6-30 23:59:59','A+');
 update pacijent set karton_id = 4 where id = 9;
 
-insert into user (id, email,  password,  ime,  prezime,uloga,broj_osiguranika, adresa, grad, drzava ,prvi_put) values (6l,'ana@gmail.com','pacijent','Marko','Markovic',3,'1111123224320','Radiceva 6','Novi Sad','Srbija',false);
-insert into pacijent (id) values (6l);
+insert into user (id, email,  password,  ime,  prezime,uloga,broj_osiguranika, adresa, grad, drzava ,prvi_put) values (11l,'ana@gmail.com','pacijent','Marko','Markovic',3,'1111123224320','Radiceva 6','Novi Sad','Srbija',false);
+insert into pacijent (id) values (11l);
 
 insert into klinicki_centar (id,naziv) values (1,'Klinicki centar Novi Sad');
 
@@ -46,9 +46,11 @@ insert into administrator_klinike (id,klinika_id) values (2,1);
 
 insert into user (id,ime,prezime,email,password,uloga,broj_osiguranika,prvi_put) values (3,'Marko','Markovic','Lekar1','lekar1',1,3424234242212,false);
 insert into lekar (id,od,do,klinika) values (3,'1998-12-31 23:59:59','1999-12-31 12:59:59',1);
+update lekar set tip_pregleda = 1 where id = 3;
 
 insert into user (id,ime,prezime,email,password,uloga,broj_osiguranika,prvi_put) values (6,'Marija','Maric','Lekar2','lekar2',1,4567298242212,true);
 insert into lekar (id,od,do,klinika) values (6,'1998-12-31 23:59:59','1999-12-31 12:59:59',1);
+update lekar set tip_pregleda = 2 where id = 6;
 
 insert into user (id,ime,prezime,email,password,uloga,broj_osiguranika,prvi_put) values (5,'Marica','Maric','Sestra1','sestra1',2,4567234242212,true);
 insert into medicinska_sestra (id,od,do,klinika) values (5,'1998-12-31 23:59:59','1999-12-31 12:59:59',1);
@@ -67,4 +69,4 @@ insert into pregled(id,datum,trajanje,cena_id,lekar_id,sala_klinika_id,sala_broj
 insert into pregled(id,datum,trajanje,cena_id,lekar_id,sala_klinika_id,sala_broj_sale,tip_id,karton_id) values (2,'2020-10-10 19:00:00',50,1,3,1,1,2,1);
 insert into pregled(id,datum,trajanje,cena_id,lekar_id,sala_klinika_id,sala_broj_sale,tip_id,karton_id,dijagnoza_id) values (3,'2020-10-10 19:00:00',50,1,3,1,1,2,2,1);
 insert into pregled(id,datum,trajanje,cena_id,lekar_id,sala_klinika_id,sala_broj_sale,tip_id,karton_id) values (4,'2020-10-10 19:00:00',50,1,6,1,1,2,3);
-insert into pregled(id,datum,trajanje,cena_id,lekar_id,sala_klinika_id,sala_broj_sale,tip_id,karton_id,dijagnoza_id) values (5,'2020-10-10 19:00:00',50,1,3,1,1,2,1,1);
+insert into pregled(id,datum,trajanje,cena_id,lekar_id,sala_klinika_id,sala_broj_sale,tip_id,karton_id,dijagnoza_id) values (5,'2020-09-10 19:00:00',50,1,3,1,1,2,1,1);

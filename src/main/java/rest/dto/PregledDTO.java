@@ -1,26 +1,15 @@
 package rest.dto;
 
+import java.text.SimpleDateFormat;
 import java.util.Date;
-import java.util.StringTokenizer;
 
-import javax.persistence.CascadeType;
-import javax.persistence.Column;
-import javax.persistence.FetchType;
-import javax.persistence.ManyToOne;
-import javax.persistence.OneToOne;
-
-import rest.domain.Dijagnoza;
-import rest.domain.Karton;
-import rest.domain.Lekar;
 import rest.domain.Pregled;
-import rest.domain.Sala;
-import rest.domain.StavkaCenovnika;
-import rest.domain.TipPregleda;
 
 public class PregledDTO {
 	
 	private Integer id;
 	private Date datum;
+	private String formatiran;
 	private int trajanje;
 	private TipPregledaDTO tip;
 	private KartonDTO karton;
@@ -32,6 +21,9 @@ public class PregledDTO {
 	public PregledDTO(Pregled s) {
 		this.id=s.getId();
 		this.datum=s.getDatum();
+		String pattern = "dd.MM.yyyy. HH:mm";
+		SimpleDateFormat simpleDateFormat = new SimpleDateFormat(pattern);
+		this.formatiran = simpleDateFormat.format(s.getDatum());
 		this.trajanje=s.getTrajanje();
 		this.tip=new TipPregledaDTO(s.getTip(),s.getSala().getKlinika().getId());
 		try {
@@ -124,6 +116,15 @@ public class PregledDTO {
 	public void setDijagnoza(DijagnozaDTO dijagnoza) {
 		this.dijagnoza = dijagnoza;
 	}
+
+	public String getFormatiran() {
+		return formatiran;
+	}
+
+	public void setFormatiran(String formatiran) {
+		this.formatiran = formatiran;
+	}
+	
 	
 
 }

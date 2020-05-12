@@ -1,7 +1,12 @@
 package rest.controller;
 
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Calendar;
+import java.util.Date;
 import java.util.List;
+import java.util.Set;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -15,9 +20,14 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
+import rest.domain.GodisnjiOdmor;
 import rest.domain.Klinika;
+import rest.domain.Lekar;
+import rest.domain.Pregled;
 import rest.dto.KlinikaDTO;
+import rest.dto.LekarDTO;
 import rest.service.KlinikaService;
+import rest.service.PregledService;
 
 
 @RestController
@@ -27,7 +37,8 @@ public class KlinikaController {
 	@Autowired
 	private KlinikaService service;
 	
-	
+	@Autowired
+	private PregledService pregledi;
 	
 	@GetMapping
 	public ResponseEntity<List<KlinikaDTO>> getKlinike(){
@@ -91,6 +102,62 @@ public class KlinikaController {
 		service.save(k);
 		System.out.println("Ocena uspesno dodata");
 		return new ResponseEntity<>(HttpStatus.OK);
+	}
+	
+	@GetMapping(value="/pretraga",  produces=MediaType.APPLICATION_JSON_VALUE)
+	public ResponseEntity<List<KlinikaDTO>> pretragaKlinike(@RequestParam String datum,@RequestParam String tip,@RequestParam String naziv,@RequestParam String adresa,@RequestParam String prosek) throws ParseException{
+		List<Klinika> klinike = service.findAll();
+		System.out.println(datum+tip+adresa+naziv+prosek);
+		SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm");
+		Date vremePregleda = sdf.parse(datum);
+		List<KlinikaDTO> pronadjene = new ArrayList<KlinikaDTO>();
+		for (Klinika k: klinike) {
+			boolean zadovoljenaKlinika = false;
+			Set<Lekar> lekari = k.getLekari();
+			ArrayList<LekarDTO> pronadjeniLekari = new ArrayList<LekarDTO>();
+			for (Lekar l : lekari) {
+				boolean zadovoljenLekar = true;
+				if (l.getTipPregleda().getNaziv().equals(tip)) {
+					// proveri da li specijalizovan lekar ide na godisnji za datum
+					//proveri da li ima zakazan vec drugi pregled za datum
+					List<Pregled> svipregledi = pregledi.findAll();
+					for (Pregled p: svipregledi) {
+						if (p.getLekar().getEmail().equals(l.getEmail())) {
+							//pregled za tog lekara
+							Calendar doKada = Calendar.getInstance(); // creates calendar
+							doKada.setTime(p.getDatum()); // sets calendar time/date
+							doKada.add(Calendar.MINUTE, p.getTrajanje()); // adds one hour
+							
+							if (vremePregleda.after(p.getDatum()) && vremePregleda.before(doKada.getTime())){
+								zadovoljenLekar = false;
+							}
+							
+						}
+					}
+					Set<GodisnjiOdmor> godisnji = l.getGodisnji();
+					for(GodisnjiOdmor go : godisnji) {
+						if (go.getDatumPocetka().before(vremePregleda) && go.getDatumKraja().after(vremePregleda)) {
+							zadovoljenLekar = false;
+						}
+					}
+					if (zadovoljenLekar) {
+						zadovoljenaKlinika = true;
+						LekarDTO pronadjen = new LekarDTO(l);
+						pronadjen.setProsek(l);
+						pronadjeniLekari.add(pronadjen);
+					}
+				}
+				
+			}
+			if(zadovoljenaKlinika) {
+				System.out.println(k.getNaziv());
+				KlinikaDTO dto = new KlinikaDTO(k);
+				dto.setProsek(k);
+				dto.setLekari(pronadjeniLekari);
+				pronadjene.add(dto);
+			}	
+		}
+		return new ResponseEntity<>(pronadjene, HttpStatus.OK);
 	}
 
 }

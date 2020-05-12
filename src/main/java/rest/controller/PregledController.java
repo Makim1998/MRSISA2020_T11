@@ -59,6 +59,25 @@ public class PregledController {
 		return new ResponseEntity<>(slterminiDTO, HttpStatus.OK);
 	}
 	@GetMapping
+	(value="/zaPacijenta")
+	public ResponseEntity<List<PregledDTO>> getPreglediZaPacijenta(@RequestParam String email) {
+		System.out.println("pregledi za pacijenta");
+		List<Pregled> svi = pregledService.findAll();
+		List<PregledDTO> zaPacijenta = new ArrayList<>();
+		for (Pregled p : svi) {
+			if(p.getKarton() != null ) {
+				if(email.equals(p.getKarton().getPacijent().getEmail())) {
+					zaPacijenta.add(new PregledDTO(p));
+					System.out.println(p.getId());
+				}
+			}
+		}
+		System.out.println(email);
+		System.out.println(zaPacijenta.size());
+		return new ResponseEntity<>(zaPacijenta, HttpStatus.OK);
+	}
+	
+	@GetMapping
 	(value = "/zakazani/{id}")
 	public ResponseEntity<List<PregledDTO>> getZakazaniTerminiPregleda(@PathVariable Integer id) throws ParseException {
 		System.out.println("kiko1");

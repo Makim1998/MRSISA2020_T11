@@ -9,7 +9,8 @@ const Empty = {template: '<blank></blank>'}
 Vue.component('pacijentHome',{
 	data: function(){
 		return {
-			component:"blank"
+			component:"blank",
+			klinika: null
 		}
 		
 	},
@@ -27,10 +28,26 @@ Vue.component('pacijentHome',{
 			
 		</div>
 		<!-- /#sidebar-wrapper -->
-
-	    <!-- Page Content -->
-	    <div id="page-content-wrapper">
-			<component v-bind:is = "component"></component>
+	     <div id="page-content-wrapper" >
+			<div v-if="component === 'klinike'">
+			  <klinikePacijent  v-on:skok = "javiSe($event)" ></klinikePacijent>
+			</div>
+			<div v-else-if="component === 'lekari'">
+			  <lekariPacijent v-bind:klinika="klinika"></lekariPacijent>
+			</div>
+			<div v-else-if="component === 'pregledi'">
+			  <pregledi></pregledi>
+			</div>
+			<div v-else-if="component === 'profil'">
+			  <pacijentProfil></pacijentProfil>
+			</div>
+			<div v-else-if="component === 'karton'">
+			  <karton></karton>
+			</div>
+			<div v-else>
+			  <blank></blank>
+			</div>
+			
 	    </div>
 	    <!-- /#page-content-wrapper -->
 	</div>
@@ -46,6 +63,13 @@ Vue.component('pacijentHome',{
 	},
 	
 	methods : {
+		javiSe(klinika) {
+        	console.log("skok")
+        	console.log(klinika.naziv);
+        	this.klinika = klinika;
+        	console.log(this.klinika.naziv);
+        	this.component = 'lekari';
+        },
 		odjava() {
         	axios
         	.get('rest/login/odjava')
