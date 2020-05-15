@@ -117,6 +117,7 @@ Vue.component("pacijenti", {
 	, 
 	methods : {
 		prikaziPacijenta(pacijent,karton){
+			alert("rs");
 			axios
 		    .get('rest/Pregled/svi')
 		    .then(response => {

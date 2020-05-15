@@ -1,0 +1,59 @@
+@charset "ISO-8859-1";
+.prozor {
+		position:relative;
+		margin:0 5%;
+		margin-top:10px;
+		width: 90%;
+		height:95%;
+		background-color:#f1f1f1;
+		overflow:hidden;
+		padding:10px;
+		border-radius:10px;
+}
+
+.otkazibtn{
+	position:absolute;
+	right:5px;
+	bottom:5px;
+}
+
+.menubtn{
+	text-decoration:none;
+	padding:0 5px;
+	display:block;
+	width:50%;
+	color:black;
+}
+
+.menubtn:hover{
+	color:white;
+	background-color:grey;
+	text-decoration:none;
+}
+
+.menudiv{
+	display:none;
+	background-color:white;
+	width:50%;
+	overflow:hidden;
+}
+
+.menudiv ul{
+	list-style:none;
+	width:100%;
+	padding:0;
+	margin:0;
+}
+
+.menudiv ul li{
+	padding:0;
+	margin:0;
+}
+
+.nfitem{
+	background-color:#DC3545;
+}
+
+.fitem{
+	background-color:#28A745!important;
+}

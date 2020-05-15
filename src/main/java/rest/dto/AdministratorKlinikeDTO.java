@@ -26,6 +26,7 @@ public class AdministratorKlinikeDTO {
 		this.setAdresa(s.getAdresa());
 		this.setDrzava(s.getDrzava());
 		this.setGrad(s.getGrad());
+		System.out.println("s.getKlinikaid "+s.getKlinika().getId());
 		this.setKc_id(s.getKlinika().getId());
 		this.setPrviPut(s.getPrviPut());
 	}

@@ -1,5 +1,7 @@
 package rest.dto;
 
+import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.StringTokenizer;
 
 import rest.domain.Sala;
@@ -9,8 +11,15 @@ public class SalaDTO {
 	private Integer brojSale;
 	private Integer klinika;
 	public String naziv;
+	public ArrayList<PregledDTO> pregledi;
 
 	
+	public ArrayList<PregledDTO> getPregledi() {
+		return pregledi;
+	}
+	public void setPregledi(ArrayList<PregledDTO> pregledi) {
+		this.pregledi = pregledi;
+	}
 	public Integer getBrojSale() {
 		return brojSale;
 	}
@@ -44,5 +53,11 @@ public class SalaDTO {
 		this.brojSale=a;
 		this.klinika=b;
 		this.naziv=c;
+	}
+	public SalaDTO(Integer a, Integer b, String c,ArrayList<PregledDTO> p) {
+		this.brojSale=a;
+		this.klinika=b;
+		this.naziv=c;
+		this.pregledi=p;
 	}
 }

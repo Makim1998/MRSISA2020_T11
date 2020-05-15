@@ -18,6 +18,8 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
+import rest.domain.AdministratorKlinike;
+import rest.domain.Klinika;
 import rest.domain.Lekar;
 import rest.domain.Pregled;
 import rest.domain.Sala;
@@ -27,6 +29,8 @@ import rest.domain.User;
 import rest.dto.LekarDTO;
 import rest.dto.PregledDTO;
 import rest.pk.SalaPK;
+import rest.service.AdminKService;
+import rest.service.KlinikaService;
 import rest.service.LekariService;
 import rest.service.PregledService;
 import rest.service.SalaService;
@@ -39,7 +43,11 @@ public class PregledController {
 	@Autowired
 	private PregledService pregledService;
 	@Autowired
+	private KlinikaService klinikaService;
+	@Autowired
 	private LekariService lekarService;
+	@Autowired
+	private AdminKService akService;
 	@Autowired
 	private SalaService salaService;
 	@Autowired
@@ -92,6 +100,36 @@ public class PregledController {
 		return new ResponseEntity<>(slterminiDTO, HttpStatus.OK);
 	}
 	@GetMapping
+	(value = "/zahtevi/{id}")
+	public ResponseEntity<List<PregledDTO>> getZahteviregleda(@PathVariable Integer id) throws ParseException {
+		System.out.println("kiko1");
+		AdministratorKlinike ak=akService.findOne(id);
+		List<Pregled> sltermini = pregledService.findZakazane();
+		System.out.println(sltermini.isEmpty());
+		List<PregledDTO> slterminiDTO = new ArrayList<>();
+		for (Pregled s : sltermini) {
+			System.out.println("kyle");
+			slterminiDTO.add(new PregledDTO(s));
+		}
+		System.out.println("kiko3");
+		return new ResponseEntity<>(slterminiDTO, HttpStatus.OK);
+	}
+	@GetMapping
+	(value = "/nezahtevi/{id}")
+	public ResponseEntity<List<PregledDTO>> getNeZahteviregleda(@PathVariable Integer id) throws ParseException {
+		System.out.println("kiko1");
+		AdministratorKlinike ak=akService.findOne(id);
+		List<Pregled> sltermini = pregledService.findNeZakazane();
+		System.out.println(sltermini.isEmpty());
+		List<PregledDTO> slterminiDTO = new ArrayList<>();
+		for (Pregled s : sltermini) {
+			System.out.println("kyle");
+			slterminiDTO.add(new PregledDTO(s));
+		}
+		System.out.println("kiko3");
+		return new ResponseEntity<>(slterminiDTO, HttpStatus.OK);
+	}
+	@GetMapping
 	(value="/svi")
 	public ResponseEntity<List<PregledDTO>> getSviPregledi() {
 		List<Pregled> svi = pregledService.findAll();
@@ -102,22 +140,27 @@ public class PregledController {
 		}
 		System.out.println("kiko3");
 		return new ResponseEntity<>(sviDTO, HttpStatus.OK);
-	}/*
-	@PutMapping(value="/izmeni",consumes = "application/json")
-	public ResponseEntity<TipPregledaDTO> updateCourse(@RequestBody TipPregledaDTO tipPregledaDTO) {
+	}
+	@PutMapping(value="/potvrdi",consumes = "application/json")
+	public ResponseEntity<PregledDTO> updateCourse(@RequestBody PregledDTO pregledDTO) {
 
 		// a course must exist
-		TipPregleda tipPregleda = tipPregledaService.findOne(tipPregledaDTO.getId());
+		Pregled p = pregledService.findOne(pregledDTO.getId());
 
-		if (tipPregleda == null) {
+		if (p == null) {
 			return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
 		}
-
-		tipPregleda.setNaziv(tipPregledaDTO.getNaziv());
-
-		tipPregleda = tipPregledaService.save(tipPregleda);
-		return new ResponseEntity<>(new TipPregledaDTO(tipPregleda), HttpStatus.OK);
-	}*/
+		System.out.println(pregledDTO.getSala().getBrojSale());
+		System.out.println(pregledDTO.getSala().getKlinika());
+		Klinika k= klinikaService.findOne(pregledDTO.getSala().getKlinika());
+		Sala s=new Sala(k,pregledDTO.getSala().getBrojSale(),pregledDTO.getSala().getNaziv());
+		p.setSala(s);
+		p.setDatum(pregledDTO.getDatum());
+		System.out.println("15. MAJ");
+		pregledService.save(p);
+		System.out.println("saa");
+		return new ResponseEntity<PregledDTO>(new PregledDTO(p), HttpStatus.OK);
+	}
 	@DeleteMapping(value = "/{id}")
 	public ResponseEntity<Void> deleteCourse(@PathVariable Integer id) {
 

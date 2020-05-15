@@ -36,6 +36,7 @@ Vue.component('administratorKlinike',{
 	      	<a href = "#cenovnik" v-on:click = "component = 'cenovnik'" >Cenovnik klinike</a>
 	      	<a href = "#godisnjiPrihvatanje" v-on:click = "component = 'godisnjiPrihvatanje'" >Godisnji</a>
 	      	<a href = "#terminPregleda" v-on:click = "component = 'terminPregleda'" >Termini za pregled</a>
+			<a href = "#zahteviPregled" v-on:click = "component = 'zahteviPregled'" >Zahtevi za pregled</a>
 			<a href = "#izvestaji" v-on:click = "component = 'izvestaji'">Izvestaji o poslovanju</a>
 			<a href = "#adminKProfil" v-on:click = "component = 'adminKProfil'" >Profil</a>
 			<div class="align-self-center mx-auto"> 

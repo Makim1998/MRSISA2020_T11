@@ -4,6 +4,11 @@ import rest.domain.Dijagnoza;
 
 public class DijagnozaDTO {
 	
+	public DijagnozaDTO() {
+		super();
+		// TODO Auto-generated constructor stub
+	}
+
 	private Integer id;
 
 	public DijagnozaDTO(Dijagnoza dijagnoza) {

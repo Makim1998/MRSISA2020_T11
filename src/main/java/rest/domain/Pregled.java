@@ -16,6 +16,7 @@ import javax.persistence.OneToOne;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 
+import rest.dto.LekarDTO;
 import rest.dto.PregledDTO;
 
 @Entity 
@@ -95,9 +96,7 @@ public class Pregled {
 	public Lekar getLekar() {
 		return lekar;
 	}
-	public void setLekar(Lekar lekar) {
-		this.lekar = lekar;
-	}
+
 	public Dijagnoza getDijagnoza() {
 		return dijagnoza;
 	}

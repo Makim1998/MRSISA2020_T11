@@ -1,12 +1,21 @@
-package rest.domain;
+  package rest.domain;
 
+import java.util.ArrayList;
+import java.util.HashSet;
+import java.util.List;
+import java.util.Set;
+
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.IdClass;
 import javax.persistence.ManyToOne;
+import javax.persistence.OneToMany;
+import javax.persistence.OrderBy;
 
 import rest.pk.SalaPK;
 
@@ -22,6 +31,10 @@ public class Sala {
 	@Column
 	private String naziv;
 	
+	@OneToMany(mappedBy="sala", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
+	@OrderBy("datum ASC")
+	private List<Pregled> pregledi= new ArrayList<Pregled>();
+	
 	public Sala() {
 		super();
 	}
@@ -29,6 +42,18 @@ public class Sala {
 		this.klinika=klinika;
 		brojSale=id2;
 		naziv=naziv2;
+	}
+	public Integer getBrojSale() {
+		return brojSale;
+	}
+	public void setBrojSale(Integer brojSale) {
+		this.brojSale = brojSale;
+	}
+	public List<Pregled> getPregledi() {
+		return pregledi;
+	}
+	public void setPregledi(List<Pregled> pregledi) {
+		this.pregledi = pregledi;
 	}
 	public Integer getId() {
 		return brojSale;

@@ -70,5 +70,14 @@ public class PregledService {
 		// TODO Auto-generated method stub
 		return pregledRepository.findByKartonIsNotNullAndDijagnozaIsNullAndLekar(lekar);
 	}
+	public List<Pregled> findZakazane() {
+		// TODO Auto-generated method stub
+		return pregledRepository.findByKartonIsNotNullAndDijagnozaIsNullAndSalaIsNull();
+	}
+
+	public List<Pregled> findNeZakazane() {
+		// TODO Auto-generated method stub
+		return pregledRepository.findByKartonIsNullOrDijagnozaIsNotNullOrSalaIsNotNull();
+	}
 
 }
