@@ -144,14 +144,14 @@ public class Klinika {
 	}
 	
 	public Klinika(KlinikaDTO dto) {
-		this.id = dto.id;
-		this.adresa = dto.adresa;
-		this.naziv = dto.naziv;
-		this.opis = dto.opis;
+		this.id = dto.getId();
+		this.adresa = dto.getAdresa();
+		this.naziv = dto.getNaziv();
+		this.opis = dto.getOpis();
 		this.administrator = null;
 		this.cenovnik = null;
 	}
-	public int getId() {
+	public Integer getId() {
 		// TODO Auto-generated method stub
 		return id;
 	}

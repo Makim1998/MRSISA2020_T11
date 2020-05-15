@@ -2,18 +2,17 @@ package rest.dto;
 
 import java.util.ArrayList;
 
-import javassist.expr.NewArray;
 import rest.domain.Klinika;
 import rest.domain.Lekar;
 
 public class KlinikaDTO {
 	
-	public Integer id;
-	public String naziv;
-	public String adresa;
-	public String opis;
+	private Integer id;
+	private String naziv;
+	private String adresa;
+	private String opis;
 	public String prosecnaOcena;
-	public ArrayList<LekarDTO> lekari;
+	private ArrayList<LekarDTO> lekari = new ArrayList<LekarDTO>();
 	
 	public KlinikaDTO(Klinika klinika) {
 		this.id = klinika.getId();
