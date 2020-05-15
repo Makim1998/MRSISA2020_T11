@@ -36,25 +36,35 @@ Vue.component("klinika", {
 			<td><input type="text" class="fotrol" v-model="input.naziv" placeholder="Naziv"></td>
 			<td><input type="text" class="fotrol" v-model="input.adresa" placeholder="Adresa"></td>
 			<td><input type="text" class="fotrol" v-model="input.opis" placeholder="Opis"></td>
-			<td><input class="btn btn-success" type='button' value='Dodavanje'  v-on:click="dodaj()"/></td>
+			<td><input class="btn btn-success" type='button' value='Dodaj'  v-on:click="dodaj()"/></td>
 		</tr>	
    </table>
-   <div class="form-popup" id="myForm">
-    <h6>Izmena ID:{{this.id}}</h6>
-    <input type="text" class="psw" v-model="izmena" placeholder="Naziv pregleda">
-    </br></br>
-	<button type="button" class="btn maal leftbutton" v-on:click="izmeni()">Potvrdi</button>
-	<button type="button" class="btn zaal rightbutton" v-on:click="otkazi()">Otkazi</button>
-   </div>
 </div>
 </div>		  
 `
 	, 
 	methods : {
 		dodaj() {
-        	axios
-        	.post('rest/klinika/dodaj', {"id": null, "naziv":this.input.naziv, "adresa":this.input.adresa, "naziv":this.input.opis})
-			.then(response => this.$router.replace({ name: "administratorKlinike" }));
+			if (!this.proveraPolja())
+				alert("Niste uneli sva polja za dodavanje nove klinike!");
+			else{
+				console.log("Opis " + this.input.opis);
+				axios
+        		.post('rest/klinika/dodaj', {"id": null, "naziv":this.input.naziv,
+        			"adresa":this.input.adresa, "opis":this.input.opis,
+        			"prosecnaOcena":"nema"})
+        		.then(response => {
+					axios
+						.get('rest/klinika')
+						.then(response => (this.klinike=response.data))
+				});
+			}
+        },
+        proveraPolja(){
+        	if (this.input.naziv == "" || this.input.adresa == "" || this.input.opis == "")
+        		return false;
+        	else
+        		return true;
         }
 	},
 	mounted(){

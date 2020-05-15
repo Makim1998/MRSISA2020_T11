@@ -1,4 +1,4 @@
-const Klinika = { template : '<klinika></klinika>' }
+//const Klinika = { template : '<klinika></klinika>' }
 const Zahtevi = { template : '<zahtevi></zahtevi>' }
 
 Vue.component('administratorCentra',{
@@ -53,7 +53,7 @@ Vue.component('administratorCentra',{
 `
 	, 
 	components:{
-		'klinika': Klinika,
+		//'klinika': Klinika,
 		'zahtevi': Zahtevi
 	},
 	

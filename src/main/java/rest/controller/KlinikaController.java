@@ -58,23 +58,28 @@ public class KlinikaController {
 	public ResponseEntity<KlinikaDTO> updateCourse(@RequestBody KlinikaDTO kDTO) {
 
 		System.out.println("IDEMO1");
-		Klinika k = service.findOne(kDTO.id);
+		Klinika k = service.findOne(kDTO.getId());
 
 		if (k == null) {
 			return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
 		}
-		k.setNaziv(kDTO.naziv);
-		k.setAdresa(kDTO.adresa);
-		k.setOpis(kDTO.opis);
+		k.setNaziv(kDTO.getNaziv());
+		k.setAdresa(kDTO.getAdresa());
+		k.setOpis(kDTO.getOpis());
 		k= service.save(k);
 		return new ResponseEntity<>(new KlinikaDTO(k), HttpStatus.OK);
 	}
 	
 	@PostMapping(value="/dodaj", consumes=MediaType.APPLICATION_JSON_VALUE, produces=MediaType.APPLICATION_JSON_VALUE)
-	public ResponseEntity<KlinikaDTO> dodajKlinika(@RequestBody KlinikaDTO klinikaDto){
+	public ResponseEntity<Void> dodajKlinika(@RequestBody KlinikaDTO klinikaDto){
+		System.out.println("naziv: " + klinikaDto.getNaziv());
+		System.out.println("adresa: " + klinikaDto.getAdresa());
+		System.out.println("opis: " + klinikaDto.getOpis());
 		Klinika klinika = new Klinika(klinikaDto);
-		service.save(klinika);
-		return new ResponseEntity<>(new KlinikaDTO(klinika), HttpStatus.OK);
+		System.out.println("Kreirana je nova klinika");
+		klinika = service.save(klinika);
+		System.out.println("Dodata je nova klinika");
+		return new ResponseEntity<>(HttpStatus.OK);
 	}
 	
 	@GetMapping(value="/adminIds")
