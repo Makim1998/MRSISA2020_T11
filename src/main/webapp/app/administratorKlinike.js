@@ -4,7 +4,7 @@
 //const Lekari = { template : '<lekari></lekari>' }
 //const Godisnji = { template : '<godisnji></godisnji>' }
 //const TerminPregleda = { template : '<terminPregleda></terminPregleda>' }
-const Izvestaji = { template : '<izvestaji></izvestaji>' }
+//const Izvestaji = { template : '<izvestaji></izvestaji>' }
 //const ProfilAK = { template : '<adminKProfil></adminKProfil>' }
 
 Vue.component('administratorKlinike',{
@@ -37,7 +37,8 @@ Vue.component('administratorKlinike',{
 	      	<a href = "#godisnjiPrihvatanje" v-on:click = "component = 'godisnjiPrihvatanje'" >Godisnji</a>
 	      	<a href = "#terminPregleda" v-on:click = "component = 'terminPregleda'" >Termini za pregled</a>
 			<a href = "#zahteviPregled" v-on:click = "component = 'zahteviPregled'" >Zahtevi za pregled</a>
-			<a href = "#izvestaji" v-on:click = "component = 'izvestaji'">Izvestaji o poslovanju</a>
+			<a href = "#zahteviOperacija" v-on:click = "component = 'zahteviOperacija'" >Zahtevi za operaciju</a>
+			<a href = "#izvestaj" v-on:click = "component = 'izvestaj'">Izvestaji o poslovanju</a>
 			<a href = "#adminKProfil" v-on:click = "component = 'adminKProfil'" >Profil</a>
 			<div class="align-self-center mx-auto"> 
                 <button id = "odjavi" class="btn btn-primary btn-sm" v-on:click="odjava()">Odjavi se</button>
@@ -69,7 +70,7 @@ Vue.component('administratorKlinike',{
 		//'godisnji': Godisnji,
 		//'terminPregleda': TerminPregleda,
 		//'lekari': Lekari,
-		'izvestaji': Izvestaji,
+		//'izvestaji': Izvestaji,
 		//'profilAK': ProfilAK
 	},
 	

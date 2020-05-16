@@ -80,4 +80,9 @@ public class PregledService {
 		return pregledRepository.findByKartonIsNullOrDijagnozaIsNotNullOrSalaIsNotNull();
 	}
 
+	public List<Pregled> findZavrsene() {
+		// TODO Auto-generated method stub
+		return pregledRepository.findByDijagnozaIsNotNull();
+	}
+
 }

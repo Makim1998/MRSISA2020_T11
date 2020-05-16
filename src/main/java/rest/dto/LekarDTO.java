@@ -144,6 +144,7 @@ import rest.domain.Lekar;
 			this.setKc_id(s.getKlinika().getId());
 			this.setPrviPut(s.getPrviPut());
 			this.setKlinika( s.getKlinika().getNaziv());
+			this.setProsek(s);
 		}
 		
 		public Boolean getPrviPut() {

@@ -1,0 +1,85 @@
+@charset "ISO-8859-1";
+.kontejner {
+      width: 60% ;
+      overflow:hidden;
+      float:left;
+	  margin-top:5%;
+}
+
+.izvjestaj-form{
+	float:right;
+	width:40%;
+	margin-top:5%;
+	overflow:hidden;
+}
+
+.l{
+	float:left;
+	margin-left:10px;
+}
+
+.r{
+	float:right;
+	margin-right:10px;
+}
+
+.izvjestaj-radio{
+	display:block;
+	clear:both;
+  position: relative;
+  padding-left: 35px;
+  margin-bottom: 12px;
+  cursor: pointer;
+  font-size: 14px;
+  -webkit-user-select: none;
+  -moz-user-select: none;
+  -ms-user-select: none;
+  user-select: none;
+}
+
+.izvjestaj-radio input {
+  position: absolute;
+  opacity: 0;
+  cursor: pointer;
+}
+
+.checkmark {
+  position: absolute;
+  top: 0;
+  left: 0;
+  height: 15px;
+  width: 15px;
+  background-color: #eee;
+  border-radius: 50%;
+}
+
+.izvjestaj-radio:hover input ~ .checkmark {
+  background-color: #ccc;
+}
+
+.izvjestaj-radio input:checked ~ .checkmark {
+  background-color: #2196F3;
+}
+
+.checkmark:after {
+  content: "";
+  position: absolute;
+  display: none;
+}
+
+.izvjestaj-radio input:checked ~ .checkmark:after {
+  display: block;
+}
+
+.izvjestaj-radio .checkmark:after {
+ 	top: 5px;
+	left: 5px;
+	width: 4px;
+	height: 4px;
+	border-radius: 50%;
+	background: white;
+}
+
+#izvjestaj-msg{
+	display:none;
+}

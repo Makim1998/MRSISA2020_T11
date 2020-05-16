@@ -5,7 +5,8 @@ Vue.component("klinikaProfil", {
             naziv: "",
             adresa: "",
             opis: "",
-            kc_id:null
+            kc_id:null,
+            prosecnaOcena:""
 		}
 	},
 	template: ` 
@@ -28,6 +29,10 @@ Vue.component("klinikaProfil", {
 		<div class="form-group">
     		<label for="opis">Opis: </label>
    			<textarea id = "adresa" class="form-control" v-model="opis" placeholder="Opis"></textarea>
+		</div>
+		<div class="form-group">
+			<label for="username">Prosecna ocena: </label>
+   			<input type="text" id = "username" class="form-control" v-model="prosecnaOcena"  disabled>
 		</div>
 		<div class="form-group">
     		<button type="button" class="btn btn-primary btn-block" v-on:click="izmeni()">Izmeni profil</button>
@@ -63,6 +68,7 @@ Vue.component("klinikaProfil", {
 	    	this.naziv=response.data.naziv;
 	    	this.adresa=response.data.adresa;
 	    	this.opis=response.data.opis;
+	    	this.prosecnaOcena=response.data.prosecnaOcena;
 		    })
 		    .catch(response => {
 				this.$router.push("/");

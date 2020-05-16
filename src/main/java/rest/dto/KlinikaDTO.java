@@ -25,6 +25,7 @@ public class KlinikaDTO {
 			dto.setProsek(l);
 			this.lekari.add(dto);
 		}
+		this.setProsek(klinika);
 	}
 	
 

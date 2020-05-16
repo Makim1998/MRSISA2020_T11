@@ -2,6 +2,7 @@ package rest.controller;
 
 import java.text.ParseException;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -97,6 +98,20 @@ public class PregledController {
 			slterminiDTO.add(new PregledDTO(s));
 		}
 		System.out.println("kiko3");
+		return new ResponseEntity<>(slterminiDTO, HttpStatus.OK);
+	}
+	@GetMapping
+	(value = "/zavrseni/{id}")
+	public ResponseEntity<List<PregledDTO>> getZavrseniTerminiPregleda(@PathVariable Integer id) throws ParseException {
+		List<Pregled> sltermini = pregledService.findZavrsene();
+		System.out.println(sltermini.isEmpty());
+		List<PregledDTO> slterminiDTO = new ArrayList<PregledDTO>();
+		for (Pregled s : sltermini) {
+			if(s.getLekar().getKlinika().getId()==id) {
+				slterminiDTO.add(new PregledDTO(s));
+			}
+		}
+		Collections.sort(slterminiDTO);
 		return new ResponseEntity<>(slterminiDTO, HttpStatus.OK);
 	}
 	@GetMapping

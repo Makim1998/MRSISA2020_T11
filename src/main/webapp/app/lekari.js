@@ -31,6 +31,7 @@ Vue.component("lekari", {
 		   <th>Korisnicko ime</th>
 		   <th>Ime</th>
 		   <th>Prezime</th>
+		   <th>Prosecna ocena</th>
 		   <th>Broj osiguranika</th>
 		   <th>Brisanje</th>
 		</tr>
@@ -39,6 +40,7 @@ Vue.component("lekari", {
 			<td class="myclass">{{tp.username}}</td>
 			<td class="myclass">{{tp.ime}}</td>
 			<td class="myclass">{{tp.prezime}}</td>
+			<td class="myclass">{{tp.prosecnaOcena}}</td>
 			<td class="myclass">{{tp.brojOsiguranika}}</td>
 			<td><input class="btn btn-danger btn-lg" value='Obrisi' type='button' v-on:click="obrisi(tp.id)"/></td>
 		</tr>
@@ -46,7 +48,9 @@ Vue.component("lekari", {
 			<td></td>
 			<td><input class="btn btn-success" type='button' value='Dodajte novog lekara'  v-on:click="otvori()"/></td>
 			<td></td>
-			<td><router-link :to="{ name: 'administratorKlinike' }" tag="button" float='right' class="btn btn-primary" >Nazad</router-link></td>
+			<td></td>
+			<td></td>
+			<td></td>
 			<td></td>
 		</tr>	
    </table>
