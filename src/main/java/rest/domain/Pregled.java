@@ -111,7 +111,11 @@ public class Pregled {
 		this.trajanje=preg.getTrajanje();
 		this.cena=st;
 		this.lekar=l;
-		this.sala=s;
-		this.tip=t;
+		if (s==null) {
+			this.tip=l.getTipPregleda();
+		}else {
+			this.sala=s;
+			this.tip=t;
+		}
 	}
 }

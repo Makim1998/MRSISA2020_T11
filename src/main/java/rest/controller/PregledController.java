@@ -192,9 +192,15 @@ public class PregledController {
 	public ResponseEntity<User> login(@RequestBody PregledDTO pregledDTO){
 		StavkaCenovnika st=stavkaCenovnikaService.findOne(pregledDTO.getCena().getId());
 		Lekar l=lekarService.findOne(pregledDTO.getLekar().getId());
-		SalaPK pk=new SalaPK(pregledDTO.getSala().getBrojSale(),pregledDTO.getSala().getKlinika());
-		Sala s=salaService.findOne(pk);
-		TipPregleda t=tipPregledaService.findOne(pregledDTO.getTip().getId());
+		Sala s=null;
+		TipPregleda t=null;
+		try {
+			SalaPK pk=new SalaPK(pregledDTO.getSala().getBrojSale(),pregledDTO.getSala().getKlinika());
+			t=tipPregledaService.findOne(pregledDTO.getTip().getId());
+			s=salaService.findOne(pk);
+		} catch (Exception e) {
+			System.out.println("nema sale");
+		}
 		Pregled pregled=new Pregled(pregledDTO,st,l,s,t);
 		pregledService.save(pregled);
 		return new ResponseEntity<>(HttpStatus.OK);
