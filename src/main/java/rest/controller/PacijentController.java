@@ -1,5 +1,6 @@
 package rest.controller;
 
+import java.text.ParseException;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -7,6 +8,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -15,11 +17,15 @@ import org.springframework.web.bind.annotation.RestController;
 
 import rest.domain.Karton;
 import rest.domain.Lekar;
+import rest.domain.Operacija;
 import rest.domain.Pacijent;
+import rest.domain.Pregled;
 import rest.domain.User;
 import rest.dto.LekarDTO;
 import rest.dto.KartonDTO;
 import rest.dto.PacijentDTO;
+import rest.dto.PregledDTO;
+import rest.service.LekariService;
 import rest.service.PacijentService;
 
 @RestController
@@ -27,6 +33,8 @@ import rest.service.PacijentService;
 public class PacijentController {
 	@Autowired
 	private PacijentService patientService;
+	@Autowired
+	private LekariService lekarService;
 	
 	@GetMapping(value ="/svi", produces = "application/json")
 	public ResponseEntity<List<PacijentDTO>> getPacijenti() {
@@ -61,7 +69,49 @@ public class PacijentController {
 		
 		return new ResponseEntity<KartonDTO>(new KartonDTO(p.getKarton()), HttpStatus.OK);
 	}
-	
+	@GetMapping
+	(value = "/pregledani/{id}")
+	public ResponseEntity<List<PacijentDTO>> getPregledaniPacijenti(@PathVariable Integer id) throws ParseException {
+		System.out.println("flamingosi0");
+		Lekar l=lekarService.findOne(id);
+		List<PacijentDTO> slterminiDTO = new ArrayList<>();
+		ArrayList<Integer> kartoni=new ArrayList<Integer>();
+		kartoni.add(0);
+		for (Operacija op : l.getOperacije()) {
+			System.out.println("flamingosi1");
+			boolean postoji=false;
+			Pacijent p=patientService.findOneByKarton(op.getKarton());
+			Integer idk=op.getKarton().getId();
+			for (int i: kartoni) {
+				if(idk==i) {
+					postoji=true;
+				}
+			}
+			if(postoji==false) {
+				slterminiDTO.add(new PacijentDTO(p));
+			}
+		}
+		System.out.println("flamingosi2");
+		for (Pregled op : l.getPregledi()) {
+			System.out.println("flamingosi3");
+			boolean postoji=false;
+			Pacijent p=patientService.findOneByKarton(op.getKarton());
+			try {
+				Integer idk=op.getKarton().getId();
+				for (int i: kartoni) {
+					if(idk==i) {
+						postoji=true;
+					}
+				}
+				if(postoji==false) {
+					slterminiDTO.add(new PacijentDTO(p));
+				}
+			} catch (Exception e) {
+				System.out.println("flamingos");
+			}
+		}
+		return new ResponseEntity<>(slterminiDTO, HttpStatus.OK);
+	}	
 	@PutMapping(value ="/profil",consumes = "application/json", produces = "application/json")
 	public ResponseEntity<User> editProfile(@RequestBody PacijentDTO pacijent)
 			throws Exception {

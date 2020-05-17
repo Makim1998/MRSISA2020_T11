@@ -68,7 +68,7 @@ insert into dijagnoza (id) values (1);
 
 insert into pregled(id,datum,trajanje,cena_id,lekar_id,sala_klinika_id,sala_broj_sale,tip_id) values (1,'2020-10-10 17:00:00',50,1,3,1,1,1);
 insert into pregled(id,datum,trajanje,cena_id,lekar_id,sala_klinika_id,sala_broj_sale,tip_id,karton_id) values (2,'2020-10-10 20:00:00',50,1,3,1,1,2,1);
-insert into pregled(id,datum,trajanje,cena_id,lekar_id,sala_klinika_id,sala_broj_sale,tip_id,karton_id,dijagnoza_id) values (3,'2020-10-10 19:00:00',50,1,3,1,1,2,2,1);
+insert into pregled(id,datum,trajanje,cena_id,lekar_id,sala_klinika_id,sala_broj_sale,tip_id,karton_id,dijagnoza_id) values (3,'2020-10-10 19:00:00',50,1,6,1,1,2,2,1);
 insert into pregled(id,datum,trajanje,cena_id,lekar_id,tip_id,karton_id) values (4,'2020-10-10 19:00:00',50,1,6,2,3);
 insert into pregled(id,datum,trajanje,cena_id,lekar_id,tip_id,karton_id) values (6,'2020-10-10 12:00:00',50,1,6,2,3);
 insert into pregled(id,datum,trajanje,cena_id,lekar_id,tip_id,karton_id) values (7,'2020-10-09 12:00:00',50,1,6,2,3);
@@ -76,4 +76,4 @@ insert into pregled(id,datum,trajanje,cena_id,lekar_id,tip_id,karton_id) values 
 insert into pregled(id,datum,trajanje,cena_id,lekar_id,tip_id,karton_id) values (9,'2020-10-13 12:00:00',50,1,6,2,3);
 insert into pregled(id,datum,trajanje,cena_id,lekar_id,tip_id,karton_id) values (10,'2020-10-06 12:00:00',50,1,6,2,3);
 insert into pregled(id,datum,trajanje,cena_id,lekar_id,tip_id,karton_id) values (11,'2020-10-10 14:00:00',50,1,6,2,3);
-insert into pregled(id,datum,trajanje,cena_id,lekar_id,sala_klinika_id,sala_broj_sale,tip_id,karton_id,dijagnoza_id) values (5,'2020-09-10 19:00:00',50,1,3,2,1,2,1,1);
+insert into pregled(id,datum,trajanje,cena_id,lekar_id,sala_klinika_id,sala_broj_sale,tip_id,karton_id,dijagnoza_id) values (5,'2020-09-10 19:00:00',50,1,6,2,1,2,1,1);

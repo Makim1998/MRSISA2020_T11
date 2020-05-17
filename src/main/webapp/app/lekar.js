@@ -2,7 +2,7 @@
 //const Pregled = { template : '<pregled></pregled>' }
 const RadniKalendar = { template : '<radniKalendar></radniKalendar>' }
 //const GodisnjiL = { template : '<godisnjiL></godisnjiL>' }
-const Zakazivanje = { template : '<zakazivanje></zakazivanje>' }
+//const Zakazivanje = { template : '<zakazivanje></zakazivanje>' }
 //const ProfilL = { template : '<profilL></profilL>' }
 
 Vue.component('lekar',{
@@ -33,7 +33,7 @@ Vue.component('lekar',{
 	      	<a href = "#zakazaniPregledi" v-on:click = "component = 'zakazaniPregledi'" >Pregled</a>	      	
 			<a href = "#radniKalendar" v-on:click = "component = 'radniKalendar'" >Radni  kalendar</a>
 	      	<a href = "#godisnjiSlanje" v-on:click = "component = 'godisnjiSlanje'" >Godisnji odmor</a>
-	      	<a href = "#zakazivanje" v-on:click = "component = 'zakazivanje'" >Zakazivanje</a>
+	      	<a href = "#zakazivanjeLekar" v-on:click = "component = 'zakazivanjeLekar'" >Zakazivanje</a>
 			<a href = "#lekarProfil" v-on:click = "component = 'lekarProfil'" >Profil</a>
 			<div class="align-self-center mx-auto"> 
                 <button id = "odjavi" class="btn btn-primary btn-sm" v-on:click="odjava()">Odjavi se</button>
@@ -63,7 +63,7 @@ Vue.component('lekar',{
 		'radniKalendar': RadniKalendar,
 		//'godisnjiL': GodisnjiL,
 		//'pregled': Pregled,
-		'zakazivanje': Zakazivanje
+		//'zakazivanje': Zakazivanje
 		//'profilL': ProfilL
 	},
 	

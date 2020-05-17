@@ -272,6 +272,12 @@ public class LoginController {
 			KlinikaDTO klinikaDTO=new KlinikaDTO(klinika);
 			return new ResponseEntity<KlinikaDTO>(klinikaDTO, HttpStatus.OK);
 		}
+		if(logedIn.getUloga()==Uloga.LEKAR){
+			Lekar ak=lekarService.findByEmail(logedIn.getEmail());
+			Klinika klinika=ak.getKlinika();
+			KlinikaDTO klinikaDTO=new KlinikaDTO(klinika);
+			return new ResponseEntity<KlinikaDTO>(klinikaDTO, HttpStatus.OK);
+		}
 		return new ResponseEntity<>(HttpStatus.NOT_FOUND);
 	}
 

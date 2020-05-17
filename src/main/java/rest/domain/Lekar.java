@@ -15,6 +15,7 @@ import javax.persistence.ElementCollection;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
 import javax.persistence.JoinColumn;
+import javax.persistence.ManyToMany;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
@@ -31,8 +32,11 @@ public class Lekar extends User{
 	@OneToMany(mappedBy="lekar",fetch = FetchType.LAZY, cascade = CascadeType.ALL)
 	@JsonIgnore
 	private Set<Pregled> pregledi=new HashSet<Pregled>();
-
 	
+	@ManyToMany(mappedBy="lekari",fetch = FetchType.LAZY, cascade = CascadeType.ALL)
+	@JsonIgnore
+	private Set<Operacija> operacije=new HashSet<Operacija>();
+
 	@OneToMany(mappedBy="medOsoblje", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
 	private Set<GodisnjiOdmor> godisnji= new HashSet<GodisnjiOdmor>();
 	
@@ -92,6 +96,12 @@ public class Lekar extends User{
 		this.setRadnoVremeOd(df.parse(lekarDTO.getRadnoVremeOd()));
 	}
 
+	public Set<Operacija> getOperacije() {
+		return operacije;
+	}
+	public void setOperacije(Set<Operacija> operacije) {
+		this.operacije = operacije;
+	}
 	public Set<Pregled> getPregledi() {
 		return pregledi;
 	}

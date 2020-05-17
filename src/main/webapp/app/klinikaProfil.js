@@ -68,12 +68,14 @@ Vue.component("klinikaProfil", {
 		    	var str2=lokacija;
 		    	var str3="&gen=9&apiKey=aXyfkX0kZp1Zd6gsXK6qCOrSfozCSa7Euf7uHOHmmPc";
 		    	var veb=str1.concat(str2,str3);
+		    	
 		    	ymaps.ready(function(){
 					axios
 				    .get(veb)
 				    .then((response) => {
 				    	var latitude=response.data.Response.View[0].Result[0].Location.DisplayPosition.Latitude;
 				    	var longitude=response.data.Response.View[0].Result[0].Location.DisplayPosition.Longitude;
+				    	document.getElementById('map').innerHTML="";
 				    	this.moscowMap = new ymaps.Map('map', {
 				    		center:[latitude,longitude],
 						    zoom: 13
@@ -120,7 +122,7 @@ Vue.component("klinikaProfil", {
 			    	var longitude=response.data.Response.View[0].Result[0].Location.DisplayPosition.Longitude;
 			    	this.moscowMap = new ymaps.Map('map', {
 			    		center:[latitude,longitude],
-					    zoom: 15
+					    zoom: 13
 			    	});
 			    	placemark = new ymaps.Placemark(this.moscowMap.getCenter());
 			    	this.moscowMap.geoObjects.add(placemark);
