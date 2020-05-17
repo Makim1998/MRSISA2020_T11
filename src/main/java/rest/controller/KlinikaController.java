@@ -12,7 +12,9 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -79,6 +81,21 @@ public class KlinikaController {
 		System.out.println("Kreirana je nova klinika");
 		klinika = service.save(klinika);
 		System.out.println("Dodata je nova klinika");
+		return new ResponseEntity<>(HttpStatus.OK);
+	}
+	
+	@DeleteMapping(value="/{id}")
+	public ResponseEntity<Void> obrisiKlinika(@PathVariable Integer id){
+		Klinika klinika = service.findOne(id);
+		if (klinika.getCenovnik() != null)
+			return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
+		if (klinika.getAdministrator() != null)
+			return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
+		if (klinika.getMedicinskeSestre().size() > 0)
+			return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
+		if (klinika.getSale().size() > 0)
+			return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
+		service.remove(id);
 		return new ResponseEntity<>(HttpStatus.OK);
 	}
 	
