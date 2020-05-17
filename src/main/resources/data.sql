@@ -27,8 +27,8 @@ insert into klinicki_centar (id,naziv) values (1,'Klinicki centar Novi Sad');
 insert into user (id,ime,prezime,email,password,uloga,broj_osiguranika,prvi_put) values (1,'Ivan','Ivanovic','AdminKC1','adminkc1',4,2322432322432,false);
 insert into administrator_klinickog_centra (id,kc) values (1,1);
 
-insert into klinika (id,adresa,naziv,opis,klinicki_centar_id) values (1,'Novi Sad','Klinika Centar','Nema opisa',1);
-insert into klinika (id,adresa,naziv,opis,klinicki_centar_id) values (2,'Liman','Klinika Liman','Nema opisa',1);
+insert into klinika (id,adresa,naziv,opis,klinicki_centar_id) values (1,'Novi Sad Bulevar cara Lazara 39','Klinika Centar','Nema opisa',1);
+insert into klinika (id,adresa,naziv,opis,klinicki_centar_id) values (2,'Novi Sad Bulevar cara Lazara 38','Klinika Liman','Nema opisa',1);
 
 insert into sala (klinika_id,broj_sale,naziv) values (1,1,'Operaciona');
 insert into sala (klinika_id,broj_sale,naziv) values (1,2,'Sala za pregled');

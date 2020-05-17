@@ -54,7 +54,7 @@ Vue.component('adminKProfil',{
     		<input type="password" class="form-control" v-model="ponovljena" placeholder="Ponovi lozinku">
 		</div>
 		<div class="form-group">
-    		<button type="button" class="btn btn-primary btn-block" v-on:click="izmeni()">Izmeni profil</button>
+    		<button id="submit" type="button" class="btn btn-primary btn-block" v-on:click="izmeni()">Izmeni profil</button>
 		</div>
     </form>
 </div>	
