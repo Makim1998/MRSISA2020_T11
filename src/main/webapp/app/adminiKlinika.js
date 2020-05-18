@@ -47,6 +47,7 @@ Vue.component("adminiKlinika", {
 		    <input type="text" class="psw" v-model="input.brojOsiguranika" placeholder="Broj osiguranika" required>
 		    <input type="text" class="psw" v-model="input.username" placeholder="Korisnicko ime" required>
 		    <input type="password" class="psw" v-model="input.password" placeholder="Lozinka" required>
+		    <label>ID klinike:</label>
 		    <select v-model="input.kc_id" required>
 		    	<option v-for="k in klinike">{{k}}</option>
 		    </select>

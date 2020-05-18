@@ -21,7 +21,7 @@ public class StavkaSifarnika {
 	@Column(nullable=false)
 	private Integer stavkaId;
 	
-	@Column
+	@Column(nullable=false)
 	private TipSifre tip;
 
 	public Integer getId() {
