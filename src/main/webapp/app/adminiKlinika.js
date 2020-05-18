@@ -6,6 +6,7 @@ Vue.component("adminiKlinika", {
 				prezime: "",
 				username: "",
                 password: "",
+                brojOsiguranika: "",
                 kc_id: null
                 	},
 			tipovi:[],
@@ -36,20 +37,18 @@ Vue.component("adminiKlinika", {
 				<tr>
 					<td></td>
 					<td><input class="btn btn-success" type='button' value='Dodajte novog administratora klinike'  v-on:click="otvori()"/></td>
-					<td></td>
-					<td><router-link :to="{ name: 'administratorKlinike' }" tag="button" float='right' class="btn btn-primary" >Nazad</router-link></td>
-					<td></td>
 				</tr>	
 		   </table>
 		   <div id="modaldark">
 		   <div class="form-popup" id="myForm">
-		    <h4>Novi lekar</h4>
+		    <h4>Novi administrator klinike</h4>
 		    <input type="text" class="psw" v-model="input.ime" placeholder="Ime" required>
 		    <input type="text" class="psw" v-model="input.prezime" placeholder="Prezime" required>
+		    <input type="text" class="psw" v-model="input.brojOsiguranika" placeholder="Broj osiguranika" required>
 		    <input type="text" class="psw" v-model="input.username" placeholder="Korisnicko ime" required>
-		    <input type="text" class="psw" v-model="input.password" placeholder="Lozinka" required>
-		    <select v-for="k in klinike" v-model="input.kc_id" required>
-		    	<option>{{k}}</option>
+		    <input type="password" class="psw" v-model="input.password" placeholder="Lozinka" required>
+		    <select v-model="input.kc_id" required>
+		    	<option v-for="k in klinike">{{k}}</option>
 		    </select>
 		    </br></br>
 		    <button type="button" class="btn maal leftbutton" v-on:click="dodaj()">Potvrdi</button>
@@ -75,7 +74,8 @@ Vue.component("adminiKlinika", {
 	        	axios
 	        	.post('rest/adminK/dodaj', {"id": null,
 	        		"ime":this.input.ime,"prezime":this.input.prezime,"password":this.input.password,
-	        		"username":this.input.username})
+	        		"username":this.input.username, "kc_id":this.input.kc_id
+	        		, "brojOsiguranika":this.input.brojOsiguranika})
 				.then(response => {	
 					axios
 				    .get('rest/adminK')

@@ -5,7 +5,8 @@ Vue.component("adminiKCentara", {
 				ime: "",
 				prezime: "",
 				username: "",
-                password: ""
+                password: "",
+                brojOsiguranika: ""
                 	},
 			tipovi:[],
 			id:null,
@@ -34,18 +35,16 @@ Vue.component("adminiKCentara", {
 				<tr>
 					<td></td>
 					<td><input class="btn btn-success" type='button' value='Dodajte novog admina klinickog centra'  v-on:click="otvori()"/></td>
-					<td></td>
-					<td><router-link :to="{ name: 'administratorCentra' }" tag="button" float='right' class="btn btn-primary" >Nazad</router-link></td>
-					<td></td>
 				</tr>	
 		   </table>
 		   <div id="modaldark">
 		   <div class="form-popup" id="myForm">
-		    <h4>Novi lekar</h4>
+		    <h4>Novi administrator klinickog centra</h4>
 		    <input type="text" class="psw" v-model="input.ime" placeholder="Ime" required>
 		    <input type="text" class="psw" v-model="input.prezime" placeholder="Prezime" required>
+		    <input type="text" class="psw" v-model="input.brojOsiguranika" placeholder="Broj osiguranika" required>
 		    <input type="text" class="psw" v-model="input.username" placeholder="Korisnicko ime" required>
-		    <input type="text" class="psw" v-model="input.password" placeholder="Lozinka" required>
+		    <input type="password" class="psw" v-model="input.password" placeholder="Lozinka" required>
 		    </br></br>
 		    <button type="button" class="btn maal leftbutton" v-on:click="dodaj()">Potvrdi</button>
 		    <button type="button" class="btn zaal rightbutton" v-on:click="otkazi()">Otkazi</button>
@@ -70,7 +69,7 @@ Vue.component("adminiKCentara", {
 	        	axios
 	        	.post('rest/adminKC/dodaj', {"id": null,
 	        		"ime":this.input.ime,"prezime":this.input.prezime,"password":this.input.password,
-	        		"username":this.input.username})
+	        		"username":this.input.username, "brojOsiguranika":this.input.brojOsiguranika})
 				.then(response => {	
 					axios
 				    .get('rest/adminKC')

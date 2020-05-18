@@ -12,6 +12,7 @@ public class AdministratorKCentraDTO {
 	private String adresa;
 	private String grad;
 	private String drzava;
+	private String brojOsiguranika;
 	private Integer kc_id;
 	private Boolean prviPut;
 	
@@ -96,6 +97,13 @@ public class AdministratorKCentraDTO {
 		this.kc_id = kc_id;
 	}
 	
+	public String getBrojOsiguranika() {
+		return brojOsiguranika;
+	}
+	public void setBrojOsiguranika(String brojOsiguranika) {
+		this.brojOsiguranika = brojOsiguranika;
+	}
+	
 	public AdministratorKCentraDTO() {
 	}
 	
@@ -108,8 +116,9 @@ public class AdministratorKCentraDTO {
 		this.setAdresa(s.getAdresa());
 		this.setDrzava(s.getDrzava());
 		this.setGrad(s.getGrad());
-		this.setKc_id(s.getKlinickiCentar().getId());
+		this.setKc_id(1);
 		this.setPrviPut(s.getPrviPut());
+		this.setBrojOsiguranika(s.getBrojOsiguranika());
 	}
 
 }

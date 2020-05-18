@@ -21,6 +21,9 @@ public class KlinickiCentar {
 	@Column
 	private String naziv;
 	
+	@OneToMany(mappedBy="klinickiCentar",fetch = FetchType.LAZY, cascade = CascadeType.ALL)
+	private Set<AdministratorKlinickogCentra> admini = new HashSet<AdministratorKlinickogCentra>();
+	
 	public Integer getId() {
 		return id;
 	}
@@ -55,6 +58,14 @@ public class KlinickiCentar {
 	}
 
 	public KlinickiCentar() {
+	}
+
+	public Set<AdministratorKlinickogCentra> getAdmini() {
+		return admini;
+	}
+
+	public void setAdmini(Set<AdministratorKlinickogCentra> admini) {
+		this.admini = admini;
 	}
 	
 }
