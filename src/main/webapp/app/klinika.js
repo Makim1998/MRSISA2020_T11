@@ -8,7 +8,11 @@ Vue.component("klinika", {
             		},
 	    	klinike:[],
 	    	id:null,
-	    	izmena:""
+	    	izmena:{
+	    		naziv: "",
+                opis: "",
+                adresa: ""
+	    	}
 	    }
 	},
 	template: ` 
@@ -24,12 +28,16 @@ Vue.component("klinika", {
 		   <th>Naziv</th>
 		   <th>Adresa</th>
 		   <th>Opis</th>
+		   <th>Izmena</th>
+		   <th>Brisanje</th>
 		</tr>
 		<tr v-for="k in klinike" >
 			<td class="myclass">{{k.id}}</td>
 			<td class="myclass">{{k.naziv}}</td>
 			<td class="myclass">{{k.adresa}}</td>
 			<td class="myclass">{{k.opis}}</td>
+			<td><input class="btn btn-warning btn-lg" value='Izmeni' type='button' v-on:click="izmeni(k.id,k.naziv,k.adresa,k.opis)"/></td>
+			<td><input class="btn btn-danger btn-lg" value='Obrisi' type='button' v-on:click="obrisi(k.id)"/></td>
 		</tr>
 		<tr>
 			<td></td>
@@ -39,6 +47,19 @@ Vue.component("klinika", {
 			<td><input class="btn btn-success" type='button' value='Dodaj'  v-on:click="dodaj()"/></td>
 		</tr>	
    </table>
+   
+   <div id="modaldark">
+		<div class="form-popup" id="myForm">
+			<h6>ID:{{this.id}}</h6>
+			<input type="text" class="psw" v-model="izmena.naziv">
+			<input type="text" class="psw" v-model="izmena.adresa">
+			<input type="text" class="psw" v-model="izmena.opis">
+			</br></br>
+			<button type="button" class="btn maal leftbutton" v-on:click="potvrda()">Potvrdi</button>
+			<button type="button" class="btn zaal rightbutton" v-on:click="otkazi()">Otkazi</button>
+		</div>
+	</div>
+			
 </div>
 </div>		  
 `
@@ -65,6 +86,40 @@ Vue.component("klinika", {
         		return false;
         	else
         		return true;
+        },
+        obrisi(id){
+        	axios
+        	.delete('rest/klinika/'+id)
+        	.then(response => {
+				axios
+					.get('rest/klinika')
+					.then(response => (this.klinike=response.data))
+			});
+        },
+        izmeni(id,naziv,adresa,opis){
+        	this.id = id;
+        	this.izmena.naziv = naziv;
+        	this.izmena.adresa = adresa;
+        	this.izmena.opis = opis;
+        	document.getElementById("myForm").style.display = "block";
+			document.getElementById("modaldark").style.display = "block";
+			document.getElementById("modaldark").style.opacity="1";
+        },
+        potvrda(){
+        	axios
+        	.put("rest/klinika/izmeni", {"id":this.id,
+        		"naziv":this.izmena.naziv, "adresa":this.izmena.adresa, "opis":this.izmena.opis})
+        	.then(response => {
+    			axios
+    				.get('rest/klinika')
+    				.then(response => (this.klinike=response.data))
+    		});
+        	this.otkazi();
+        },
+        otkazi(){
+        	document.getElementById("myForm").style.display = "none";
+			document.getElementById("modaldark").style.display = "none";
+			document.getElementById("modaldark").style.opacity="0";
         }
 	},
 	mounted(){
