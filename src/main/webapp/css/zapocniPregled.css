@@ -1,0 +1,44 @@
+@charset "ISO-8859-1";
+#zapocniP{
+	display:none;
+	margin:0 5%;
+	position:relative;
+		margin-top:10px;
+		width: 90%;
+		height:90vh;
+		background-color:#f1f1f1;
+		overflow:hidden;
+		padding:10px;
+		border-radius:10px;
+}
+
+#poruka{
+	margin:0 auto;
+		margin-top:100px;
+		width: 30%;
+		background-color:#f1f1f1;
+		overflow:hidden;
+		padding:10px;
+		border-radius:10px;
+}
+
+#myForm2{
+	display:none;
+}
+#myForm3{
+	display:none;
+}
+#myForm4{
+	display:none;
+}
+#btns{
+	position:absolute;
+	bottom:0;
+	right:0;
+}
+
+#btns input{
+	float:right;
+	margin:0 5px;
+	margin-bottom:5px;
+}

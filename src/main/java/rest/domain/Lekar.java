@@ -38,6 +38,7 @@ public class Lekar extends User{
 	private Set<Operacija> operacije=new HashSet<Operacija>();
 
 	@OneToMany(mappedBy="medOsoblje", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
+	@JsonIgnore
 	private Set<GodisnjiOdmor> godisnji= new HashSet<GodisnjiOdmor>();
 	
 	@ManyToOne

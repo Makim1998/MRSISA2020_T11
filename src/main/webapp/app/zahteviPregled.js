@@ -141,14 +141,12 @@ Vue.component("zahteviPregled", {
 `
 	, 
 	methods : {
-		rezervisi(a,ou){
+		rezervisi(a,qpr){
 			this.saljemPregled.sala=a;
           	/*var str1=ou.substring(0,10);
         	var str2=" ";
         	var str3=ou.substring(11,16);
         	var datumicc=str1.concat(str2,str3);*/
-        	var qpr=new Date(ou);
-        	alert(qpr);
         	this.saljemPregled.datum=qpr;
         	axios
         	.put('rest/Pregled/potvrdi',(this.saljemPregled))
@@ -156,6 +154,8 @@ Vue.component("zahteviPregled", {
             	axios
     		    .get('rest/Pregled/zahtevi/'+this.admin_id,this.admin_id)
     		    .then(response => (this.pregledi=response.data));
+            	alert("Uspesno ste potvrdili pregled.");
+            	this.otkaziZakazivanje();
             });
 		},
 		prekidac(a){

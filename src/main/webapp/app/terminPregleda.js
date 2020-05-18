@@ -162,7 +162,9 @@ Vue.component("terminPregleda", {
 		});
 		axios
 	    .get('rest/Pregled/slobodni')
-	    .then(response => (this.pregledi=response.data));
+	    .then(response => {
+	    	this.pregledi=response.data;
+	    });
 		axios
 	    .get('rest/lekari')
 	    .then(response => (this.lekari=response.data));

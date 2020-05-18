@@ -81,14 +81,18 @@ public class PacijentController {
 			System.out.println("flamingosi1");
 			boolean postoji=false;
 			Pacijent p=patientService.findOneByKarton(op.getKarton());
-			Integer idk=op.getKarton().getId();
-			for (int i: kartoni) {
-				if(idk==i) {
-					postoji=true;
+			try {
+				Integer idk=op.getKarton().getId();
+				for (int i: kartoni) {
+					if(idk==i) {
+						postoji=true;
+					}
 				}
-			}
-			if(postoji==false) {
-				slterminiDTO.add(new PacijentDTO(p));
+				if(postoji==false) {
+					slterminiDTO.add(new PacijentDTO(p));
+				}
+			} catch (Exception e) {
+				System.out.println("flamingos");
 			}
 		}
 		System.out.println("flamingosi2");

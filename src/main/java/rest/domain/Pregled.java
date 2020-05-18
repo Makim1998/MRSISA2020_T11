@@ -106,7 +106,7 @@ public class Pregled {
 	public Pregled() {
 		super();
 	}
-	public Pregled(PregledDTO preg,StavkaCenovnika st,Lekar l,Sala s, TipPregleda t) {
+	public Pregled(PregledDTO preg,StavkaCenovnika st,Lekar l,Sala s, TipPregleda t, Karton k) {
 		this.datum=preg.getDatum();
 		this.trajanje=preg.getTrajanje();
 		this.cena=st;
@@ -116,6 +116,9 @@ public class Pregled {
 		}else {
 			this.sala=s;
 			this.tip=t;
+		}
+		if (k!=null) {
+			this.karton=k;
 		}
 	}
 }

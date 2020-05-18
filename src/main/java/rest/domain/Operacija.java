@@ -94,12 +94,17 @@ public class Operacija {
 	public Operacija() {
 		super();
 	}
-	public Operacija(OperacijaDTO oper,StavkaCenovnika st,Sala s, TipPregleda t) {
+	public Operacija(OperacijaDTO oper,StavkaCenovnika st,Sala s, HashSet<Lekar> lekari, Karton k) {
 		this.datum=oper.getDatum();
 		this.trajanje=oper.getTrajanje();
 		this.cena=st;
-		this.lekari=null;
-		this.sala=s;
+		this.lekari=lekari;
+		if(s!=null) {
+			this.sala=s;
+		}
+		if(k!=null) {
+			this.karton=k;
+		}
 	}
 }
 

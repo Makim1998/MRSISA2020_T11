@@ -54,13 +54,13 @@
 .buttons button{
 	float:left;
 	margin-left:5px;
-	background-color:#28A745;
-	color:white;
+	/*background-color:#28A745;
+	color:white;*/
 }
 
-.buttons button:nth-child(3){
+/*.buttons button:nth-child(3){
 	background-color:#D73141;
-}
+}*/
 
 #zkarton{
 	display:none;

@@ -20,6 +20,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import rest.domain.AdministratorKlinike;
+import rest.domain.Karton;
 import rest.domain.Klinika;
 import rest.domain.Lekar;
 import rest.domain.Pregled;
@@ -27,10 +28,12 @@ import rest.domain.Sala;
 import rest.domain.StavkaCenovnika;
 import rest.domain.TipPregleda;
 import rest.domain.User;
+import rest.dto.KartonDTO;
 import rest.dto.LekarDTO;
 import rest.dto.PregledDTO;
 import rest.pk.SalaPK;
 import rest.service.AdminKService;
+import rest.service.KartonService;
 import rest.service.KlinikaService;
 import rest.service.LekariService;
 import rest.service.PregledService;
@@ -55,6 +58,8 @@ public class PregledController {
 	private TipPregledaService tipPregledaService;
 	@Autowired
 	private StavkaCenovnikaService stavkaCenovnikaService;
+	@Autowired
+	private KartonService kartonService;
 
 	@GetMapping
 	(value="/slobodni")
@@ -201,7 +206,15 @@ public class PregledController {
 		} catch (Exception e) {
 			System.out.println("nema sale");
 		}
-		Pregled pregled=new Pregled(pregledDTO,st,l,s,t);
+		Karton k= null;
+		try {
+			KartonDTO kd=pregledDTO.getKarton();
+			System.out.println(kd.getId()+" to je karton id");
+			k=kartonService.findOne(kd.getId());
+		}catch (Exception e) {
+			System.out.println("nema kartona");
+		}
+		Pregled pregled=new Pregled(pregledDTO,st,l,s,t,k);
 		pregledService.save(pregled);
 		return new ResponseEntity<>(HttpStatus.OK);
 	}

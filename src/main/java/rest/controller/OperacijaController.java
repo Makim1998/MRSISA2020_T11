@@ -3,6 +3,7 @@ package rest.controller;
 import java.text.ParseException;
 import java.util.ArrayList;
 import java.util.Collections;
+import java.util.HashSet;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -20,17 +21,22 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import rest.domain.AdministratorKlinike;
+import rest.domain.Karton;
 import rest.domain.Klinika;
 import rest.domain.Lekar;
+import rest.domain.Operacija;
 import rest.domain.Pregled;
 import rest.domain.Sala;
 import rest.domain.StavkaCenovnika;
 import rest.domain.TipPregleda;
 import rest.domain.User;
+import rest.dto.KartonDTO;
 import rest.dto.LekarDTO;
+import rest.dto.OperacijaDTO;
 import rest.dto.PregledDTO;
 import rest.pk.SalaPK;
 import rest.service.AdminKService;
+import rest.service.KartonService;
 import rest.service.KlinikaService;
 import rest.service.LekariService;
 import rest.service.OperacijaService;
@@ -52,6 +58,8 @@ public class OperacijaController {
 	private AdminKService akService;
 	@Autowired
 	private SalaService salaService;
+	@Autowired
+	private KartonService kartonService;
 	@Autowired
 	private TipPregledaService tipPregledaService;
 	@Autowired
@@ -188,17 +196,35 @@ public class OperacijaController {
 		} else {
 			return new ResponseEntity<>(HttpStatus.NOT_FOUND);
 		}
-	}
-	@PostMapping(value="/dodaj",consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
-	public ResponseEntity<User> login(@RequestBody PregledDTO pregledDTO){
-		StavkaCenovnika st=stavkaCenovnikaService.findOne(pregledDTO.getCena().getId());
-		Lekar l=lekarService.findOne(pregledDTO.getLekar().getId());
-		SalaPK pk=new SalaPK(pregledDTO.getSala().getBrojSale(),pregledDTO.getSala().getKlinika());
-		Sala s=salaService.findOne(pk);
-		TipPregleda t=tipPregledaService.findOne(pregledDTO.getTip().getId());
-		Pregled pregled=new Pregled(pregledDTO,st,l,s,t);
-		pregledService.save(pregled);
-		return new ResponseEntity<>(HttpStatus.OK);
 	}*/
+	@PostMapping(value="/dodaj",consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
+	public ResponseEntity<User> dodajOperaciju(@RequestBody OperacijaDTO operacijaDTO){
+		StavkaCenovnika st=stavkaCenovnikaService.findOne(operacijaDTO.getCena().getId());
+		//ArrayList<Lekari>
+		HashSet<Lekar> lekari = new HashSet<Lekar>();
+		for (LekarDTO le : operacijaDTO.getLekari()) {
+			Lekar l=lekarService.findOne(le.getId());
+			lekari.add(l);
+		}
+		Sala s=null;
+		TipPregleda t=null;
+		try {
+			SalaPK pk=new SalaPK(operacijaDTO.getSala().getBrojSale(),operacijaDTO.getSala().getKlinika());
+			//t=tipPregledaService.findOne(operacijaDTO.getTip().getId());
+			s=salaService.findOne(pk);
+		} catch (Exception e) {
+			System.out.println("nema sale");
+		}
+		Karton k= null;
+		try {
+			KartonDTO kd=operacijaDTO.getKarton();
+			k=kartonService.findOne(kd.getId());
+		}catch (Exception e) {
+			System.out.println("nema kartona");
+		}
+		Operacija pregled=new Operacija(operacijaDTO,st,s,lekari,k);
+		operacijaService.save(pregled);
+		return new ResponseEntity<>(HttpStatus.OK);
+	}
 }
 

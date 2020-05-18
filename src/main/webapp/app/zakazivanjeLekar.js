@@ -1,13 +1,15 @@
 Vue.component("zakazivanjeLekar", {
 	data: function () {
 	    return {
-	    	 input: {	    		 
+	    	 input: {	  
+	    		 karton:null,
                  datum: null,
                  trajanje:null,
                  tipPregleda:"",
                  sala:"",
                  lekar:"",
-                 cena:""
+                 cena:"",
+                 lekari:[]
              		},
 	    	tipovi:[],
 	    	pacijent:[],
@@ -49,7 +51,7 @@ Vue.component("zakazivanjeLekar", {
 			<td class="myclass">{{tp.ime}}</td>
 			<td class="myclass">{{tp.prezime}}</td>
 			<td class="myclass">{{tp.brojOsiguranika}}</td>
-			<td colspan="2" style="text-align:center;"><input class="btn btn-success" style="margin-top:10px;" type='button' value='Zakazite'  v-on:click="zakazi()"/></td>
+			<td colspan="2" style="text-align:center;"><input class="btn btn-success" style="margin-top:10px;" type='button' value='Zakazite'  v-on:click="zakazi(tp.karton)"/></td>
 		</tr>
    </table>
    
@@ -78,7 +80,8 @@ Vue.component("zakazivanjeLekar", {
 `
 	, 
 	methods : {
-		zakazi(){
+		zakazi(a){
+			this.input.karton=a;
 			document.getElementById("myForm").style.display = "block";
 			document.getElementById("modaldark").style.display = "block";
 			document.getElementById("modaldark").style.opacity="1";
@@ -118,12 +121,15 @@ Vue.component("zakazivanjeLekar", {
 			document.getElementById("modaldark").style.opacity="0";
         },
 		zakaziOperaciju() {
+        	this.input.lekari=[];
+        	this.input.lekari.push(this.input.lekar);
         	axios
-        	.post('rest/Operacija/zakazi', {"id":null,"datum":this.input.datum,
-        		"trajanje":this.input.trajanje,"tip":this.input.tipPregleda,"cena":this.input.cena,
-        		"sala":this.input.sala,"lekar":this.input.lekar,})
+        	.post('rest/Operacija/dodaj', {"id":null,"datum":this.input.datum,
+        		"trajanje":this.input.trajanje,"cena":this.input.cena,"karton":this.input.karton,
+        		"sala":null,"lekari":this.input.lekari,})
             .then(response =>{
             	alert("Uspesno ste zakazali operaciju");
+            	this.otkazi();
             })
 			.catch(error => {
 				alert("Nevalidan unos. Pokusajte ponovo.");
@@ -131,12 +137,12 @@ Vue.component("zakazivanjeLekar", {
         },
 		zakaziPregled() {
         	axios
-        	.post('rest/Pregled/dodaj', {"id":null,"datum":this.input.datum,
+        	.post('rest/Pregled/dodaj', {"id":null,"datum":this.input.datum,"karton":this.input.karton,
         		"trajanje":this.input.trajanje,"tip":null,"cena":this.input.cena,
         		"sala":null,"lekar":this.input.lekar,})
             .then(response =>{
             	alert("Uspesno ste zakazali pregled");
-            	this.otkazi()
+            	this.otkazi();
             })
 			.catch(error => {
 				alert("Nevalidan unos. Pokusajte ponovo.");
