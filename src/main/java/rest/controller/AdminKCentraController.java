@@ -27,7 +27,6 @@ public class AdminKCentraController {
 
 	@GetMapping
 	public ResponseEntity<List<AdministratorKCentraDTO>> getAdmins(){
-		System.out.println("Problem je u naabavljanju admina");
 		List<AdministratorKCentraDTO> ret = new ArrayList<AdministratorKCentraDTO>();
 		List<AdministratorKlinickogCentra> admins = service.findAll();
 		for (AdministratorKlinickogCentra a: admins) {
