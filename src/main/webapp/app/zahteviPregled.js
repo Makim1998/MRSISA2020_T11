@@ -31,22 +31,26 @@ Vue.component("zahteviPregled", {
 	    		stavke:[],
 	    		klinika_id:null,
 	    	},
+	    	preglediOperacije:{
+	    		datum:null,
+	    		trajanje:null,
+	    	},
+	    	sviPreglediOperacije:[],
 	    	id:null,
 	    	trenutniKarton:[],
 	    	datumic:"",
 	    	slobodna:[],
 	    	slobodna1:[],
-	    	saljemPregled:null
+	    	saljemPregled:null,
+	    	sortirano:[],
 	    }
 	},
 	template: ` 
 <div class="oneoption">
 <div>
-	<div class="jumbotron">
-	  <h2>Zahtevi lekara za pregled</h2>
-	  <p>Dodeljivanje termina i sale.</p> 
-	</div>
-   <table align="left" class="table">
+<h2 class="text-center">Zahtevi lekara za pregled</h2>
+<br>
+   <table align="left" class="table klasicna-tabela">
 		<tr>
 		   <th>Datum i vreme pregleda</th>
 		   <th>Trajanje</th>
@@ -60,8 +64,8 @@ Vue.component("zahteviPregled", {
 			<td class="myclass">{{tp.trajanje}} minuta</td>
 			<td class="myclass">{{tp.tip.naziv}}</td>
 			<td class="myclass">{{tp.lekar.username}}</td>
-			<td><input class="btn btn-success" type='button' value='Detalji'  v-on:click="karton(tp.karton)"/></td>
-			<td><input class="btn btn-success" value='Zakazite' type='button' v-on:click="zakazite(tp.datum,tp.trajanje,tp,0)"/></td>
+			<td><input class="btn btn-primary" type='button' value='Detalji'  v-on:click="karton(tp.karton)"/></td>
+			<td><input class="btn btn-primary" value='Zakazite' type='button' v-on:click="zakazite(tp.datum,tp.trajanje,tp,0)"/></td>
 		</tr>	
    </table>
    <div id="modaldark">
@@ -156,7 +160,10 @@ Vue.component("zahteviPregled", {
     		    .then(response => (this.pregledi=response.data));
             	alert("Uspesno ste potvrdili pregled.");
             	this.otkaziZakazivanje();
-            });
+            })
+    	    .catch(error => {
+    			alert("Svi lekari su zauzeti.");
+    		});
 		},
 		prekidac(a){
 			var el=document.getElementById(a);
@@ -231,18 +238,33 @@ Vue.component("zahteviPregled", {
         		    if(this.sale[fi].pregledi.length==0){
         		    	this.slobodna1.push(rez.toISOString());
         			}
-        			for (ri = 0; ri < this.sale[fi].pregledi.length; ri++) {
+        		    sviPreglediOperacije=[];
+        		    for (ri = 0; ri < this.sale[fi].pregledi.length; ri++) {
+        		    	this.preglediOperacije.datum=new Date(this.sale[fi].pregledi[ri].datum);
+        		    	this.preglediOperacije.trajanje=this.sale[fi].pregledi[ri].trajanje;
+        		    	this.sviPreglediOperacije.push(preglediOperacije);
+        		    }
+        		    for (ri = 0; ri < this.sale[fi].operacije.length; ri++) {
+        		    	this.preglediOperacije.datum=new Date(this.sale[fi].operacije[ri].datum);
+        		    	this.preglediOperacije.trajanje=this.sale[fi].operacije[ri].trajanje;
+        		    	this.sviPreglediOperacije.push(preglediOperacije);
+        		    }
+        		    this.sviPreglediOperacije.sort(function(a,b){
+        		    	//var dateA = new Date(a.datum), dateB = new Date(b.datum);
+        		        return a.datum - b.datum;
+        		    });
+        			for (ri = 0; ri < this.sviPreglediOperacije.length; ri++) {
 
-        				var trenutniPregled=new Date(this.sale[fi].pregledi[ri].datum);
-        				var trenutniPregledKraj = new Date(trenutniPregled.getTime() + this.sale[fi].pregledi[ri].trajanje*60000);
+        				var trenutniPregled=this.sviPreglediOperacije[ri].datum;
+        				var trenutniPregledKraj = new Date(trenutniPregled.getTime() + this.sviPreglediOperacije[ri].trajanje*60000);
         				var prijePregled;
         				if(ri>0){
-        					prijePregled=new Date(this.sale[fi].pregledi[ri-1].datum);
-        					var prijePregledKraj = new Date(prijePregled.getTime() + this.sale[fi].pregledi[ri-1].trajanje*60000);
+        					prijePregled=this.sviPreglediOperacije[ri-1].datum;
+        					var prijePregledKraj = new Date(prijePregled.getTime() + this.sviPreglediOperacije[ri-1].trajanje*60000);
         				}
         				if(ri==0 && rezKraj<trenutniPregled){
         					slobodnaa="1";
-        				}else if(ri==(this.sale[fi].pregledi.length-1) && rez>trenutniPregled){
+        				}else if(ri==(this.sviPreglediOperacije.length-1) && rez>trenutniPregled){
         					slobodnaa="2";
         				}else if(prijePregledKraj<rez && trenutniPregled>rezKraj){
         					slobodnaa="3";
@@ -250,7 +272,7 @@ Vue.component("zahteviPregled", {
         					noviPocetak=new Date(trenutniPregled.getTime() - traje*60000);
         					if(ri==0 && noviPocetak.getHours()>=10){
         						slobodnaa="4";
-        					}else if(ri==(this.sale[fi].pregledi.length-1)){
+        					}else if(ri==(this.sviPreglediOperacije[ri].length-1)){
         						var noviKraj=new Date(trenutniPregledKraj.getTime() + traje*60000);
         						if(noviKraj.getHours()<23){
         							noviPocetak=trenutniPregledKraj;

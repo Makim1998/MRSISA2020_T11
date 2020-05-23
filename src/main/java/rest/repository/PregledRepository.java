@@ -30,4 +30,6 @@ public interface PregledRepository extends JpaRepository<Pregled,Integer> {
 
 	List<Pregled> findByDijagnozaIsNotNull();
 
+	List<Pregled> findByKartonIsNotNullAndDijagnozaIsNullAndSalaIsNotNullAndLekar(Lekar lekar);
+
 }

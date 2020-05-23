@@ -12,34 +12,34 @@ Vue.component("klinikaProfil", {
 	},
 	template: ` 
 <div class="oneoption">
-<div id = "login" class="sidenavlogin">
-    <form>
-		<h2 class="text-center">Profil klinike</h2>       
-		<div class="form-group">
-			<label for="username">ID Klinike: </label>
-   			<input type="text" id = "username" class="form-control" v-model="id"  disabled>
+<div class="sidenavlogin">
+    <form class="fProfil">
+		<h2 class="text-center">Profil klinike</h2>   
+		<div id="flijevo">    
+			<div class="form-group">
+				<label for="username">ID Klinike: </label>
+	   			<input type="text" id = "username" class="form-control" v-model="id"  disabled>
+			</div>
+			<div class="form-group">
+				<label for="ime">Naziv: </label>
+	   			<input type="text" id = "ime" class="form-control" v-model="naziv" placeholder="Naziv">
+	    	</div>
+	    	<div class="form-group">
+	    		<label for="opis">Opis: </label>
+	   			<textarea id = "opis" class="form-control" v-model="opis" placeholder="Opis"></textarea>
+			</div>
 		</div>
-		<div class="form-group">
-			<label for="ime">Naziv: </label>
-   			<input type="text" id = "ime" class="form-control" v-model="naziv" placeholder="Naziv">
-    	</div>
-    	<div class="form-group">
-    		<label for="adresa">Adresa: </label>
-   			<input type="textbox" id = "adresa" class="form-control" v-model="adresa" placeholder="Adresa">
-		</div>
-		<div class="form-group">
-			<div id="map"></div>
-		</div>
-		<div class="form-group">
-    		<label for="opis">Opis: </label>
-   			<textarea id = "opis" class="form-control" v-model="opis" placeholder="Opis"></textarea>
-		</div>
-		<div class="form-group">
-			<label for="username">Prosecna ocena: </label>
-   			<input type="text" id = "username" class="form-control" v-model="prosecnaOcena"  disabled>
-		</div>
-		<div class="form-group">
-    		<button type="button" id="submit" class="btn btn-primary btn-block" v-on:click="izmeni()">Izmeni profil</button>
+		<div id="fdesno">
+	    	<div class="form-group">
+	    		<label for="adresa">Adresa: </label>
+	   			<input type="textbox" id = "adresa" class="form-control" v-model="adresa" placeholder="Adresa">
+			</div>
+			<div class="form-group">
+				<div id="map"></div>
+			</div>
+			<div class="form-group">
+	    		<button type="button" id="submit" class="btn btn-primary btn-block" v-on:click="izmeni()">Izmeni profil</button>
+			</div>
 		</div>
     </form>
 </div>	

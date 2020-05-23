@@ -28,18 +28,17 @@ Vue.component("zakazivanjeLekar", {
 	    }
 	},
 	template: ` 
-<div class="oneoption">
+<div class="oneoptionlekar">
 <div>
-	<div class="jumbotron" style="width:105%;">
-	  <h2>Zakazivanje pregleda i operacija</h2> 
-	</div>
-   <table align="left" class="table">
+	<h2 class="text-center">Zakazivanje pregleda i operacija</h2>
+<br>
+   <table align="left" class="table klasicna-tabela">
    		<tr>
 		   <th><input type="text" style="margin-left:10px;margin-bottom:10px;" class="fotrol" id="myInput1" placeholder="Ime"></th>
 		   <th><input type="text" style="margin-left:10px;margin-bottom:10px;" class="fotrol" id="myInput2" placeholder="Prezime"></th>
 		   <th><input type="text" style="margin-left:10px;margin-bottom:10px;" class="fotrol" id="myInput3" placeholder="Broj osiguranika"></th>
-		   <th><input class="btn btn-success"  type='button' value='Pretrazi'  v-on:click="fjaPretrage()"/></th>
-		   <th ><input class="btn btn-success"  type='button' value='Prikazi sve'  v-on:click="prikaziSve()"/></th>
+		   <th><input class="btn btn-primary"  type='button' value='Pretrazi'  v-on:click="fjaPretrage()"/></th>
+		   <th ><input class="btn btn-primary"  type='button' value='Prikazi sve'  v-on:click="prikaziSve()"/></th>
 		</tr>
 		<tr>
 		   <th>Ime</th>
@@ -51,11 +50,46 @@ Vue.component("zakazivanjeLekar", {
 			<td class="myclass">{{tp.ime}}</td>
 			<td class="myclass">{{tp.prezime}}</td>
 			<td class="myclass">{{tp.brojOsiguranika}}</td>
-			<td colspan="2" style="text-align:center;"><input class="btn btn-success" style="margin-top:10px;" type='button' value='Zakazite'  v-on:click="zakazi(tp.karton)"/></td>
+			<td colspan="2" style="text-align:center;"><input class="btn btn-primary" style="margin-top:10px;" type='button' value='Zakazite' data-toggle="modal" data-target="#novipregled" v-on:click="zakazi(tp.karton)"/></td>
 		</tr>
    </table>
-   
-    <div id="modaldark">
+      <!-- Modal -->
+<div class="modal fade" id="novipregled" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+  <div class="modal-dialog" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" >Novi pregled/operacija</h5>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body">
+		<form>
+			<div class="form-group">
+		      	<label for = "od">Datum: </label>
+				<input type="datetime-local" id="od" class="psw"  required v-model="input.datum">
+		    </div>
+		    <div class="form-group">
+				<label for="tra">Trajanje:</label>
+			    <input type="number" id="tra" class="psw" min="10" max="60" required v-model="input.trajanje">		    
+			</div>
+		    <div class="form-group">
+		      	<label for="ca">Cena:</label>
+					<select id="ca" v-model="input.cena">
+						<option v-for="ca in cenovnik.stavke">{{ca.usluga}}-{{ca.cena}}DIN-ID:{{ca.id}}</option>
+					</select>
+		    </div>
+		</form>
+      </div>
+      <div class="modal-footer">
+          <button type="button" class="btn btn-primary" v-on:click="zakaziPregled()">Pregled</button>
+		  <button type="button" class="btn btn-primary" v-on:click="zakaziOperaciju()">Operacija</button>
+          <button type="button" class="btn btn-secondary" data-dismiss="modal" v-on:click="otkazi2()">Otkazi</button>
+      </div>
+    </div>
+  </div>
+</div>
+    <!----div id="modaldark">
    <div class="form-popup" id="myForm">
     <h4>Novi termin</h4>
     <label for="od">Datum:<input type="datetime-local" id="od" class="psw"  placeholder="Datum" required v-model="input.datum"></label>
@@ -74,7 +108,7 @@ Vue.component("zakazivanjeLekar", {
     <button type="button" class="btn maal leftbutton" style="margin-left:5px" v-on:click="zakaziOperaciju()">Operacija</button>
     <button type="button" class="btn zaal rightbutton" v-on:click="otkazi()">Otkazi</button>
    </div>
-   </div>
+   </div---->
 </div>
 </div>		  
 `
@@ -82,9 +116,9 @@ Vue.component("zakazivanjeLekar", {
 	methods : {
 		zakazi(a){
 			this.input.karton=a;
-			document.getElementById("myForm").style.display = "block";
+			/*document.getElementById("myForm").style.display = "block";
 			document.getElementById("modaldark").style.display = "block";
-			document.getElementById("modaldark").style.opacity="1";
+			document.getElementById("modaldark").style.opacity="1";*/
 		},
 		prikaziPacijenta(pacijent,karton){
 			alert("rs");
@@ -129,8 +163,8 @@ Vue.component("zakazivanjeLekar", {
         		"sala":null,"lekari":this.input.lekari,})
             .then(response =>{
             	alert("Uspesno ste zakazali operaciju");
-            	this.otkazi();
-            })
+            	$('#novipregled').modal('hide');
+            	$('.modal-backdrop').remove();            })
 			.catch(error => {
 				alert("Nevalidan unos. Pokusajte ponovo.");
 			});
@@ -142,8 +176,8 @@ Vue.component("zakazivanjeLekar", {
         		"sala":null,"lekar":this.input.lekar,})
             .then(response =>{
             	alert("Uspesno ste zakazali pregled");
-            	this.otkazi();
-            })
+            	$('#novipregled').modal('hide');
+            	$('.modal-backdrop').remove();            })
 			.catch(error => {
 				alert("Nevalidan unos. Pokusajte ponovo.");
 			});

@@ -11,7 +11,7 @@ Vue.component('godisnjiSlanje',{
 	},
 	template: ` 
 <div class="oneoption">
-<div id = "login" class="godisnjidiv">
+<div class="godisnjidiv">
     <form>
 		<h2 class="text-center">Slanje zahteva za godisnji odmor/odsustvo</h2>       
 		<div class="form-group">

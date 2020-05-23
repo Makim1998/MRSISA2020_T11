@@ -19,13 +19,17 @@ Vue.component('cenovnik', {
 	template: ` 
 <div class="oneoption">
 <div>
-	<div class="jumbotron">
-	  <h2>Cenovnik klinike</h2>
-	  <p>Dodavanje, izmena i brisanje.</p> 
-	</div>
-	<input type="text" style="margin-left:10px;margin-bottom:10px;" class="fotrol" id="myInput" placeholder="Naziv usluge">
-	<input class="btn btn-success" type='button' value='Pretrazi'  v-on:click="fjaPretrage()"/>
-   <table align="left" class="table">
+<h2 class="text-center">Cenovnik klinike</h2>
+  <div class="form-row">
+    <div class="col-sm-2 my-1">
+     <input type="text" style="margin-left:10px;margin-top:5px;" class="fotrol" id="myInput" placeholder="Naziv usluge">
+    </div>
+    <div class="col-sm-2 my-1">
+      	<input class="btn btn-primary" type='button' value='Pretrazi'  v-on:click="fjaPretrage()"/>
+    </div>
+  </div>
+<br>
+   <table align="left" class="table klasicna-tabela">
 		<tr>
 		   <th>ID</th>
 		   <th>Cena</th>
@@ -37,18 +41,47 @@ Vue.component('cenovnik', {
 			<td class="myclass">{{tp.id}}</td>
 			<td class="myclass">{{tp.cena}}</td>
 			<td class="myclass">{{tp.usluga}}</td>
-			<td><input class="btn btn-warning btn-lg" value='Izmeni' type='button'  v-on:click="uredi(tp.id,tp.cena,tp.usluga)"/></td>
-			<td><input class="btn btn-danger btn-lg" value='Obrisi' type='button' v-on:click="obrisi(tp.id)"/></td>
+			<td><input class="btn btn-primary btn-lg" value='Izmeni' type='button'  data-toggle="modal" data-target="#izmeni" v-on:click="uredi(tp.id,tp.cena,tp.usluga)"/></td>
+			<td><input class="btn btn-primary btn-lg" value='Obrisi' type='button' v-on:click="obrisi(tp.id)"/></td>
 		</tr>
 		<tr>
 			<td></td>
 			<td><input type="number" min="500" max="100000" class="fotrol" v-model="input.cena" placeholder="Cena"></td>
 			<td><input type="text" class="fotrol" v-model="input.naziv" placeholder="Naziv usluge"></td>
-			<td><input class="btn btn-success" type='button' value='Dodavanje'  v-on:click="dodaj()"/></td>
-			<td><router-link :to="{ name: 'administratorKlinike' }" tag="button" float='right' class="btn btn-primary" >Nazad</router-link></td>
+			<td><input class="btn btn-primary" type='button' value='Dodaj stavku'  v-on:click="dodaj()"/></td>
 		</tr>	
    </table>
-   <div id="modaldark">
+  <!-- Modal -->
+<div class="modal fade" id="izmeni" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+  <div class="modal-dialog" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" >Izmena ID: {{this.id}}</h5>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body">
+		<form>
+			<div class="form-group">
+		      	<label for = "nazivusluge">Naziv usluge: </label>
+				<input id="nazivusluge" type="text" class="psw" v-model="naziv">
+		    </div>
+		    <div class="form-group">
+		      	<label for = "cena">Cena: </label>
+		        <input  id="cena" type="number" min="500" max="100000" class="psw" v-model="cena">
+		    </div>
+
+		</form>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" data-dismiss="modal">Zatvori</button>
+        <button type="button" class="btn btn-primary" data-dissmiss="modal" v-on:click="izmeni()">Potvrdi</button>
+      </div>
+    </div>
+  </div>
+</div>
+   <!---div id="modaldark">
    <div class="form-popup" id="myForm">
     <h6>Izmena ID:{{this.id}}</h6>
     <input type="text" class="psw" v-model="naziv" placeholder="Naziv usluge">
@@ -57,7 +90,7 @@ Vue.component('cenovnik', {
     <button type="button" class="btn maal leftbutton" v-on:click="izmeni()">Potvrdi</button>
     <button type="button" class="btn zaal rightbutton" v-on:click="otkazi()">Otkazi</button>
    </div>
-   </div>
+   </div--->
 </div>
 </div>		  
 `
@@ -67,9 +100,9 @@ Vue.component('cenovnik', {
 			this.id=id;
 			this.cena=cena;
 			this.naziv=naziv;
-			document.getElementById("myForm").style.display = "block";
+			/*document.getElementById("myForm").style.display = "block";
 			document.getElementById("modaldark").style.display = "block";
-			document.getElementById("modaldark").style.opacity="1";
+			document.getElementById("modaldark").style.opacity="1";*/
         },
 		izmeni() {      
         	axios
@@ -86,9 +119,11 @@ Vue.component('cenovnik', {
 					alert("Nevalidan unos. Pokusajte ponovo.");
 				});
 			});
-			document.getElementById("myForm").style.display = "none";
+        	$('#izmeni').modal('hide');
+        	$('.modal-backdrop').remove();
+			/*document.getElementById("myForm").style.display = "none";
 			document.getElementById("modaldark").style.display = "none";
-			document.getElementById("modaldark").style.opacity="0";
+			document.getElementById("modaldark").style.opacity="0";*/
 
         },
         fjaPretrage() {

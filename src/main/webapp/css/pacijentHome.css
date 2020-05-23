@@ -28,7 +28,12 @@
 
 .oneoption{
 	float:left;
-	width:calc(100% - 275px);
+	width:calc(100% - 300px);
+}
+
+.oneoptionlekar{
+	float:left;
+	width:calc(100% - 230px);
 }
 
 .sidenavlogin{

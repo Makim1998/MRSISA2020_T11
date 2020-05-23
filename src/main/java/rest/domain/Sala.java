@@ -35,6 +35,10 @@ public class Sala {
 	@OrderBy("datum ASC")
 	private List<Pregled> pregledi= new ArrayList<Pregled>();
 	
+	@OneToMany(mappedBy="sala", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
+	@OrderBy("datum ASC")
+	private List<Operacija> operacije= new ArrayList<Operacija>();
+	
 	public Sala() {
 		super();
 	}
@@ -45,6 +49,13 @@ public class Sala {
 	}
 	public Integer getBrojSale() {
 		return brojSale;
+	}
+	
+	public List<Operacija> getOperacije() {
+		return operacije;
+	}
+	public void setOperacije(List<Operacija> operacije) {
+		this.operacije = operacije;
 	}
 	public void setBrojSale(Integer brojSale) {
 		this.brojSale = brojSale;

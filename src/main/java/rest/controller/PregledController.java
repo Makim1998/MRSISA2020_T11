@@ -1,8 +1,10 @@
 package rest.controller;
 
 import java.text.ParseException;
+import java.time.Duration;
 import java.util.ArrayList;
 import java.util.Collections;
+import java.util.Date;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -23,6 +25,7 @@ import rest.domain.AdministratorKlinike;
 import rest.domain.Karton;
 import rest.domain.Klinika;
 import rest.domain.Lekar;
+import rest.domain.Operacija;
 import rest.domain.Pregled;
 import rest.domain.Sala;
 import rest.domain.StavkaCenovnika;
@@ -94,15 +97,16 @@ public class PregledController {
 	@GetMapping
 	(value = "/zakazani/{id}")
 	public ResponseEntity<List<PregledDTO>> getZakazaniTerminiPregleda(@PathVariable Integer id) throws ParseException {
-		System.out.println("kiko1");
+		System.out.println("kiko2928");
 		Lekar l=lekarService.findOne(id);
 		List<Pregled> sltermini = pregledService.findZakazane(l);
 		System.out.println(sltermini.isEmpty());
 		List<PregledDTO> slterminiDTO = new ArrayList<>();
 		for (Pregled s : sltermini) {
 			slterminiDTO.add(new PregledDTO(s));
+			System.out.println("sasa23343");
 		}
-		System.out.println("kiko3");
+		System.out.println("kiko332");
 		return new ResponseEntity<>(slterminiDTO, HttpStatus.OK);
 	}
 	@GetMapping
@@ -176,10 +180,96 @@ public class PregledController {
 		Sala s=new Sala(k,pregledDTO.getSala().getBrojSale(),pregledDTO.getSala().getNaziv());
 		p.setSala(s);
 		p.setDatum(pregledDTO.getDatum());
-		System.out.println("15. MAJ");
+		Date pPoslije=p.getDatum();
+		pPoslije.setTime(pPoslije.getTime()+ p.getTrajanje()*60000);
+		Lekar l=lekarService.findOne(pregledDTO.getLekar().getId());
+		boolean mozel=true;
+		for (Pregled pr : l.getPregledi()) {
+			Date prPoslije=pr.getDatum();
+			prPoslije.setTime(prPoslije.getTime()+ pr.getTrajanje()*60000);
+			if((p.getDatum().after(pr.getDatum()) && p.getDatum().before(prPoslije))|| (pPoslije.after(pr.getDatum()) && pPoslije.before(prPoslije))) {
+				mozel=false;
+				break;
+			}
+		}
+		if(mozel==true) {
+			for (Operacija pr : l.getOperacije()) {
+				Date prPoslije=pr.getDatum();
+				prPoslije.setTime(prPoslije.getTime()+ pr.getTrajanje()*60000);
+				if((p.getDatum().after(pr.getDatum()) && p.getDatum().before(prPoslije))|| (pPoslije.after(pr.getDatum()) && pPoslije.before(prPoslije))) {
+					mozel=false;
+					break;
+				}
+			}	
+		}
+		boolean ima=false;
+		if(mozel==false) {
+			System.out.println("Doktor je zauzet");
+			for (Lekar lek: k.getLekari()) {
+				if( lek.getTipPregleda().getId()==p.getTip().getId() && JelSlobodanLekar(lek,p.getDatum(),pPoslije)==true) {
+					p.setLekar(lek);
+					ima=true;
+					break;
+				}
+			}
+		}
+		if(ima==false) {
+			System.out.println("Doktori su svi zauzeti");
+			p=algoritamPregled(p,k,p.getTip().getId(),p.getDatum(),pPoslije);
+			return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+		}
 		pregledService.save(p);
 		System.out.println("saa");
 		return new ResponseEntity<PregledDTO>(new PregledDTO(p), HttpStatus.OK);
+	}
+	private Pregled algoritamPregled(Pregled pregled,Klinika k, Integer idTipa, Date pocetak, Date pPoslije) {
+		Sala najboljaSala=null;
+		Date najboljiPocetak= new Date();
+		Lekar slLekar=null;
+		List<Sala> sale=salaService.findAll(k);
+		for (Sala sala : sale) {
+			boolean mozel=true;
+			for (Pregled pr : sala.getPregledi()) {
+				Date prPoslije=pr.getDatum();
+				prPoslije.setTime(prPoslije.getTime()+ pr.getTrajanje()*60000);
+				if((pocetak.after(pr.getDatum()) && pocetak.before(prPoslije))|| (pPoslije.after(pr.getDatum()) && pPoslije.before(prPoslije))) {
+					for (Operacija op : sala.getOperacije()) {
+						Date opPoslije=op.getDatum();
+						opPoslije.setTime(opPoslije.getTime()+ op.getTrajanje()*60000);
+						if((pocetak.after(op.getDatum()) && pocetak.before(opPoslije))|| (pPoslije.after(op.getDatum()) && pPoslije.before(prPoslije))) {
+							for (Lekar lek: k.getLekari()) {
+								if( lek.getTipPregleda().getId()==idTipa && JelSlobodanLekar(lek,pocetak,pPoslije)==true) {
+									pregled.setDatum(pocetak);
+									pregled.setSala(sala);
+									pregled.setLekar(lek);
+									return pregled;
+								}
+							}
+						}
+					}
+				}else if(pocetak.before(pr.getDatum()) && (pr.getDatum().getTime()-prPoslije.getTime()<=60000*pregled.getTrajanje())) {
+					for (Operacija op : sala.getOperacije()) {
+						Date opPoslije=op.getDatum();
+						opPoslije.setTime(opPoslije.getTime()+ op.getTrajanje()*60000);
+						if((pr.getDatum().after(op.getDatum()) && pr.getDatum().before(opPoslije))|| (prPoslije.after(op.getDatum()) && prPoslije.before(prPoslije))) {
+							for (Lekar lek: k.getLekari()) {
+								if( lek.getTipPregleda().getId()==idTipa && JelSlobodanLekar(lek,pr.getDatum(),prPoslije)==true) {
+									if(najboljiPocetak.getTime()>pr.getDatum().getTime()) {
+										najboljiPocetak=pr.getDatum();
+										najboljaSala=sala;
+										slLekar=lek;
+									}
+								}
+							}
+						}
+					}
+				}
+			}
+		}
+		pregled.setDatum(najboljiPocetak);
+		pregled.setLekar(slLekar);
+		pregled.setSala(najboljaSala);
+		return pregled;		
 	}
 	@DeleteMapping(value = "/{id}")
 	public ResponseEntity<Void> deleteCourse(@PathVariable Integer id) {
@@ -217,5 +307,25 @@ public class PregledController {
 		Pregled pregled=new Pregled(pregledDTO,st,l,s,t,k);
 		pregledService.save(pregled);
 		return new ResponseEntity<>(HttpStatus.OK);
+	}
+	private boolean JelSlobodanLekar(Lekar l, Date pPocetak, Date pPoslije) {
+		boolean mozel=true;
+		for (Pregled pr : l.getPregledi()) {
+			Date prPoslije=pr.getDatum();
+			prPoslije.setTime(prPoslije.getTime()+ pr.getTrajanje()*60000);
+			if((pPocetak.after(pr.getDatum()) && pPocetak.before(prPoslije))|| (pPoslije.after(pr.getDatum()) && pPoslije.before(prPoslije))) {
+				return false;
+			}
+		}
+		if(mozel==true) {
+			for (Operacija pr : l.getOperacije()) {
+				Date prPoslije=pr.getDatum();
+				prPoslije.setTime(prPoslije.getTime()+ pr.getTrajanje()*60000);
+				if((pPocetak.after(pr.getDatum()) && pPocetak.before(prPoslije))|| (pPoslije.after(pr.getDatum()) && pPoslije.before(prPoslije))) {
+					return false;
+				}
+			}	
+		}
+		return true;
 	}
 }

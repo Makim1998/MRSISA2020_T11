@@ -1,16 +1,34 @@
 @charset "ISO-8859-1";
 .kontejner {
       width: 60% ;
+      padding:10px;
       overflow:hidden;
       float:left;
 	  margin-top:5%;
+	  margin-left:5px;
+	  border:1px solid grey;
+	  border-radius:5px;
 }
 
 .izvjestaj-form{
+	position:relative;
 	float:right;
-	width:40%;
+	padding:10px;
+    background: #f7f7f7;
+	width:39%;
+	border:1px solid grey;
+	border-radius:5px;
 	margin-top:5%;
 	overflow:hidden;
+	height:400px;
+}
+
+.izvjestaj-form>p{
+	margin:20px 0;
+}
+
+.r,.l{
+	margin-bottom:30px;
 }
 
 .l{
@@ -82,4 +100,11 @@
 
 #izvjestaj-msg{
 	display:none;
+	margin-top:20px;
+}
+
+.izvjestaj-btn{
+	position:absolute;
+	bottom:5px;
+	left:5px;
 }

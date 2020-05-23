@@ -19,13 +19,18 @@ Vue.component("lekari", {
 	template: ` 
 <div class="oneoption">
 <div>
-	<div class="jumbotron">
-	  <h2>Lekari</h2>
-	  <p>Pretraga, dodavanje i brisanje.</p> 
-	</div>
-	<input type="text" style="margin-left:10px;margin-bottom:10px;" class="fotrol" id="myInput" placeholder="Korisnicko ime">
-	<input class="btn btn-success" type='button' value='Pretrazi'  v-on:click="fjaPretrage()"/>
-   <table align="left" class="table">
+	<h2 class="text-center">Lekari</h2>
+  <div class="form-row">
+    <div class="col-sm-2 my-1">
+     <input type="text" style="margin-left:10px;margin-top:5px;" class="fotrol" id="myInput" placeholder="Korisnicko ime">
+    </div>
+    <div class="col-sm-2 my-1">
+      	<input class="btn btn-primary" type='button' value='Pretrazi'  v-on:click="fjaPretrage()"/>
+    </div>
+  </div>
+<br>
+	
+   <table align="left" class="table klasicna-tabela">
 		<tr>
 		   <th>ID</th>
 		   <th>Korisnicko ime</th>
@@ -42,11 +47,11 @@ Vue.component("lekari", {
 			<td class="myclass">{{tp.prezime}}</td>
 			<td class="myclass">{{tp.prosecnaOcena}}</td>
 			<td class="myclass">{{tp.brojOsiguranika}}</td>
-			<td><input class="btn btn-danger btn-lg" value='Obrisi' type='button' v-on:click="obrisi(tp.id)"/></td>
+			<td><input class="btn btn-primary btn-lg" value='Obrisi' type='button' v-on:click="obrisi(tp.id)"/></td>
 		</tr>
 		<tr>
 			<td></td>
-			<td><input class="btn btn-success" type='button' value='Dodajte novog lekara'  v-on:click="otvori()"/></td>
+			<td><input class="btn btn-primary" type='button' value='Dodajte novog lekara'  data-toggle="modal" data-target="#novilekar"/></td>
 			<td></td>
 			<td></td>
 			<td></td>
@@ -54,7 +59,53 @@ Vue.component("lekari", {
 			<td></td>
 		</tr>	
    </table>
-   <div id="modaldark">
+<!-- Modal -->
+<div class="modal fade" id="novilekar" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+  <div class="modal-dialog" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" >Novi lekar</h5>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body">
+		<form>
+			<div class="form-group">
+		      	<label for = "ime">Ime: </label>
+		      	<input id="ime" type="text" class="psw" v-model="input.ime" required>
+		    </div>
+		    <div class="form-group">
+		      	<label for = "prezime">Prezime: </label>
+				<input id="prezime" type="text" class="psw" v-model="input.prezime" required>
+		    </div>
+		    <div class="form-group">
+		      	<label for = "brojos">Broj osiguranika: </label>
+				<input id="brojos" type="text" class="psw" v-model="input.brojOsiguranika"  required>
+		    </div>
+		    <div class="form-group">
+		      	<label for = "korime">Korisnicko ime: </label>
+				<input id="korime" type="text" class="psw" v-model="input.username" required>
+		    </div>
+		    <div class="form-group">
+		      	<label for = "lozinka">Lozinka: </label>
+				<input id="lozinka" type="text" class="psw" v-model="input.password" required>
+		    </div>
+		    <div class="form-group">
+		    	<label>Radno vreme lekara:</label><br>
+		    	<label for="od">Od:<input type="time" id="od" class="psw" v-model="input.rvod" placeholder="Radno vreme od" required></label>
+				<label for="do">Do:<input type="time" id="do" class="psw" v-model="input.rvdo" placeholder="Radno vreme do" required></label>
+		    </div>
+		</form>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" data-dismiss="modal">Zatvori</button>
+        <button type="button" class="btn btn-primary" data-dissmiss="modal" v-on:click="dodaj()">Potvrdi</button>
+      </div>
+    </div>
+  </div>
+</div>
+   <!---div id="modaldark">
    <div class="form-popup" id="myForm">
     <h4>Novi lekar</h4>
     <input type="text" class="psw" v-model="input.ime" placeholder="Ime" required>
@@ -69,7 +120,7 @@ Vue.component("lekari", {
     <button type="button" class="btn maal leftbutton" v-on:click="dodaj()">Potvrdi</button>
     <button type="button" class="btn zaal rightbutton" v-on:click="otkazi()">Otkazi</button>
    </div>
-   </div>
+   </div---->
 </div>
 </div>		  
 `
@@ -124,7 +175,8 @@ Vue.component("lekari", {
 				axios
 			    .get('rest/lekari')
 			    .then(response => (this.tipovi=response.data));
-				this.otkazi()
+				$('#novilekar').modal('hide');
+            	$('.modal-backdrop').remove();
 				})
 			.catch(error => {
 				alert("Nevalidan unos. Pokusajte ponovo.");

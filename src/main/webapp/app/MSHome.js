@@ -43,14 +43,39 @@ Vue.component("MSHome", {
 			<component v-bind:is = "component"></component>
 	    </div>
 	    <!-- /#page-content-wrapper -->
-	   <div id="modaldark">
+	   <!---div id="modaldark">
 	   <div class="form-popup" id="myForm">
 	    <h4>Promenite lozinku</h4>
 	    <input type="password" class="psw" v-model="lozinka" placeholder="Lozinka" required>
 	    <input type="password" class="psw" v-model="ponovljena" placeholder="Ponovljena lozinka" required>
 	    <button type="button" class="btn maal leftbutton" v-on:click="dodajLoz()">Potvrdi</button>
 	   </div>
-	   </div>
+	   </div--->
+	   	   <!-- Modal -->
+<div class="modal fade" id="lozinka" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+  <div class="modal-dialog" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" >Promenite lozinku</h5>
+      </div>
+      <div class="modal-body">
+		<form>
+			<div class="form-group">
+		      	<label for = "lozinka">Lozinka: </label>
+	    		<input id="lozinka" type="password" class="psw" v-model="lozinka" placeholder="Lozinka" required>
+		    </div>
+		    <div class="form-group">
+		      	<label for = "lozinka2">Ponovljena lozinka: </label>
+	    		<input id="lozinka2" type="password" class="psw" v-model="ponovljena" placeholder="Ponovljena lozinka" required>
+		    </div>
+		</form>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-primary" v-on:click="dodajLoz()">Potvrdi</button>
+      </div>
+    </div>
+  </div>
+</div>
 	</div>
 `
 		, 
@@ -96,8 +121,8 @@ Vue.component("MSHome", {
 					})
 				    .then((response) => {
 				    	alert("Uspesno ste izmenili lozinku!");
-				    	this.otkazi()
-				    });
+				    	$('#lozinka').modal('hide');
+		            	$('.modal-backdrop').remove();				    });
 		    	}
 		    	else{
 		    		alert("Popunite ispravno sva polja (min 6 karaktera)");
@@ -121,7 +146,7 @@ Vue.component("MSHome", {
 		    	this.kc_id=response.data.kc_id;
 		    	this.prviPut = response.data.prviPut;
 				if(this.prviPut==true){
-					this.otvori();
+					$('#lozinka').modal('show');
 				}
 		    })
 		    .catch(response => {

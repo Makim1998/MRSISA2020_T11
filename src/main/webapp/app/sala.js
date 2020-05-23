@@ -16,13 +16,17 @@ Vue.component('sala', {
 	template: ` 
 <div class="oneoption">
 <div>
-	<div class="jumbotron">
-	  <h2>Sale</h2>
-	  <p>Pretraga, dodavanje, izmena i brisanje.</p> 
-	</div>
-	<input type="text" style="margin-left:10px;margin-bottom:10px;" class="fotrol" id="myInput" placeholder="Naziv sale">
-	<input class="btn btn-success" type='button' value='Pretrazi'  v-on:click="fjaPretrage()"/>
-   <table align="left" class="table">
+	<h2 class="text-center">Sale</h2>
+  <div class="form-row">
+    <div class="col-sm-2 my-1">
+     <input type="text" style="margin-left:10px;margin-top:5px;" class="fotrol" id="myInput" placeholder="Naziv sale">
+    </div>
+    <div class="col-sm-2 my-1">
+      	<input class="btn btn-primary" type='button' value='Pretrazi'  v-on:click="fjaPretrage()"/>
+    </div>
+  </div>
+<br>
+   <table align="left" class="table klasicna-tabela">
 		<tr>
 		   <th>Broj sale</th>
 		   <th>Naziv</th>
@@ -32,22 +36,47 @@ Vue.component('sala', {
 		<tr v-for="tp in tipovi" v-if="tp.klinika==salaPK.klinika" class="filterDiv " >
 			<td class="myclass">{{tp.brojSale}}</td>
 			<td class="myclass">{{tp.naziv}}</td>
-			<td><input class="btn btn-warning btn-lg" value='Izmeni' type='button'  v-on:click="uredi(tp.brojSale,tp.naziv)"/></td>
-			<td><input class="btn btn-danger btn-lg" value='Obrisi' type='button' v-on:click="obrisi(tp.brojSale)"/></td>
+			<td><input class="btn btn-primary btn-lg" value='Izmeni' type='button'  data-toggle="modal" data-target="#izmeni" v-on:click="uredi(tp.brojSale,tp.naziv)"/></td>
+			<td><input class="btn btn-primary btn-lg" value='Obrisi' type='button' v-on:click="obrisi(tp.brojSale)"/></td>
 		</tr>
 		<tr>
 			<td><input type="number" min="1" max="1000" class="fotrol" v-model="salaPK.brojSale" placeholder="Broj sale"></td>
 			<td><input type="text" class="fotrol" v-model="input.sala" placeholder="Naziv sale"></td>
-			<td><input class="btn btn-success" type='button' value='Dodavanje'  v-on:click="dodaj()"/></td>
+			<td><input class="btn btn-primary" type='button' value='Dodaj salu'  v-on:click="dodaj()"/></td>
 		</tr>	
    </table>
-   <div id="modaldark">
+      <!-- Modal -->
+<div class="modal fade" id="izmeni" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+  <div class="modal-dialog" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" >Broj sale: {{this.id}}</h5>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body">
+		<form>
+			<div class="form-group">
+		      	<label for = "nazivsale">Naziv sale: </label>
+				<input id="nazivsale" type="text" class="psw" v-model="izmena">
+		    </div>
+		</form>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" data-dismiss="modal">Zatvori</button>
+        <button type="button" class="btn btn-primary" data-dissmiss="modal" v-on:click="izmeni()">Potvrdi</button>
+      </div>
+    </div>
+  </div>
+</div>
+   <!---div id="modaldark">
    <div class="form-popup" id="myForm">
    
     <button type="button" class="btn maal leftbutton" v-on:click="izmeni()">Potvrdi</button>
     <button type="button" class="btn zaal rightbutton" v-on:click="otkazi()">Otkazi</button>
    </div>
-   </div>
+   </div---->
 </div>
 </div>		  
 `
@@ -56,9 +85,9 @@ Vue.component('sala', {
 		uredi(id,naziv) {
 			this.id=id;
 			this.izmena=naziv;
-			document.getElementById("myForm").style.display = "block";
+			/*document.getElementById("myForm").style.display = "block";
 			document.getElementById("modaldark").style.display = "block";
-			document.getElementById("modaldark").style.opacity="1";
+			document.getElementById("modaldark").style.opacity="1";*/
         },
 		izmeni() {
         	if(this.izmena == "" || this.izmena.length>24){
@@ -71,9 +100,11 @@ Vue.component('sala', {
 	        	    .get('rest/sala')
 	        	    .then(response => (this.tipovi=response.data));
 	            });
-				document.getElementById("myForm").style.display = "none";
+	        	$('#izmeni').modal('hide');
+	        	$('.modal-backdrop').remove();
+				/*document.getElementById("myForm").style.display = "none";
 				document.getElementById("modaldark").style.display = "none";
-				document.getElementById("modaldark").style.opacity="0";
+				document.getElementById("modaldark").style.opacity="0";*/
         	}
 
         },

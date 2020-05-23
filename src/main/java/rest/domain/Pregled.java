@@ -96,7 +96,10 @@ public class Pregled {
 	public Lekar getLekar() {
 		return lekar;
 	}
-
+	public void setLekar(Lekar lek) {
+		this.lekar=lek;
+		
+	}
 	public Dijagnoza getDijagnoza() {
 		return dijagnoza;
 	}

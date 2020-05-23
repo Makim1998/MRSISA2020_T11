@@ -18,7 +18,8 @@ Vue.component('izvestaj', {
 <div>
 	<h2 class="text-center">Izvjestaj poslovanja klinike</h2>
     <div class="kontejner">	
-	  <line-chart :data="grafik"></line-chart>       
+	  <line-chart :data="grafik"></line-chart>  
+	  <h5 style="text-align:center;">Naziv grafika</h5>     
 	</div>
 	<div class="izvjestaj-form">
 	<div class="l"><p>Od:</p><input type="date" v-model="pocetak"></div>
@@ -36,8 +37,9 @@ Vue.component('izvestaj', {
 		<input type="radio" name="prikaz" value="mjesec" v-model="picked">
 		<span class="checkmark"></span>
 	</label>
-	<button type="button" class="btn btn-primary izvjestaj-btn" v-on:click="prikazimsg()">Prikazi</button">
+	<p>Prosecna ocena klinike: <span id="ocenaklinike"></span><p>
 	<p id="izvjestaj-msg">Prihod klinike za dati vremenski period iznosi <span id="izvjestaj-vr">{{ukupno}}</span></p>
+	<button type="button" class="btn btn-primary izvjestaj-btn" v-on:click="prikazimsg()">Prikazi</button">
 	</div>
 </div>
 </div>	 

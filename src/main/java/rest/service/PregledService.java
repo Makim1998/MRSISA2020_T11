@@ -68,7 +68,7 @@ public class PregledService {
 
 	public List<Pregled> findZakazane(Lekar lekar) {
 		// TODO Auto-generated method stub
-		return pregledRepository.findByKartonIsNotNullAndDijagnozaIsNullAndLekar(lekar);
+		return pregledRepository.findByKartonIsNotNullAndDijagnozaIsNullAndSalaIsNotNullAndLekar(lekar);
 	}
 	public List<Pregled> findZakazane() {
 		// TODO Auto-generated method stub
