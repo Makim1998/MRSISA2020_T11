@@ -8,18 +8,15 @@ Vue.component("sifarnik", {
             		},
 	    	stavke:[],
 	    	id:null,
-	    	izmena: {
-	    		id: null,
-	    		sifra: ""
-	    	}
+	    	izmena: ""
 	    }
 	},
 	template: ` 
 <div class="oneoption">
 <div>
 	<div class="jumbotron">
-	  <h2>Sifarnik za dijagnoze i lekove</h2>
-	  <p>Pretraga i dodavanje</p> 
+	  <h2>Stavke sifarnika</h2>
+	  <p>Dodavanje i izmena</p> 
 	</div>
    <table align="left" class="table">
 		<tr>
@@ -27,12 +24,14 @@ Vue.component("sifarnik", {
 		   <th>Sifra</th>
 		   <th>ID Stavke</th>
 		   <th>Tip stavke</th>
+		   <th>Brisanje</th>
 		</tr>
 		<tr v-for="s in stavke" >
 			<td class="myclass">{{s.id}}</td>
 			<td class="myclass">{{s.sifra}}</td>
 			<td class="myclass">{{s.stavkaId}}</td>
 			<td class="myclass">{{s.tip}}</td>
+			<td><input class="btn btn-danger btn-lg" value='Obrisi' type='button' v-on:click="obrisi(s.id)"/></td>
 		</tr>
 		<tr>
 			<td></td>
@@ -42,15 +41,16 @@ Vue.component("sifarnik", {
 				<option>LEK</option>
 				<option>DIJAGNOZA</option>
 			</select></td>
-			<td><input class="btn btn-success" type='button' value='Dodavanje'  v-on:click="dodaj()"/></td>
+			<td><input class="btn btn-success" type='button' value='Dodavanje'  v-on:click="proveraPolja()"/></td>
 		</tr>
 		<tr>
-			<td><select v-for="s in stavke" v-model="izmena.id">
-				<option>{{s.id}}</option>
+			<td></td>
+			<td><select v-model="id">
+				<option v-for="s in stavke">{{s.id}}</option>
 			</select></td>
-			<td>Nova sifra: </td>
-			<td><input type="text" class="fotrol" v-model="izmena.sifra" placeholder="StavkaId"></td>
-			<td><input class="btn btn-success" type='button' value='Izmena' v-on:click="izmeni()"/></td>
+			<td><input type="text" class="fotrol" v-model="izmena" placeholder="Nova sifra"></td>
+			<td></td>
+			<td><input class="btn btn-warning btn-lg" type='button' value='Izmena' v-on:click="izmeni()"/></td>
 		</tr>
    </table>
 </div>
@@ -58,15 +58,42 @@ Vue.component("sifarnik", {
 `
 	, 
 	methods : {
+		proveraPolja(){
+			if (this.input.sifra=="" || this.input.stavkaId=="" || this.input.tip=="")
+				alert("Niste uneli sva polja!");
+			else
+				this.dodaj();
+		},
 		dodaj() {
         	axios
         	.post('rest/sifarnik/dodaj', {"id": null, "sifra":this.input.sifra, "stavkaId":this.input.stavkaId, "tip":this.input.tip})
-			.then(response => this.$router.replace({ name: "administratorCentra" }));
+        	.then(response => {
+    			axios
+    				.get('rest/sifarnik')
+    				.then(response => (this.stavke=response.data))
+    		});
         },
         izmeni(){
+        	if (this.izmena=="")
+        		alert('Nova sifra ne moze da bude prazna!')
+        	else{
+        		axios
+        		.put('rest/sifarnik/'+this.id+"/"+this.izmena)
+        		.then(response => {
+    				axios
+    					.get('rest/sifarnik')
+    					.then(response => (this.stavke=response.data))
+    			});
+        	}
+        },
+        obrisi(id){
         	axios
-        	.put('rest/sifarnik/izmeni', {"id": this.izmena.id, "novaSifra": this.izmena.sifra})
-        	.then(response => this.$router.replace({ name: "administratorCentra" }));
+        	.delete('rest/sifarnik/'+id)
+        	.then(response => {
+				axios
+					.get('rest/sifarnik')
+					.then(response => (this.stavke=response.data))
+			});
         }
 	},
 	mounted(){

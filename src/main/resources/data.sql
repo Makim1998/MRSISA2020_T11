@@ -65,6 +65,13 @@ insert into lekar_ocene (lekar_id,ocene) values (3,4);
 insert into lekar_ocene (lekar_id,ocene) values (3,5);
 
 insert into dijagnoza (id) values (1);
+insert into dijagnoza (id) values (2);
+
+insert into lek (id,naziv,sifra) values (1,'lek1','x1t1s2');
+insert into lek (id,naziv,sifra) values (2,'lek2','x2t2s3');
+
+insert into stavka_sifarnika(id,sifra,stavka_id,tip) values (1,'x1t1s2',1,1);
+insert into stavka_sifarnika(id,sifra,stavka_id,tip) values (2,'d2t67',2,0);
 
 insert into pregled(id,datum,trajanje,cena_id,lekar_id,sala_klinika_id,sala_broj_sale,tip_id) values (1,'2020-10-10 17:00:00',50,1,3,1,1,1);
 insert into pregled(id,datum,trajanje,cena_id,lekar_id,sala_klinika_id,sala_broj_sale,tip_id,karton_id) values (2,'2020-10-10 20:00:00',50,1,3,1,1,2,1);
