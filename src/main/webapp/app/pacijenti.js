@@ -28,7 +28,7 @@ Vue.component("pacijenti", {
 	    }
 	},
 	template: ` 
-<div class="oneoptionlekar">
+<div class="oneoptionsestra">
 <div>
 <h2 class="text-center">Pacijenti</h2>
 <br>
@@ -189,6 +189,14 @@ Vue.component("pacijenti", {
 	, 
 	methods : {
 		zapocni(){
+			/*
+			if(this.input.lekar.uloga=="MEDICINSKA_SESTRA"){
+				alert(this.input.lekar.uloga);
+			}
+			if(this.input.lekar.uloga=="LEKAR"){
+				alert("too");
+			}
+			*/
 			document.getElementById("pKartona").style.display="none";
 			document.getElementById("zPregled").style.display="none";
 			document.getElementById("zkarton").style.display="block";
@@ -349,7 +357,16 @@ Vue.component("pacijenti", {
 	    	this.klinika_id=response.data.kc_id;
 	    })
 	    .catch(response => {
-			this.$router.push("/");
+	    	axios
+			.get('rest/login/getConcreteUser/MedicinskaS')
+		    .then((response) => {
+		    	this.input.lekar=response.data;
+		    	this.lekar_username=response.data.email;
+		    	this.klinika_id=response.data.kc_id;
+		    })
+		    .catch(response => {
+		    	this.$router.push("/");
+		    });
 		});
 		axios
 	    .get('rest/pacijent/svi')
@@ -369,6 +386,5 @@ Vue.component("pacijenti", {
 		.catch(response => {
 			this.$router.push("/");
 		});
-
 	},
 });

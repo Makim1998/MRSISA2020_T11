@@ -35,6 +35,10 @@
 	float:left;
 	width:calc(100% - 230px);
 }
+.oneoptionsestra{
+	float:left;
+	width:calc(100% - 270px);
+}
 
 .sidenavlogin{
 	margin:0 auto!important;
