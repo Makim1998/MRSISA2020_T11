@@ -22,9 +22,10 @@ import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 
 import rest.dto.LekarDTO;
 import rest.dto.OperacijaDTO;
+import rest.dto.PregledDTO;
 
 @Entity 
-public class Operacija {
+public class Operacija implements Comparable<Operacija>{
 
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -105,6 +106,11 @@ public class Operacija {
 		if(k!=null) {
 			this.karton=k;
 		}
+	}
+	@Override
+	public int compareTo(Operacija o) {
+		// TODO Auto-generated method stub
+		return getDatum().compareTo(o.getDatum());
 	}
 }
 

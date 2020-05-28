@@ -20,7 +20,7 @@ import rest.dto.LekarDTO;
 import rest.dto.PregledDTO;
 
 @Entity 
-public class Pregled {
+public class Pregled implements Comparable<Pregled> {
 
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -123,5 +123,10 @@ public class Pregled {
 		if (k!=null) {
 			this.karton=k;
 		}
+	}
+	@Override
+	public int compareTo(Pregled o) {
+		// TODO Auto-generated method stub
+		return getDatum().compareTo(o.getDatum());
 	}
 }
