@@ -17,6 +17,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import rest.domain.AdministratorKlinike;
 import rest.domain.GodisnjiOdmor;
 import rest.domain.Klinika;
 import rest.domain.Lekar;
@@ -29,6 +30,7 @@ import rest.service.GodisnjiService;
 import rest.service.KlinikaService;
 import rest.service.LekariService;
 import rest.service.MSService;
+import rest.service.MailService;
 import rest.service.UserService;
 
 
@@ -46,6 +48,8 @@ public class GodisnjiController {
 	private UserService uservice;
 	@Autowired
 	private MSService msservice;
+	@Autowired
+	private MailService mailService;
 	@GetMapping
 	(value = "/svi/{id}")
 	public ResponseEntity<List<GodisnjiDTO>> getGodisnjiKlinike(@PathVariable Integer id) throws ParseException {
@@ -81,6 +85,15 @@ public class GodisnjiController {
 		}
 
 		god.setPrihvacenOdbijen(gDTO.getPrihvacenOdbijen());
+		String mail=god.getMedOsoblje().getEmail();
+		String naslov="Zahtev za godisnji odmor-";
+		if(god.getPrihvacenOdbijen()) {
+			naslov+="Prihvacen";
+		}else {
+			naslov+="Odbijen";
+		}
+		String tekst=gDTO.getRazlog();
+		mailService.SendMail(mail, naslov, tekst);
 		god=gService.save(god);
 		return new ResponseEntity<>(gDTO, HttpStatus.OK);
 	}/*

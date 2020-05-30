@@ -17,7 +17,7 @@ Vue.component('godisnjiPrihvatanje', {
 	template: ` 
 <div class="oneoption">
 <div>
-<h2 class="text-center">Godisnji odmori/odsustva</h2>
+<h2 class="text-center">Godisnji odmor/odsustva</h2>
 <br>
    <table align="left" class="table klasicna-tabela">
 		<tr>
@@ -36,7 +36,7 @@ Vue.component('godisnjiPrihvatanje', {
 			<td class="myclass">{{tp.datumPocetka.substring(0,10)}}</td>
 			<td class="myclass">{{tp.datumKraja.substring(0,10)}}</td>
 			<td><input class="btn btn-primary btn-lg" value='Prihvati' type='button'  data-toggle="modal" data-target="#prihvati" v-on:click="uredi(tp.korisnik.email,true,tp.id,tp.datumPocetka,tp.datumKraja,tp.korisnik.id)"/></td>
-			<td><input class="btn btn-primary btn-lg" value='Odbij' type='button' v-on:click="uredi(tp.korisnik.email,false,tp.id,tp.datumPocetka,tp.datumKraja,tp.korisnik.id)"/></td>
+			<td><input class="btn btn-primary btn-lg" value='Odbij' type='button' data-toggle="modal" data-target="#prihvati" v-on:click="uredi(tp.korisnik.email,false,tp.id,tp.datumPocetka,tp.datumKraja,tp.korisnik.id)"/></td>
 		</tr>	
    </table>
    <!-- Modal -->

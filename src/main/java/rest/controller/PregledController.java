@@ -26,6 +26,7 @@ import rest.domain.Karton;
 import rest.domain.Klinika;
 import rest.domain.Lekar;
 import rest.domain.Operacija;
+import rest.domain.Pacijent;
 import rest.domain.Pregled;
 import rest.domain.Sala;
 import rest.domain.StavkaCenovnika;
@@ -40,6 +41,8 @@ import rest.service.AdminKService;
 import rest.service.KartonService;
 import rest.service.KlinikaService;
 import rest.service.LekariService;
+import rest.service.MailService;
+import rest.service.PacijentService;
 import rest.service.PregledService;
 import rest.service.SalaService;
 import rest.service.StavkaCenovnikaService;
@@ -64,7 +67,10 @@ public class PregledController {
 	private StavkaCenovnikaService stavkaCenovnikaService;
 	@Autowired
 	private KartonService kartonService;
-
+	@Autowired
+	private PacijentService patientService;
+	@Autowired
+	private MailService mailService;
 	@GetMapping
 	(value="/slobodni")
 	public ResponseEntity<List<PregledDTO>> getSlobodniTerminiPregleda() {
@@ -295,6 +301,16 @@ public class PregledController {
 		p.setSala(s);
 		Lekar l=lekarService.findOne(preg.getLekar().getId());
 		p.setLekar(l);
+		
+		String mail=l.getEmail();
+		String naslov="Zakazivanje pregleda";
+		String tekst="Poštovani,"
+				+ "\nVas pregled je potvrdjen za  "+p.getDatum().toString().substring(0,16)
+		        + ".\nPregled ce se odrzati u sali "+p.getSala().getNaziv()+",broj:"+p.getSala().getBrojSale()+".";
+		mailService.SendMail(mail, naslov, tekst);
+		Pacijent pacijent=patientService.findOneByKarton(p.getKarton());
+		mail=pacijent.getEmail();
+		mailService.SendMail(mail, naslov, tekst);
 		pregledService.save(p);
 		return new ResponseEntity<PregledDTO>(new PregledDTO(p), HttpStatus.OK);
 	}
@@ -345,6 +361,16 @@ public class PregledController {
 			System.out.println("nema kartona");
 		}
 		Pregled pregled=new Pregled(pregledDTO,st,l,s,t,k);
+		if(s==null) {
+			Klinika klinika=l.getKlinika();
+			AdministratorKlinike ak=akService.findByKlinika(klinika);
+			String mail=ak.getEmail();
+			String naslov="Zakazivanje pregleda";
+			String tekst="Poštovani,"
+					+ "\nNovi pregled zakazan je za  "+pregled.getDatum().toString().substring(0,16)
+			        + "\nMolimo vas da rezervisete salu u toku dana.";
+			mailService.SendMail(mail, naslov, tekst);
+		}
 		pregledService.save(pregled);
 		return new ResponseEntity<>(HttpStatus.OK);
 	}

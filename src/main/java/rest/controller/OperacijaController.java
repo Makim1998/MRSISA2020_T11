@@ -39,6 +39,7 @@ import rest.service.AdminKService;
 import rest.service.KartonService;
 import rest.service.KlinikaService;
 import rest.service.LekariService;
+import rest.service.MailService;
 import rest.service.OperacijaService;
 import rest.service.PregledService;
 import rest.service.SalaService;
@@ -64,6 +65,8 @@ public class OperacijaController {
 	private TipPregledaService tipPregledaService;
 	@Autowired
 	private StavkaCenovnikaService stavkaCenovnikaService;
+	@Autowired
+	private MailService mailService;
 /*
 	@GetMapping
 	(value="/slobodni")
@@ -202,8 +205,10 @@ public class OperacijaController {
 		StavkaCenovnika st=stavkaCenovnikaService.findOne(operacijaDTO.getCena().getId());
 		//ArrayList<Lekari>
 		HashSet<Lekar> lekari = new HashSet<Lekar>();
+		Klinika klinika=null;
 		for (LekarDTO le : operacijaDTO.getLekari()) {
 			Lekar l=lekarService.findOne(le.getId());
+			klinika=l.getKlinika();
 			lekari.add(l);
 		}
 		Sala s=null;
@@ -224,6 +229,15 @@ public class OperacijaController {
 		}
 		Operacija pregled=new Operacija(operacijaDTO,st,s,lekari,k);
 		operacijaService.save(pregled);
+		if(s==null) {
+			AdministratorKlinike ak=akService.findByKlinika(klinika);
+			String mail=ak.getEmail();
+			String naslov="Zakazivanje operacije";
+			String tekst="Poštovani,"
+					+ "\nNova operacija zakazana je za "+pregled.getDatum().toString().substring(0,16)
+			        + "\nMolimo vas da rezervisete salu u toku dana.";
+			mailService.SendMail(mail, naslov, tekst);
+		}
 		return new ResponseEntity<>(HttpStatus.OK);
 	}
 }
