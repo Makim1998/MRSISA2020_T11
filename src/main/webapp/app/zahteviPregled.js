@@ -16,7 +16,7 @@ Vue.component("zahteviPregled", {
 	template: ` 
 <div class="oneoption">
 <div>
-<h2 class="text-center">Zahtevi lekra za pregled</h2>
+<h2 class="text-center">Zahtevi ekara za pregled</h2>
 <br>
    <table align="left" class="table klasicna-tabela">
 		<tr>
@@ -148,6 +148,7 @@ Vue.component("zahteviPregled", {
     			document.getElementById("myForm3").style.display = "none";
     			document.getElementById("modaldark").style.display = "none";
     			document.getElementById("modaldark").style.opacity="0";
+    			this.ispitanPregled=[];
             })
     	    .catch(error => {
     			alert("Svi lekari su zauzeti.");
@@ -165,6 +166,7 @@ Vue.component("zahteviPregled", {
             });
 		},
 		otkaziRezervisanje(){
+			this.ispitanPregled=[];
 			document.getElementById("sa").style.display = "block";
 			document.getElementById("myForm3").style.display = "none";
 		},

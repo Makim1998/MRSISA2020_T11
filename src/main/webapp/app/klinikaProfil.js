@@ -84,7 +84,10 @@ Vue.component("klinikaProfil", {
 				    	this.moscowMap.geoObjects.add(placemark);
 				    });
 		        }); 
-		    });
+		    })
+			.catch(response => {
+				alert("Pogresan unos.Greska.")
+			});
         },
 	},
 	mounted(){

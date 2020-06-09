@@ -1,5 +1,6 @@
 package rest.controller;
 
+import java.text.ParseException;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -18,10 +19,10 @@ public class SistemController {
 	private PregledController pregledController;
 	
 	@Scheduled(cron = "${greeting.cron}")
-	public void cronJob() {
+	public void cronJob() throws ParseException {
 		dodjelaSalePregled();
 	}
-	private void dodjelaSalePregled() {
+	private void dodjelaSalePregled() throws ParseException {
 		List<Pregled> zahtijevi = pregledService.findZakazane();
 		for (Pregled zahtijev : zahtijevi) {
 			Pregled pregled=pregledController.algoritamPregled(zahtijev);

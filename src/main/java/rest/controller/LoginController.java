@@ -286,5 +286,4 @@ public class LoginController {
 		}
 		return new ResponseEntity<>(HttpStatus.NOT_FOUND);
 	}
-
 }

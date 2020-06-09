@@ -90,6 +90,7 @@ public class PacijentController {
 				}
 				if(postoji==false) {
 					slterminiDTO.add(new PacijentDTO(p));
+					kartoni.add(idk);
 				}
 			} catch (Exception e) {
 				System.out.println("flamingos");
@@ -109,6 +110,7 @@ public class PacijentController {
 				}
 				if(postoji==false) {
 					slterminiDTO.add(new PacijentDTO(p));
+					kartoni.add(idk);
 				}
 			} catch (Exception e) {
 				System.out.println("flamingos");
