@@ -21,7 +21,7 @@ Vue.component('pacijentHome',{
 	},
 	template: ` 
 	<div id = "pacijentHome">
-		<div  id="mySidenav" class="sidenav">
+		<div  id="mySidenav" class="sidenavbar">
 	      	<a href = "#klinike"v-on:click = "component = 'klinike'"  >Klinike</a>
 	      	<a href = "#lekari" v-on:click = "component = 'lekari'"  >Lekari</a>
 			<a href = "#pregledi" v-on:click = "component = 'pregledici'">Pregledi</a>

@@ -27,10 +27,11 @@ insert into klinicki_centar (id,naziv) values (1,'Klinicki centar Novi Sad');
 insert into user (id,ime,prezime,email,password,uloga,broj_osiguranika,prvi_put) values (1,'Ivan','Ivanovic','AdminKC1','adminkc1',4,2322432322432,false);
 insert into administrator_klinickog_centra (id,kc) values (1,1);
 
-insert into klinika (id,adresa,naziv,opis,klinicki_centar_id) values (1,'Novi Sad','Klinika Centar','Nema opisa',1);
-insert into klinika (id,adresa,naziv,opis,klinicki_centar_id) values (2,'Liman','Klinika Liman','Nema opisa',1);
+insert into klinika (id,adresa,naziv,opis,klinicki_centar_id) values (1,'Novi Sad Bulevar cara Lazara 39','Klinika Centar','Nema opisa',1);
+insert into klinika (id,adresa,naziv,opis,klinicki_centar_id) values (2,'Novi Sad Bulevar cara Lazara 38','Klinika Liman','Nema opisa',1);
 
 insert into sala (klinika_id,broj_sale,naziv) values (1,1,'Operaciona');
+insert into sala (klinika_id,broj_sale,naziv) values (1,2,'Sala za pregled');
 insert into sala (klinika_id,broj_sale,naziv) values (2,1,'Operaciona');
 insert into sala (klinika_id,broj_sale,naziv) values (2,2,'Operaciona');
 
@@ -64,9 +65,22 @@ insert into lekar_ocene (lekar_id,ocene) values (3,4);
 insert into lekar_ocene (lekar_id,ocene) values (3,5);
 
 insert into dijagnoza (id) values (1);
+insert into dijagnoza (id) values (2);
+
+insert into lek (id,naziv,sifra) values (1,'lek1','x1t1s2');
+insert into lek (id,naziv,sifra) values (2,'lek2','x2t2s3');
+
+insert into stavka_sifarnika(id,sifra,stavka_id,tip) values (1,'x1t1s2',1,1);
+insert into stavka_sifarnika(id,sifra,stavka_id,tip) values (2,'d2t67',2,0);
 
 insert into pregled(id,datum,trajanje,cena_id,lekar_id,sala_klinika_id,sala_broj_sale,tip_id) values (1,'2020-10-10 17:00:00',50,1,3,1,1,1);
-insert into pregled(id,datum,trajanje,cena_id,lekar_id,sala_klinika_id,sala_broj_sale,tip_id,karton_id) values (2,'2020-10-10 19:00:00',50,1,3,1,1,2,1);
-insert into pregled(id,datum,trajanje,cena_id,lekar_id,sala_klinika_id,sala_broj_sale,tip_id,karton_id,dijagnoza_id) values (3,'2020-10-10 19:00:00',50,1,3,1,1,2,2,1);
-insert into pregled(id,datum,trajanje,cena_id,lekar_id,sala_klinika_id,sala_broj_sale,tip_id,karton_id) values (4,'2020-10-10 19:00:00',50,1,6,1,1,2,3);
-insert into pregled(id,datum,trajanje,cena_id,lekar_id,sala_klinika_id,sala_broj_sale,tip_id,karton_id,dijagnoza_id) values (5,'2020-09-10 19:00:00',50,1,3,1,1,2,1,1);
+insert into pregled(id,datum,trajanje,cena_id,lekar_id,sala_klinika_id,sala_broj_sale,tip_id,karton_id) values (2,'2020-10-10 18:00:00',50,1,3,1,1,2,1);
+insert into pregled(id,datum,trajanje,cena_id,lekar_id,sala_klinika_id,sala_broj_sale,tip_id,karton_id,dijagnoza_id) values (3,'2019-10-10 19:00:00',50,1,6,1,1,2,2,1);
+insert into pregled(id,datum,trajanje,cena_id,lekar_id,tip_id,karton_id) values (4,'2020-10-10 17:30:00',50,1,3,2,3);
+insert into pregled(id,datum,trajanje,cena_id,lekar_id,tip_id,karton_id) values (6,'2020-10-10 20:00:00',50,1,6,2,3);
+insert into pregled(id,datum,trajanje,cena_id,lekar_id,tip_id,karton_id) values (7,'2020-10-09 12:00:00',50,1,6,2,3);
+insert into pregled(id,datum,trajanje,cena_id,lekar_id,tip_id,karton_id) values (8,'2020-10-11 12:00:00',50,1,6,2,3);
+insert into pregled(id,datum,trajanje,cena_id,lekar_id,tip_id,karton_id) values (9,'2020-10-13 13:00:00',50,1,6,2,3);
+insert into pregled(id,datum,trajanje,cena_id,lekar_id,tip_id,karton_id) values (10,'2020-10-06 12:00:00',50,1,6,2,3);
+insert into pregled(id,datum,trajanje,cena_id,lekar_id,tip_id,karton_id) values (11,'2020-10-10 14:00:00',50,1,6,2,3);
+insert into pregled(id,datum,trajanje,cena_id,lekar_id,sala_klinika_id,sala_broj_sale,tip_id,karton_id,dijagnoza_id) values (5,'2019-09-10 19:00:00',50,1,6,2,1,2,1,1);

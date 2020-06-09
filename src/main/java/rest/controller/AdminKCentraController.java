@@ -15,7 +15,6 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import rest.domain.AdministratorKlinickogCentra;
-import rest.domain.KlinickiCentar;
 import rest.dto.AdministratorKCentraDTO;
 import rest.service.AdminKCService;
 
@@ -41,8 +40,9 @@ public class AdminKCentraController {
 	public ResponseEntity<Void> addAdmin(@RequestBody AdministratorKCentraDTO dto){
 		dto.setPrviPut(true);
 		AdministratorKlinickogCentra admin = new AdministratorKlinickogCentra(dto);
-		admin.setKlinickiCentar(new KlinickiCentar(1, "Klinicki centar Novi Sad"));
+		System.out.println("Kreiran je novi admin KC");
 		admin = service.save(admin);
+		System.out.println("Dodat je novi admin KC");
 		return new ResponseEntity<>(HttpStatus.OK);
 	}
 	

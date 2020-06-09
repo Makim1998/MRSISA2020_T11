@@ -6,6 +6,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import rest.domain.AdministratorKlinike;
+import rest.domain.Klinika;
 import rest.repository.AdminKRepository;
 
 
@@ -36,6 +37,11 @@ public class AdminKService {
 	
 	public void remove(Integer id) {
 		adminKRepository.deleteById(id);
+	}
+
+	public AdministratorKlinike findByKlinika(Klinika klinika) {
+		// TODO Auto-generated method stub
+		return adminKRepository.findOneByKlinika(klinika);
 	}
 
 }

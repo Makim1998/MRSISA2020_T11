@@ -257,7 +257,7 @@ public class LoginController {
 		if(logedIn.getUloga()==Uloga.MEDICINSKA_SESTRA){
 			MedicinskaSestra ms=msService.findByEmail(logedIn.getEmail());
 			System.out.println("SESTROO:"+ms.getIme());
-			return new ResponseEntity<>(ms,HttpStatus.OK);
+			return new ResponseEntity<User>(ms,HttpStatus.OK);
 		}
 		return new ResponseEntity<>(HttpStatus.NOT_FOUND);
 	}
@@ -268,6 +268,18 @@ public class LoginController {
 		}
 		if(logedIn.getUloga()==Uloga.ADMINISTRATOR_KLINIKE){
 			AdministratorKlinike ak=adminKService.findByEmail(logedIn.getEmail());
+			Klinika klinika=ak.getKlinika();
+			KlinikaDTO klinikaDTO=new KlinikaDTO(klinika);
+			return new ResponseEntity<KlinikaDTO>(klinikaDTO, HttpStatus.OK);
+		}
+		if(logedIn.getUloga()==Uloga.LEKAR){
+			Lekar ak=lekarService.findByEmail(logedIn.getEmail());
+			Klinika klinika=ak.getKlinika();
+			KlinikaDTO klinikaDTO=new KlinikaDTO(klinika);
+			return new ResponseEntity<KlinikaDTO>(klinikaDTO, HttpStatus.OK);
+		}
+		if(logedIn.getUloga()==Uloga.MEDICINSKA_SESTRA){
+			MedicinskaSestra ak=msService.findByEmail(logedIn.getEmail());
 			Klinika klinika=ak.getKlinika();
 			KlinikaDTO klinikaDTO=new KlinikaDTO(klinika);
 			return new ResponseEntity<KlinikaDTO>(klinikaDTO, HttpStatus.OK);

@@ -5,7 +5,7 @@ import java.util.Date;
 
 import rest.domain.Pregled;
 
-public class PregledDTO {
+public class PregledDTO implements Comparable<PregledDTO>{
 	
 	private Integer id;
 	private Date datum;
@@ -25,14 +25,18 @@ public class PregledDTO {
 		SimpleDateFormat simpleDateFormat = new SimpleDateFormat(pattern);
 		this.formatiran = simpleDateFormat.format(s.getDatum());
 		this.trajanje=s.getTrajanje();
-		this.tip=new TipPregledaDTO(s.getTip(),s.getSala().getKlinika().getId());
+		this.tip=new TipPregledaDTO(s.getTip(),s.getLekar().getKlinika().getId());
 		try {
 			this.karton=new KartonDTO(s.getKarton());
 		}catch (Exception e) {
 			this.karton=null;
 		}
 		this.cena=new StavkaCenovnikaDTO(s.getCena());
-		this.sala=new SalaDTO(s.getSala().getId(),s.getSala().getKlinika().getId(),s.getSala().getNaziv());
+		try {
+			this.sala=new SalaDTO(s.getSala().getId(),s.getSala().getKlinika().getId(),s.getSala().getNaziv());
+		}catch (Exception e) {
+			this.sala=null;
+		}
 		this.lekar=new LekarDTO(s.getLekar());
 		try {
 			this.dijagnoza=new DijagnozaDTO(s.getDijagnoza());
@@ -123,6 +127,12 @@ public class PregledDTO {
 
 	public void setFormatiran(String formatiran) {
 		this.formatiran = formatiran;
+	}
+
+	@Override
+	public int compareTo(PregledDTO a) {
+		// TODO Auto-generated method stub
+		return getDatum().compareTo(a.getDatum());
 	}
 	
 	

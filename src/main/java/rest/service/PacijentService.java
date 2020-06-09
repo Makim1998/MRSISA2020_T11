@@ -6,6 +6,7 @@ import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import rest.domain.Karton;
 import rest.domain.Pacijent;
 import rest.repository.PacijentRepository;
 
@@ -38,5 +39,11 @@ public class PacijentService {
 
 	public void remove(Integer id) {
 		pacijentRepository.deleteById(id);
+	}
+
+
+	public Pacijent findOneByKarton(Karton karton) {
+		// TODO Auto-generated method stub
+		return pacijentRepository.findOneByKarton(karton);
 	}
 }

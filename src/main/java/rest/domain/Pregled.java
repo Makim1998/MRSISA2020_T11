@@ -16,10 +16,11 @@ import javax.persistence.OneToOne;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 
+import rest.dto.LekarDTO;
 import rest.dto.PregledDTO;
 
 @Entity 
-public class Pregled {
+public class Pregled implements Comparable<Pregled> {
 
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -95,8 +96,9 @@ public class Pregled {
 	public Lekar getLekar() {
 		return lekar;
 	}
-	public void setLekar(Lekar lekar) {
-		this.lekar = lekar;
+	public void setLekar(Lekar lek) {
+		this.lekar=lek;
+		
 	}
 	public Dijagnoza getDijagnoza() {
 		return dijagnoza;
@@ -107,12 +109,24 @@ public class Pregled {
 	public Pregled() {
 		super();
 	}
-	public Pregled(PregledDTO preg,StavkaCenovnika st,Lekar l,Sala s, TipPregleda t) {
+	public Pregled(PregledDTO preg,StavkaCenovnika st,Lekar l,Sala s, TipPregleda t, Karton k) {
 		this.datum=preg.getDatum();
 		this.trajanje=preg.getTrajanje();
 		this.cena=st;
 		this.lekar=l;
-		this.sala=s;
-		this.tip=t;
+		if (s==null) {
+			this.tip=l.getTipPregleda();
+		}else {
+			this.sala=s;
+			this.tip=t;
+		}
+		if (k!=null) {
+			this.karton=k;
+		}
+	}
+	@Override
+	public int compareTo(Pregled o) {
+		// TODO Auto-generated method stub
+		return getDatum().compareTo(o.getDatum());
 	}
 }

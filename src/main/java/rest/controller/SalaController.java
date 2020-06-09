@@ -1,6 +1,8 @@
 package rest.controller;
 
 import java.util.ArrayList;
+import java.util.Collections;
+import java.util.HashSet;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -20,6 +22,7 @@ import rest.domain.Klinika;
 import rest.domain.Pregled;
 import rest.domain.Sala;
 import rest.domain.User;
+import rest.dto.PregledDTO;
 import rest.dto.SalaDTO;
 import rest.pk.SalaPK;
 import rest.service.KlinikaService;
@@ -44,7 +47,13 @@ public class SalaController {
 		System.out.println("1.maj: "+sale.isEmpty());
 		List<SalaDTO> saleDTO = new ArrayList<>();
 		for (Sala s : sale) {
-			saleDTO.add(new SalaDTO(s.getId(),s.getKlinika().getId(),s.getNaziv()));
+			ArrayList<PregledDTO> pregledi = new ArrayList<PregledDTO>();
+			for (Pregled pregled :s.getPregledi() ) {
+				PregledDTO pr = new PregledDTO(pregled);
+				pregledi.add(pr);
+			}
+			Collections.sort(pregledi);
+			saleDTO.add(new SalaDTO(s.getId(),s.getKlinika().getId(),s.getNaziv(),pregledi));
 		}
 		
 		System.out.println("top");

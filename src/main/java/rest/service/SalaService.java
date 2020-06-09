@@ -3,8 +3,10 @@ package rest.service;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 
+import rest.domain.Klinika;
 import rest.domain.Sala;
 import rest.pk.SalaPK;
 import rest.repository.SalaRepository;
@@ -29,6 +31,11 @@ public class SalaService {
 
 	public void remove(SalaPK id) {
 		salaRepository.deleteById(id);
+	}
+
+	public List<Sala> findAll(Klinika k) {
+		// TODO Auto-generated method stub
+		return salaRepository.findByKlinika(k);
 	}
 
 }

@@ -12,7 +12,9 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -58,23 +60,43 @@ public class KlinikaController {
 	public ResponseEntity<KlinikaDTO> updateCourse(@RequestBody KlinikaDTO kDTO) {
 
 		System.out.println("IDEMO1");
-		Klinika k = service.findOne(kDTO.id);
+		Klinika k = service.findOne(kDTO.getId());
 
 		if (k == null) {
 			return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
 		}
-		k.setNaziv(kDTO.naziv);
-		k.setAdresa(kDTO.adresa);
-		k.setOpis(kDTO.opis);
+		k.setNaziv(kDTO.getNaziv());
+		k.setAdresa(kDTO.getAdresa());
+		k.setOpis(kDTO.getOpis());
 		k= service.save(k);
 		return new ResponseEntity<>(new KlinikaDTO(k), HttpStatus.OK);
 	}
 	
 	@PostMapping(value="/dodaj", consumes=MediaType.APPLICATION_JSON_VALUE, produces=MediaType.APPLICATION_JSON_VALUE)
-	public ResponseEntity<KlinikaDTO> dodajKlinika(@RequestBody KlinikaDTO klinikaDto){
+	public ResponseEntity<Void> dodajKlinika(@RequestBody KlinikaDTO klinikaDto){
+		System.out.println("naziv: " + klinikaDto.getNaziv());
+		System.out.println("adresa: " + klinikaDto.getAdresa());
+		System.out.println("opis: " + klinikaDto.getOpis());
 		Klinika klinika = new Klinika(klinikaDto);
-		service.save(klinika);
-		return new ResponseEntity<>(new KlinikaDTO(klinika), HttpStatus.OK);
+		System.out.println("Kreirana je nova klinika");
+		klinika = service.save(klinika);
+		System.out.println("Dodata je nova klinika");
+		return new ResponseEntity<>(HttpStatus.OK);
+	}
+	
+	@DeleteMapping(value="/{id}")
+	public ResponseEntity<Void> obrisiKlinika(@PathVariable Integer id){
+		Klinika klinika = service.findOne(id);
+		if (klinika.getCenovnik() != null)
+			return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
+		if (klinika.getAdministrator() != null)
+			return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
+		if (klinika.getMedicinskeSestre().size() > 0)
+			return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
+		if (klinika.getSale().size() > 0)
+			return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
+		service.remove(id);
+		return new ResponseEntity<>(HttpStatus.OK);
 	}
 	
 	@GetMapping(value="/adminIds")

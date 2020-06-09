@@ -24,4 +24,12 @@ public interface PregledRepository extends JpaRepository<Pregled,Integer> {
 
 	List<Pregled> findByKartonIsNotNullAndDijagnozaIsNullAndLekar(Lekar lekar);
 
+	List<Pregled> findByKartonIsNotNullAndDijagnozaIsNullAndSalaIsNull();
+
+	List<Pregled> findByKartonIsNullOrDijagnozaIsNotNullOrSalaIsNotNull();
+
+	List<Pregled> findByDijagnozaIsNotNull();
+
+	List<Pregled> findByKartonIsNotNullAndDijagnozaIsNullAndSalaIsNotNullAndLekar(Lekar lekar);
+
 }

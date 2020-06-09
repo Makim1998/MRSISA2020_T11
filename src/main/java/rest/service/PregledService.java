@@ -68,7 +68,21 @@ public class PregledService {
 
 	public List<Pregled> findZakazane(Lekar lekar) {
 		// TODO Auto-generated method stub
-		return pregledRepository.findByKartonIsNotNullAndDijagnozaIsNullAndLekar(lekar);
+		return pregledRepository.findByKartonIsNotNullAndDijagnozaIsNullAndSalaIsNotNullAndLekar(lekar);
+	}
+	public List<Pregled> findZakazane() {
+		// TODO Auto-generated method stub
+		return pregledRepository.findByKartonIsNotNullAndDijagnozaIsNullAndSalaIsNull();
+	}
+
+	public List<Pregled> findNeZakazane() {
+		// TODO Auto-generated method stub
+		return pregledRepository.findByKartonIsNullOrDijagnozaIsNotNullOrSalaIsNotNull();
+	}
+
+	public List<Pregled> findZavrsene() {
+		// TODO Auto-generated method stub
+		return pregledRepository.findByDijagnozaIsNotNull();
 	}
 
 }

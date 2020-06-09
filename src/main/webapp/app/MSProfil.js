@@ -19,8 +19,8 @@ Vue.component('MSProfil',{
 	},
 	template: ` 
 <div class="oneoption">
-<div id = "login" class="sidenavlogin">
-    <form>
+<div class="sidenavlogin">
+    <form class="fProfil" style="width:600px;">
 		<h2 class="text-center">Pregled i promena profila</h2>       
 		<div class="form-group">
 			<label for="username">Email: </label>
@@ -36,25 +36,35 @@ Vue.component('MSProfil',{
     			<input type="text" id = "prezime" class="form-control" v-model="prezime" placeholder="Prezime">
     		</div>
     	</div>
-    	<div class="form-group">
-    		<label for="adresa">Adresa: </label>
-   			<input type="text" id = "adresa" class="form-control" v-model="adresa" placeholder="Adresa">
+    	<div class="form-group"  id = "vrsta">
+    		<div class = "celija">
+				<label for="adresa">Adresa: </label>
+   				<input type="text" id = "adresa" class="form-control" v-model="adresa" placeholder="Adresa">
+   			</div>
+   			<div class = "celija">
+   				<label for="grad">Grad: </label>
+    			<input type="text" id = "grad" class="form-control" v-model="grad" placeholder="Grad">
+    		</div>
+    		<div class = "celija">
+				<label for="drzava">Drzava: </label>
+    			<input type="text"  id = "drzava" class="form-control" v-model="drzava" placeholder="Drzava">
+			</div>
 		</div>
 		<div class="form-group">
-    		<input type="text" id = "grad" class="form-control" v-model="grad" placeholder="Grad">
+			<label for="broj">Jedinstveni br. osiguranika: </label>
+    		<input type="text" id = "broj" class="form-control" disabled v-model="brojOsiguranika" placeholder="Jedinstveni broj osiguranika">
 		</div>
-		<div class="form-group">
-    		<input type="text"  id = "drzava" class="form-control" v-model="drzava" placeholder="Drzava">
+		<div class="form-group" id = "vrsta">
+			<div class = "celija">
+				<label for="lozinka">Lozinka: </label>
+    			<input type="password" id="lozinka" class="form-control" v-model="lozinka" placeholder="Lozinka">
+   			</div>
+   			<div class = "celija">
+   				<label for="ponovljena">Ponovite lozinku: </label>
+    			<input type="password" id = "ponovljena" class="form-control" v-model="ponovljena" placeholder="Ponovi lozinku">
+    		</div>
 		</div>
-		<div class="form-group">
-    		<input type="text" id = "drzava" class="form-control" disabled v-model="brojOsiguranika" placeholder="Jedinstveni broj osiguranika">
-		</div>
-		<div class="form-group">
-    		<input type="password" class="form-control" v-model="lozinka" placeholder="Lozinka">
-		</div>
-		<div class="form-group">
-    		<input type="password" class="form-control" v-model="ponovljena" placeholder="Ponovi lozinku">
-		</div>
+		
 		<div class="form-group">
     		<button type="button" class="btn btn-primary btn-block" v-on:click="izmeni()">Izmeni profil</button>
 		</div>
