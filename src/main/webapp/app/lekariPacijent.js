@@ -67,6 +67,11 @@ Vue.component("lekariPacijent", {
 				Oceni lekara
 			</button>
 			</td>
+			<td>
+			<button type="button" v-on:click = "skok(l)" class="btn btn-primary">
+				Odaberi lekara
+			</button>
+			</td>
 		</tr>
   </tbody>
 </table>
@@ -129,6 +134,10 @@ Vue.component("lekariPacijent", {
         	axios
 		    .get('rest/lekari')
 		    .then(response => (this.lekari=response.data));
+        },
+        skok(lekar){
+        	console.log("skok-lekar");
+        	this.$emit('skok-lekar',lekar);
         },
 		oceni(){
 			console.log("ocena");

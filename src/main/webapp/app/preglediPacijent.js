@@ -8,6 +8,7 @@ Vue.component('pregledi',{
 	template: ` 
 <div id = "preglediPacijent">
 <h2 class="text-center">Pregledi</h2>
+<button  type="button" class="btn btn-primary"  v-on:click="skok()" >Zakazi novi</button>
 <br>
 <table class="table">
   <thead>
@@ -40,6 +41,13 @@ Vue.component('pregledi',{
 </div>		  		  
 `
 	, 
+	methods : {
+		skok(){
+			console.log("novi");
+        	this.$emit('novi');
+		}
+		
+	},
 	mounted(){
 		axios
 	    .get('rest/login/getConcreteUser/Pacijent')

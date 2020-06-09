@@ -1,7 +1,11 @@
+
 .sidenav {
-  height: 100vh;
-  width: 250 px;
-  float:left;
+ height: 100%;
+  width: 250px;
+  position: fixed;
+  z-index: 1;
+  top: 0;
+  left: 0;
   background-color: #111;
   overflow-x: hidden;
   padding-top: 60px;
@@ -26,11 +30,6 @@
   color: #f1f1f1;
 }
 
-.oneoption{
-	float:left;
-	width:calc(100% - 275px);
-}
-
-.sidenavlogin{
-	margin:0 auto!important;
+#page-conpage-wrapper{
+	 margin-left: 250px;
 }

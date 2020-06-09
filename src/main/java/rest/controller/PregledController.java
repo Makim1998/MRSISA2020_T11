@@ -1,8 +1,12 @@
 package rest.controller;
 
 import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Calendar;
+import java.util.Date;
 import java.util.List;
+import java.util.Set;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -12,22 +16,25 @@ import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
+import rest.domain.GodisnjiOdmor;
+import rest.domain.Klinika;
 import rest.domain.Lekar;
+import rest.domain.Pacijent;
 import rest.domain.Pregled;
 import rest.domain.Sala;
 import rest.domain.StavkaCenovnika;
 import rest.domain.TipPregleda;
 import rest.domain.User;
-import rest.dto.LekarDTO;
 import rest.dto.PregledDTO;
 import rest.pk.SalaPK;
+import rest.service.KlinikaService;
 import rest.service.LekariService;
+import rest.service.PacijentService;
 import rest.service.PregledService;
 import rest.service.SalaService;
 import rest.service.StavkaCenovnikaService;
@@ -46,6 +53,10 @@ public class PregledController {
 	private TipPregledaService tipPregledaService;
 	@Autowired
 	private StavkaCenovnikaService stavkaCenovnikaService;
+	@Autowired
+	private KlinikaService klinikaService;
+	@Autowired
+	private PacijentService pacijentService;
 
 	@GetMapping
 	(value="/slobodni")
@@ -140,5 +151,67 @@ public class PregledController {
 		Pregled pregled=new Pregled(pregledDTO,st,l,s,t);
 		pregledService.save(pregled);
 		return new ResponseEntity<>(HttpStatus.OK);
+	}
+	
+	@GetMapping
+	(value = "/posalji")
+	public ResponseEntity<String> posaljiZahtev(@RequestParam String datum,@RequestParam String tip,@RequestParam String klinika,@RequestParam String lekar,@RequestParam String pacijent) throws ParseException {
+		System.out.println(datum + tip + klinika + lekar + pacijent);
+		Lekar l = lekarService.findByEmail(lekar);
+		klinika = klinika.replace(':', ' ');
+		System.out.println(datum + tip + klinika + lekar + pacijent);
+		Klinika k = klinikaService.findByNaziv(klinika);
+		Pacijent pa = pacijentService.findByEmail(pacijent);
+		if(pa.getKarton() == null) {
+			return new ResponseEntity<>("Nemate kreiran zdtavstveni karton!",HttpStatus.BAD_REQUEST);
+		}
+		if(l == null) {
+			return new ResponseEntity<>("Ne postoji lekar!",HttpStatus.BAD_REQUEST);
+		}
+		if(k == null) {
+			return new ResponseEntity<>("Ne postoji klinika!",HttpStatus.BAD_REQUEST);
+		}
+		if(l.getTipPregleda() == null) {
+			return new ResponseEntity<>("Lekar nije specijalizovan za dati tip pregleda!",HttpStatus.BAD_REQUEST);
+		}
+		if(!l.getTipPregleda().getNaziv().equals(tip)) {
+			return new ResponseEntity<>("Lekar nije specijalizovan za dati tip pregleda!",HttpStatus.BAD_REQUEST);
+		}
+		if(!l.getKlinika().getNaziv().equals(klinika)) {
+			return new ResponseEntity<>("Odabrani lekar nije zaposlen u klinici!",HttpStatus.BAD_REQUEST);
+		}
+		SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm");
+		Date vremePregleda = sdf.parse(datum);
+		List<Pregled> svipregledi = pregledService.findAll();
+		for (Pregled p: svipregledi) {
+			if (p.getLekar().getEmail().equals(l.getEmail())) {
+				//pregled za tog lekara
+				Calendar doKada = Calendar.getInstance(); // creates calendar
+				doKada.setTime(p.getDatum()); // sets calendar time/date
+				doKada.add(Calendar.MINUTE, p.getTrajanje()); // adds one hour
+				
+				if (vremePregleda.after(p.getDatum()) && vremePregleda.before(doKada.getTime())){
+					return new ResponseEntity<>("Odabrani lekar je zauzet!",HttpStatus.BAD_REQUEST);
+
+				}
+				
+			}
+		}
+		Set<GodisnjiOdmor> godisnji = l.getGodisnji();
+		for(GodisnjiOdmor go : godisnji) {
+			if (go.getDatumPocetka().before(vremePregleda) && go.getDatumKraja().after(vremePregleda)) {
+				return new ResponseEntity<>("Odabrani lekar je na godisnjem!",HttpStatus.BAD_REQUEST);
+
+			}
+		}
+		Pregled p = new Pregled();
+		p.setDatum(vremePregleda);
+		p.setKarton(pa.getKarton());
+		p.setLekar(l);
+		p.setTip(l.getTipPregleda());
+		//pregledService.save(p);
+		return new ResponseEntity<>("Ok!",HttpStatus.OK);
+		
+		
 	}
 }

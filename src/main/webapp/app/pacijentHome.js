@@ -1,6 +1,6 @@
 const Klinike = { template: '<klinikePacijent></klinikePacijent>' }
 const LekariPacijent = { template: '<lekariPacijent></lekariPacijent>' }
-
+const ZakazivanjePacijent = {template: '<zakazivanje></zakazivanje>'}
 const Pregledi = {template: '<pregledi></pregledi>'}
 const Karton = {template: '<karton></karton>'}
 const Profil = {template: '<pacijentProfil></pacijentProfil>'}
@@ -10,7 +10,12 @@ Vue.component('pacijentHome',{
 	data: function(){
 		return {
 			component:"blank",
-			klinika: null
+			klinika: null,
+			lekar: null,
+			poruka:{
+	    		datum:"",
+	    		tip:""
+	    	}
 		}
 		
 	},
@@ -19,7 +24,7 @@ Vue.component('pacijentHome',{
 		<div  id="mySidenav" class="sidenav">
 	      	<a href = "#klinike"v-on:click = "component = 'klinike'"  >Klinike</a>
 	      	<a href = "#lekari" v-on:click = "component = 'lekari'"  >Lekari</a>
-			<a href = "#pregledi" v-on:click = "component = 'pregledi'">Pregledi</a>
+			<a href = "#pregledi" v-on:click = "component = 'pregledici'">Pregledi</a>
 			<a href = "#karton" v-on:click = "component = 'karton'">Zdravstveni karton</a>
 			<a href = "#profil" v-on:click = "component = 'profil'" >Profil</a>
 			<div class="align-self-center mx-auto"> 
@@ -29,20 +34,24 @@ Vue.component('pacijentHome',{
 		</div>
 		<!-- /#sidebar-wrapper -->
 	     <div id="page-content-wrapper" >
-			<div v-if="component === 'klinike'">
-			  <klinikePacijent  v-on:skok = "javiSe($event)" ></klinikePacijent>
+	     	<div v-if="component === 'pregledici'">
+			  <pregledi  v-on:novi = "novica()"></pregledi>
+			</div>
+			<div v-else-if="component === 'klinike'">
+			  <klinikePacijent  v-on:skok = "javiSe($event)"  v-on:poruka = "porukaa($event)"></klinikePacijent>
 			</div>
 			<div v-else-if="component === 'lekari'">
-			  <lekariPacijent v-bind:klinika="klinika"></lekariPacijent>
+			  <lekariPacijent v-on:skok-lekar = "zakazivanje($event)" v-bind:klinika="klinika"></lekariPacijent>
 			</div>
-			<div v-else-if="component === 'pregledi'">
-			  <pregledi></pregledi>
-			</div>
+			
 			<div v-else-if="component === 'profil'">
 			  <pacijentProfil></pacijentProfil>
 			</div>
 			<div v-else-if="component === 'karton'">
 			  <karton></karton>
+			</div>
+			<div v-else-if="component === 'zakazivanjice'">
+			  <zakazivanje v-on:stigao= "stigao()" v-on:nazad = "nazad()" v-bind:lekarodabran="lekar"  v-bind:date="poruka.datum" v-bind:type="poruka.tip" v-bind:klinikaodabrana = "klinika"></zakazivanje>
 			</div>
 			<div v-else>
 			  <blank></blank>
@@ -50,16 +59,18 @@ Vue.component('pacijentHome',{
 			
 	    </div>
 	    <!-- /#page-content-wrapper -->
+	    <div class ="footer"></div>
 	</div>
 `
 	, 
 	components:{
 		'klinike': Klinike,
-		'pregledi': Pregledi,
+		'pregledici': Pregledi,
 		'karton': Karton,
 		'profil': Profil,
 		'lekari': LekariPacijent,
-		'blank':Empty
+		'blank':Empty,
+		'zakazivanjice': ZakazivanjePacijent
 	},
 	
 	methods : {
@@ -69,6 +80,37 @@ Vue.component('pacijentHome',{
         	this.klinika = klinika;
         	console.log(this.klinika.naziv);
         	this.component = 'lekari';
+        },
+        zakazivanje(lekar){
+        	console.log("skok zakazivanje");
+        	console.log(lekar);
+        	console.log(this.poruka.datum);
+        	console.log(this.poruka.tip);
+        	this.lekar = lekar;
+        	console.log(this.lekar.klinika);
+        	this.component = 'zakazivanjice';
+        },
+        novica(n) {
+        	console.log(n);
+        	this.component = 'zakazivanjice';
+        },
+        nazad() {
+        	console.log("skok nazad")
+        	this.component = 'pregledici';
+        },
+        stigao() {
+        	console.log("stigao do zakazivanja")
+        	this.poruka.datum = "";
+        	this.poruka.tip = "";
+        	this.klinika = null;
+        	this.lekar = null;
+        },
+        porukaa(p){
+        	console.log("stigla poruka");
+        	this.poruka.datum = p.datum;
+        	this.poruka.tip = p.tip;
+        	console.log(this.poruka.datum);
+        	console.log(this.poruka.tip);
         },
 		odjava() {
         	axios
