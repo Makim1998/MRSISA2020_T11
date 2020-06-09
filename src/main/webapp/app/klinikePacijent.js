@@ -2,6 +2,10 @@ Vue.component("klinikePacijent", {
 	data: function () {
 	    return {
 	    	tipovi: [],
+	    	poruka:{
+	    		datum:"",
+	    		tip:""
+	    	},
 	    	input: {	    		 
                 naziv: "",
                 opis: "",
@@ -177,15 +181,22 @@ Vue.component("klinikePacijent", {
         pretraga() {
         	console.log("pretraga");
         	console.log(this.filter.datum);
-        	console.log($("#datetimepicker4").val())
+        	console.log($("#datetimepicker4").val());
+        	
         	if(!moment( $("#datetimepicker4").val(), 'YYYY-MM-DD HH:mm', true).isValid()){
         		alert("Datum nije u ispravnom formatu!\n (YYYY-MM-DD HH:mm)");
+        		return;
+        	}
+        	if(!moment( $("#datetimepicker4").val(), 'YYYY-MM-DD HH:mm', true).isAfter(moment())){
+        		alert("Odaberite datum i vreme u buducnosti!");
         		return;
         	}
         	if(this.filter.tip == undefined || this.filter.tip === ""){
         		alert("Unesite ispravno tip pregleda!");
         		return;
         	}
+        	this.poruka.datum = $("#datetimepicker4").val();
+        	this.poruka.tip = this.filter.tip;
         	axios
     	    .get('rest/klinika/pretraga?datum='+$("#datetimepicker4").val() +'&tip='+this.filter.tip +'&naziv='+this.filter.naziv +'&adresa='+this.filter.adresa +'&prosek='+this.filter.prosek)
     	    .then(response => {
@@ -207,6 +218,7 @@ Vue.component("klinikePacijent", {
         },
         skok(klinika){
         	console.log("skok");
+        	this.$emit('poruka',this.poruka);
         	this.$emit('skok',klinika);
         },
 		init(){
