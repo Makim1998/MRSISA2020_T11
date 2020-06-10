@@ -3,6 +3,8 @@ package rest.controller;
 import java.util.ArrayList;
 import java.util.List;
 
+import javax.servlet.http.HttpServletRequest;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
@@ -16,6 +18,8 @@ import org.springframework.web.bind.annotation.RestController;
 
 import rest.domain.AdministratorKlinike;
 import rest.domain.Klinika;
+import rest.domain.Uloga;
+import rest.domain.User;
 import rest.dto.AdministratorKlinikeDTO;
 import rest.service.AdminKService;
 import rest.service.KlinikaService;
@@ -31,9 +35,19 @@ public class AdministratorKlinikeController {
 	@Autowired
 	private KlinikaService klinikaService;
 	
+	@Autowired
+	public HttpServletRequest request;
+	
+	private Uloga tipKorisnika() {
+		User logedIn = (User) request.getSession().getAttribute("korisnik");
+		return logedIn.getUloga();
+	}
+	
 	@PutMapping(value="/izmeni",consumes = "application/json")
 	public ResponseEntity<AdministratorKlinikeDTO> updateCourse(@RequestBody AdministratorKlinikeDTO admKDTO) {
-
+		if(tipKorisnika()!=Uloga.ADMINISTRATOR_KLINIKE && tipKorisnika()!=Uloga.ADMINISTRATOR_KLINICKOG_CENTRA ) {
+			return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
+		}
 		// a course must exist
 		System.out.println("IDEMO1");
 		AdministratorKlinike admk = adminKService.findOne(admKDTO.getId());
@@ -68,6 +82,9 @@ public class AdministratorKlinikeController {
 
 	@GetMapping
 	public ResponseEntity<List<AdministratorKlinikeDTO>> getAdmins(){
+		if(tipKorisnika()!=Uloga.ADMINISTRATOR_KLINIKE && tipKorisnika()!=Uloga.ADMINISTRATOR_KLINICKOG_CENTRA ) {
+			return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
+		}
 		List<AdministratorKlinikeDTO> ret = new ArrayList<AdministratorKlinikeDTO>();
 		List<AdministratorKlinike> admins = adminKService.findAll();
 		for (AdministratorKlinike a: admins) {
@@ -79,6 +96,9 @@ public class AdministratorKlinikeController {
 	
 	@PostMapping(value="/dodaj", consumes=MediaType.APPLICATION_JSON_VALUE, produces=MediaType.APPLICATION_JSON_VALUE)
 	public ResponseEntity<Void> addAdmin(@RequestBody AdministratorKlinikeDTO dto){
+		if(tipKorisnika()!=Uloga.ADMINISTRATOR_KLINIKE && tipKorisnika()!=Uloga.ADMINISTRATOR_KLINICKOG_CENTRA ) {
+			return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
+		}
 		dto.setPrviPut(true);
 		AdministratorKlinike admin = new AdministratorKlinike(dto);
 		Klinika klinika = klinikaService.findOne(dto.getKc_id());

@@ -112,7 +112,10 @@ Vue.component('izvestaj', {
 			    .get('rest/Pregled/zavrseni/'+response.data.id,response.data.id)
 			    .then(response => (this.pregledi=response.data));
 		    });
-	    });
+	    })
+	    .catch(response => {
+			this.$router.push("/");
+		});
 
 	},
 });

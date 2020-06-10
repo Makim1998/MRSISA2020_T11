@@ -5,6 +5,8 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Set;
 
+import javax.servlet.http.HttpServletRequest;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
@@ -18,6 +20,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import rest.domain.Klinika;
 import rest.domain.MedicinskaSestra;
+import rest.domain.Uloga;
 import rest.domain.User;
 import rest.dto.MedicinskaSestraDTO;
 import rest.service.KlinikaService;
@@ -33,6 +36,14 @@ public class MSController {
 	@Autowired
 	private KlinikaService klinikaService;
 	
+	@Autowired
+	public HttpServletRequest request;
+	
+	private Uloga tipKorisnika() {
+		User logedIn = (User) request.getSession().getAttribute("korisnik");
+		return logedIn.getUloga();
+	}
+	
 	@GetMapping
 	public ResponseEntity<List<MedicinskaSestraDTO>> findAll(){
 		List<MedicinskaSestra> sestre = service.findAll();
@@ -46,6 +57,9 @@ public class MSController {
 	
 	@PutMapping(value="/izmeni",consumes = "application/json")
 	public ResponseEntity<MedicinskaSestraDTO> updateCourse(@RequestBody MedicinskaSestraDTO dto){
+		if(tipKorisnika()!=Uloga.ADMINISTRATOR_KLINIKE && tipKorisnika()!=Uloga.MEDICINSKA_SESTRA) {
+			return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
+		}
 		MedicinskaSestra ms = service.findOne(dto.getId());
 		ms.setAdresa(dto.getAdresa());
 		ms.setDrzava(dto.getDrzava());
@@ -60,6 +74,9 @@ public class MSController {
 	
 	@PostMapping(value="/dodaj",consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
 	public ResponseEntity<User> login(@RequestBody MedicinskaSestraDTO dto) throws ParseException{
+		if(tipKorisnika()!=Uloga.ADMINISTRATOR_KLINIKE) {
+			return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
+		}
 		dto.setPrviPut(true);
 		MedicinskaSestra ms = new MedicinskaSestra(dto);
 		Klinika klinika = klinikaService.findOne(dto.getKc_id());

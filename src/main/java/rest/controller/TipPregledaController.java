@@ -3,6 +3,8 @@ package rest.controller;
 import java.util.ArrayList;
 import java.util.List;
 
+import javax.servlet.http.HttpServletRequest;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
@@ -19,6 +21,7 @@ import org.springframework.web.bind.annotation.RestController;
 import rest.domain.Klinika;
 import rest.domain.Pregled;
 import rest.domain.TipPregleda;
+import rest.domain.Uloga;
 import rest.domain.User;
 import rest.dto.TipPregledaDTO;
 import rest.service.KlinikaService;
@@ -34,6 +37,14 @@ public class TipPregledaController {
 	private KlinikaService klinikaService;
 	@Autowired
 	private PregledService pregledService;
+	
+	@Autowired
+	public HttpServletRequest request;
+	
+	private Uloga tipKorisnika() {
+		User logedIn = (User) request.getSession().getAttribute("korisnik");
+		return logedIn.getUloga();
+	}
 
 	@GetMapping
 	public ResponseEntity<List<TipPregledaDTO>> getTipPregleda() {
@@ -50,7 +61,9 @@ public class TipPregledaController {
 	}
 	@PutMapping(value="/izmeni",consumes = "application/json")
 	public ResponseEntity<TipPregledaDTO> updateCourse(@RequestBody TipPregledaDTO tipPregledaDTO) {
-
+		if(tipKorisnika()!=Uloga.ADMINISTRATOR_KLINIKE) {
+			return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
+		}
 		// a course must exist
 		TipPregleda tipPregleda = tipPregledaService.findOne(tipPregledaDTO.getId());
 
@@ -66,7 +79,9 @@ public class TipPregledaController {
 	}
 	@DeleteMapping(value = "/{id}")
 	public ResponseEntity<Void> deleteCourse(@PathVariable Integer id) {
-
+		if(tipKorisnika()!=Uloga.ADMINISTRATOR_KLINIKE) {
+			return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
+		}
 		TipPregleda tip = tipPregledaService.findOne(id);
 		
 		List<Pregled> ztermini = pregledService.findZauzete(tip);
@@ -83,6 +98,9 @@ public class TipPregledaController {
 	}
 	@PostMapping(value="/dodaj",consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
 	public ResponseEntity<User> login(@RequestBody TipPregledaDTO tipPregledaDTO){
+		if(tipKorisnika()!=Uloga.ADMINISTRATOR_KLINIKE) {
+			return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
+		}
 		Klinika k=klinikaService.findOne(tipPregledaDTO.getKlinika());
 		TipPregleda tipPregleda=new TipPregleda(tipPregledaDTO.getId(),tipPregledaDTO.getNaziv(),k);
 		tipPregledaService.save(tipPregleda);

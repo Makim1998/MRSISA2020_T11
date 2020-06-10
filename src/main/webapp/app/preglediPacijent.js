@@ -70,8 +70,10 @@ Vue.component('pregledi',{
  					alert("Greska.");
  				};
 	    	 });
-	    });
-		
+	    })
+	    .catch(response => {
+	    	this.$router.push("/");
+		});	
 		
 	}
 });

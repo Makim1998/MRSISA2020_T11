@@ -5,6 +5,8 @@ import java.text.ParseException;
 import java.util.ArrayList;
 import java.util.List;
 
+import javax.servlet.http.HttpServletRequest;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
@@ -21,6 +23,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import rest.domain.Lekar;
 import rest.domain.Pregled;
+import rest.domain.Uloga;
 import rest.domain.User;
 import rest.dto.LekarDTO;
 import rest.service.LekariService;
@@ -36,6 +39,14 @@ public class LekariController {
 	private LekariService lekariService;
 	@Autowired
 	private PregledService pregledService;
+	
+	@Autowired
+	public HttpServletRequest request;
+	
+	private Uloga tipKorisnika() {
+		User logedIn = (User) request.getSession().getAttribute("korisnik");
+		return logedIn.getUloga();
+	}
 	
 	@GetMapping
 	public ResponseEntity<List<LekarDTO>> getLekari() {
@@ -54,7 +65,9 @@ public class LekariController {
 	}
 	@DeleteMapping(value = "/{id}")
 	public ResponseEntity<Void> deleteCourse(@PathVariable Integer id) {
-
+		if(tipKorisnika()!=Uloga.ADMINISTRATOR_KLINIKE) {
+			return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
+		}
 		Lekar lekar = lekariService.findOne(id);
 		List<Pregled> ztermini = pregledService.findZauzete(lekar);
 		if (ztermini.isEmpty()){
@@ -71,7 +84,9 @@ public class LekariController {
 	}
 	@PutMapping(value="/izmeni",consumes = "application/json")
 	public ResponseEntity<LekarDTO> updateCourse(@RequestBody LekarDTO lekarDTO) {
-
+		if(tipKorisnika()!=Uloga.ADMINISTRATOR_KLINIKE && tipKorisnika()!=Uloga.LEKAR) {
+			return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
+		}
 		// a course must exist
 		Lekar lekar = lekariService.findOne(lekarDTO.getId());
 
@@ -92,12 +107,18 @@ public class LekariController {
 	}
 	@PostMapping(value="/dodaj",consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
 	public ResponseEntity<User> login(@RequestBody LekarDTO lekarDTO) throws ParseException{
+		if(tipKorisnika()!=Uloga.ADMINISTRATOR_KLINIKE) {
+			return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
+		}
 		lekarDTO.setPrviPut(true);
 		lekariService.addLekar(lekarDTO);
 		return new ResponseEntity<>(HttpStatus.OK);
 	}
 	@PostMapping(value="/ocena",  produces=MediaType.APPLICATION_JSON_VALUE)
 	public ResponseEntity<LekarDTO> ocene(@RequestParam String lekar,@RequestParam String ocena){
+		if(tipKorisnika()!=Uloga.PACIJENT) {
+			return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
+		}
 		Lekar l = lekariService.findByEmail(lekar);
 		System.out.println("Ocenjivanje lekara");
 		System.out.println(ocena);

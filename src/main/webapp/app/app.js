@@ -69,7 +69,7 @@ var app = new Vue({
     mounted() {
         if(!this.authenticated) {
         	console.log("Not logged in!");
-            this.$router.replace({ name: "login" });
+            //this.$router.replace({ name: "login" });
         }
     },
     methods: {

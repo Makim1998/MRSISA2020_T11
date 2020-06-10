@@ -11,6 +11,8 @@ import java.util.Date;
 import java.util.List;
 import java.util.Set;
 
+import javax.servlet.http.HttpServletRequest;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
@@ -36,6 +38,7 @@ import rest.domain.Pregled;
 import rest.domain.Sala;
 import rest.domain.StavkaCenovnika;
 import rest.domain.TipPregleda;
+import rest.domain.Uloga;
 import rest.domain.User;
 
 import rest.dto.KartonDTO;
@@ -80,6 +83,13 @@ public class PregledController {
 	private PacijentService patientService;
 	@Autowired
 	private MailService mailService;
+	@Autowired
+	public HttpServletRequest request;
+	
+	private Uloga tipKorisnika() {
+		User logedIn = (User) request.getSession().getAttribute("korisnik");
+		return logedIn.getUloga();
+	}
 	@GetMapping
 	(value="/slobodni")
 	public ResponseEntity<List<PregledDTO>> getSlobodniTerminiPregleda() {
@@ -192,6 +202,9 @@ public class PregledController {
 	}
 	@PutMapping(value="/ispitaj",consumes = "application/json")
 	public ResponseEntity<PregledDTO> ispitajPregled(@RequestBody PregledSala pregledSala) throws ParseException {
+		if(tipKorisnika()!=Uloga.ADMINISTRATOR_KLINIKE) {
+			return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
+		}
 		SalaDTO sala=pregledSala.sala;
 		PregledDTO pregled=pregledSala.pregled;
 		//System.out.println("((((((((((((((((((((((((((((((((((((((((((((((");
@@ -324,6 +337,9 @@ public class PregledController {
 	}
 	@PutMapping(value="/potvrdi",consumes = "application/json")
 	public ResponseEntity<PregledDTO> updateCourse(@RequestBody PregledDTO preg) {
+		if(tipKorisnika()!=Uloga.ADMINISTRATOR_KLINIKE) {
+			return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
+		}
 		System.out.println("ispitan za potvrdu PREGLED:"+preg.getDatum()+preg.getSala().getNaziv()+preg.getLekar().getUsername());
 		Pregled p = pregledService.findOne(preg.getId());
 		if (p == null) {
@@ -364,7 +380,9 @@ public class PregledController {
 	}
 	@DeleteMapping(value = "/{id}")
 	public ResponseEntity<Void> deleteCourse(@PathVariable Integer id) {
-
+		if(tipKorisnika()!=Uloga.ADMINISTRATOR_KLINIKE) {
+			return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
+		}
 		Pregled pregled = pregledService.findOne(id);
 		System.out.println("brisanje");
 		if (pregled != null) {
@@ -376,6 +394,9 @@ public class PregledController {
 	}
 	@PostMapping(value="/dodaj",consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
 	public ResponseEntity<User> login(@RequestBody PregledDTO pregledDTO){
+		if(tipKorisnika()!=Uloga.ADMINISTRATOR_KLINIKE && tipKorisnika()!=Uloga.LEKAR) {
+			return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
+		}
 		StavkaCenovnika st=stavkaCenovnikaService.findOne(pregledDTO.getCena().getId());
 		Lekar l=lekarService.findOne(pregledDTO.getLekar().getId());
 		Sala s=null;
@@ -412,6 +433,9 @@ public class PregledController {
 	@GetMapping
 	(value = "/posalji")
 	public ResponseEntity<String> posaljiZahtev(@RequestParam String datum,@RequestParam String tip,@RequestParam String klinika,@RequestParam String lekar,@RequestParam String pacijent) throws ParseException {
+		if(tipKorisnika()!=Uloga.PACIJENT ) {
+			return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
+		}
 		System.out.println(datum + tip + klinika + lekar + pacijent);
 		Lekar l = lekarService.findByEmail(lekar);
 		klinika = klinika.replace(':', ' ');

@@ -6,6 +6,8 @@ import java.util.Collections;
 import java.util.HashSet;
 import java.util.List;
 
+import javax.servlet.http.HttpServletRequest;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
@@ -29,6 +31,7 @@ import rest.domain.Pregled;
 import rest.domain.Sala;
 import rest.domain.StavkaCenovnika;
 import rest.domain.TipPregleda;
+import rest.domain.Uloga;
 import rest.domain.User;
 import rest.dto.KartonDTO;
 import rest.dto.LekarDTO;
@@ -67,6 +70,13 @@ public class OperacijaController {
 	private StavkaCenovnikaService stavkaCenovnikaService;
 	@Autowired
 	private MailService mailService;
+	@Autowired
+	public HttpServletRequest request;
+	
+	private Uloga tipKorisnika() {
+		User logedIn = (User) request.getSession().getAttribute("korisnik");
+		return logedIn.getUloga();
+	}
 /*
 	@GetMapping
 	(value="/slobodni")
@@ -202,6 +212,9 @@ public class OperacijaController {
 	}*/
 	@PostMapping(value="/dodaj",consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
 	public ResponseEntity<User> dodajOperaciju(@RequestBody OperacijaDTO operacijaDTO){
+		if(tipKorisnika()!=Uloga.LEKAR) {
+			return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
+		}
 		StavkaCenovnika st=stavkaCenovnikaService.findOne(operacijaDTO.getCena().getId());
 		//ArrayList<Lekari>
 		HashSet<Lekar> lekari = new HashSet<Lekar>();

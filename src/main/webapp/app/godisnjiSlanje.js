@@ -75,10 +75,10 @@ Vue.component('godisnjiSlanje',{
 	    	this.id=response.data.id;
 	    	this.username = response.data.email;
 	    	this.kc_id=response.data.kc_id;
-		    })
-		    .catch(response => {
-				this.$router.push("/");
-			});
+		})
+		.catch(response => {
+		this.$router.push("/");
+		});
 		document.getElementById('od').valueAsDate = new Date();
 		document.getElementById('do').valueAsDate = new Date();
 		}

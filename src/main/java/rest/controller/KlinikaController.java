@@ -8,6 +8,8 @@ import java.util.Date;
 import java.util.List;
 import java.util.Set;
 
+import javax.servlet.http.HttpServletRequest;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
@@ -26,6 +28,8 @@ import rest.domain.GodisnjiOdmor;
 import rest.domain.Klinika;
 import rest.domain.Lekar;
 import rest.domain.Pregled;
+import rest.domain.Uloga;
+import rest.domain.User;
 import rest.dto.KlinikaDTO;
 import rest.dto.LekarDTO;
 import rest.service.KlinikaService;
@@ -42,6 +46,13 @@ public class KlinikaController {
 	@Autowired
 	private PregledService pregledi;
 	
+	@Autowired
+	public HttpServletRequest request;
+	
+	private Uloga tipKorisnika() {
+		User logedIn = (User) request.getSession().getAttribute("korisnik");
+		return logedIn.getUloga();
+	}	
 
 	
 	@GetMapping
@@ -58,7 +69,9 @@ public class KlinikaController {
 	
 	@PutMapping(value="/izmeni",consumes = "application/json")
 	public ResponseEntity<KlinikaDTO> updateCourse(@RequestBody KlinikaDTO kDTO) {
-
+		if(tipKorisnika()!=Uloga.ADMINISTRATOR_KLINIKE && tipKorisnika()!=Uloga.ADMINISTRATOR_KLINICKOG_CENTRA ) {
+			return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
+		}
 		System.out.println("IDEMO1");
 		Klinika k = service.findOne(kDTO.getId());
 
@@ -74,6 +87,9 @@ public class KlinikaController {
 	
 	@PostMapping(value="/dodaj", consumes=MediaType.APPLICATION_JSON_VALUE, produces=MediaType.APPLICATION_JSON_VALUE)
 	public ResponseEntity<Void> dodajKlinika(@RequestBody KlinikaDTO klinikaDto){
+		if(tipKorisnika()!=Uloga.ADMINISTRATOR_KLINICKOG_CENTRA ) {
+			return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
+		}
 		System.out.println("naziv: " + klinikaDto.getNaziv());
 		System.out.println("adresa: " + klinikaDto.getAdresa());
 		System.out.println("opis: " + klinikaDto.getOpis());
@@ -86,6 +102,9 @@ public class KlinikaController {
 	
 	@DeleteMapping(value="/{id}")
 	public ResponseEntity<Void> obrisiKlinika(@PathVariable Integer id){
+		if(tipKorisnika()!=Uloga.ADMINISTRATOR_KLINICKOG_CENTRA ) {
+			return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
+		}
 		Klinika klinika = service.findOne(id);
 		if (klinika.getCenovnik() != null)
 			return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
@@ -101,6 +120,9 @@ public class KlinikaController {
 	
 	@GetMapping(value="/adminIds")
 	public ResponseEntity<List<Integer>> getAdminss(){
+		if(tipKorisnika()!=Uloga.ADMINISTRATOR_KLINICKOG_CENTRA ) {
+			return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
+		}
 		List<Klinika> klinike = service.findAll();
 		List<Integer> ids = new ArrayList<Integer>();
 		for (Klinika k: klinike) {
@@ -112,6 +134,9 @@ public class KlinikaController {
 	
 	@GetMapping(value="/cenovnikIds")
 	public ResponseEntity<List<Integer>> getCenovnici(){
+		if(tipKorisnika()!=Uloga.ADMINISTRATOR_KLINICKOG_CENTRA ) {
+			return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
+		}
 		List<Klinika> klinike = service.findAll();
 		List<Integer> ids = new ArrayList<Integer>();
 		for (Klinika k: klinike) {
@@ -123,6 +148,9 @@ public class KlinikaController {
 	
 	@PostMapping(value="/ocena",  produces=MediaType.APPLICATION_JSON_VALUE)
 	public ResponseEntity<KlinikaDTO> ocene(@RequestParam String klinika,@RequestParam String ocena){
+		if(tipKorisnika()!=Uloga.PACIJENT) {
+			return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
+		}
 		Klinika k = service.findByNaziv(klinika);
 		System.out.println("Ocenjivanje klinike");
 		System.out.println(ocena);
