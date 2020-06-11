@@ -6,6 +6,8 @@ Vue.component("zakazivanje", {
 	    	lekari: [],
 	    	klinike: [],
 	    	sale: [],
+	    	predefinisan: "",
+	    	predefinisani: [],
 	    	tip:"",
 	    	lekar:"",
 	    	klinika:""
@@ -16,7 +18,13 @@ Vue.component("zakazivanje", {
 <div id = "zakazivanjePregledaPacijent">
 
 <form>
-<h2 class="text-center">Zakazivanje pregleda</h2>   
+<h2 class="text-center">Zakazivanje pregleda</h2>  
+  <div class="form-group">
+		<label for = "predef">Izaberite predefinisan pregled: </label>
+		<select id = "predef"  class= "form-control" @change="onChange($event)" v-model ="predefinisan">
+			<option v-for="(p,index) in predefinisani" :value="index">Pregled {{++index}}</option>
+		</select>
+  </div>
   <div class="form-group">
 		<label for = "datetimepicker4">Datum i vreme: </label>
 		<input  type='text' class="form-control"  id='datetimepicker4' required />
@@ -56,6 +64,16 @@ Vue.component("zakazivanje", {
 `
 	, 
 	methods : {
+		onChange(event) {
+	            var preg = this.predefinisani[parseInt(event.target.value)];
+
+	            
+    			$("#datetimepicker4").val(preg.formatiran2);
+    			this.tip = preg.tip.naziv;
+    			this.lekar = preg.lekar.username;
+    			this.klinika = preg.lekar.klinika;
+	            
+	    },
 		posalji() {
 			
 			if(!moment( $("#datetimepicker4").val(), 'YYYY-MM-DD HH:mm', true).isValid()){
@@ -97,7 +115,9 @@ Vue.component("zakazivanje", {
 	mounted(){
 		console.log("zakazivanje");
 		$('#datetimepicker4').datetimepicker();
-		
+		axios
+	    .get('rest/Pregled/sviSlobodniPregledi')
+	    .then(response => (this.predefinisani=response.data));
 		axios
 	    .get('rest/lekari')
 	    .then(response => (this.lekari=response.data));

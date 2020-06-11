@@ -91,6 +91,24 @@ public class PregledController {
 		}
 		return new ResponseEntity<>(slterminiDTO, HttpStatus.OK);
 	}
+	
+	@GetMapping
+	(value="/sviSlobodniPregledi")
+	public ResponseEntity<List<PregledDTO>> getPreglediZaPacijenta() {
+		System.out.println("pregledi za pacijenta");
+		List<Pregled> svi = pregledService.findAll();
+		List<PregledDTO> zaPacijenta = new ArrayList<>();
+		for (Pregled p : svi) {
+			if(p.getKarton() == null ) {
+					zaPacijenta.add(new PregledDTO(p));
+					System.out.println(p.getId());
+				
+			}
+		}
+		System.out.println(zaPacijenta.size());
+		return new ResponseEntity<>(zaPacijenta, HttpStatus.OK);
+	}
+	
 	@GetMapping
 	(value="/zaPacijenta")
 	public ResponseEntity<List<PregledDTO>> getPreglediZaPacijenta(@RequestParam String email) {
@@ -436,12 +454,33 @@ public class PregledController {
 
 			}
 		}
-		Pregled p = new Pregled();
-		p.setDatum(vremePregleda);
-		p.setKarton(pa.getKarton());
-		p.setLekar(l);
-		p.setTip(l.getTipPregleda());
-		//pregledService.save(p);
+		List<Pregled> svi = pregledService.findAll();
+		boolean predef = false;
+		for(Pregled p1 : svi) {
+			String datumPp = sdf.format(p1.getDatum());
+			if(datumPp.equals(datum) && p1.getLekar().getEmail().equals(l.getEmail())) {
+				System.out.println("Predefinisan pregled");
+				predef = true;
+				System.out.println(pa.getKarton() == null);
+				//System.out.println(pa.getKarton().getIme());
+				p1.setKarton(pa.getKarton());
+				p1.setSala(null);
+				pregledService.save(p1);
+				System.out.println("sacuvan pregled");
+			}
+		}
+		if (!predef) {
+			Pregled p = new Pregled();
+			p.setDatum(vremePregleda);
+			p.setKarton(pa.getKarton());
+			p.setLekar(l);
+			p.setTip(l.getTipPregleda());
+			StavkaCenovnika st = stavkaCenovnikaService.findOneByUsluga(l.getTipPregleda().getNaziv());
+			System.out.println(st == null);
+			p.setCena(st);
+			pregledService.save(p);
+		}
+
 		return new ResponseEntity<>("Ok!",HttpStatus.OK);}
 		
 		

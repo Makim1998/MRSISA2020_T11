@@ -40,6 +40,13 @@ insert into tip_pregleda (id,naziv,klinika) values (2,'Klinicki',1);
 insert into tip_pregleda (id,naziv,klinika) values (3,'Oftamoloski',2);
 
 insert into cenovnik (id,klinika_id) values (1,1);
+insert into cenovnik (id,klinika_id) values (2,2);
+
+
+insert into stavka_cenovnika (cenovnik_id,id,cena,usluga) values (1,20,1700,'Sistematski');
+insert into stavka_cenovnika (cenovnik_id,id,cena,usluga) values (1,30,1500,'Klinicki');
+insert into stavka_cenovnika (cenovnik_id,id,cena,usluga) values (2,40,2500,'Oftamoloski');
+
 insert into stavka_cenovnika (cenovnik_id,id,cena,usluga) values (1,1,2000,'Opsti pregled');
 
 insert into user (id,ime,prezime,email,password,uloga,broj_osiguranika,prvi_put) values (2,'Jovan','Jovanovic','AdminK1','admink1',0,3242543242541,false);

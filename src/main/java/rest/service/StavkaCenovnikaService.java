@@ -23,5 +23,9 @@ public class StavkaCenovnikaService {
 	public StavkaCenovnika findOne(Integer id) {
 		return stavkaCenovnikaRepository.findById(id).orElseGet(null);
 	}
+	public 	StavkaCenovnika findOneByUsluga(String usluga) {
+		return stavkaCenovnikaRepository.findOneByUsluga(usluga);
+	}
+
 
 }

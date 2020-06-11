@@ -10,6 +10,7 @@ public class PregledDTO implements Comparable<PregledDTO>{
 	private Integer id;
 	private Date datum;
 	private String formatiran;
+	private String formatiran2;
 	private int trajanje;
 	private TipPregledaDTO tip;
 	private KartonDTO karton;
@@ -22,8 +23,11 @@ public class PregledDTO implements Comparable<PregledDTO>{
 		this.id=s.getId();
 		this.datum=s.getDatum();
 		String pattern = "dd.MM.yyyy. HH:mm";
+		String pattern2 = "yyyy-MM-dd HH:mm";
 		SimpleDateFormat simpleDateFormat = new SimpleDateFormat(pattern);
 		this.formatiran = simpleDateFormat.format(s.getDatum());
+		SimpleDateFormat simpleDateFormat2 = new SimpleDateFormat(pattern2);
+		this.formatiran2 = simpleDateFormat2.format(s.getDatum());
 		this.trajanje=s.getTrajanje();
 		this.tip=new TipPregledaDTO(s.getTip(),s.getLekar().getKlinika().getId());
 		try {
@@ -107,6 +111,14 @@ public class PregledDTO implements Comparable<PregledDTO>{
 
 	public LekarDTO getLekar() {
 		return lekar;
+	}
+	
+	public String getFormatiran2() {
+		return formatiran2;
+	}
+
+	public void setFormatiran2(String formatiran2) {
+		this.formatiran2 = formatiran2;
 	}
 
 	public void setLekar(LekarDTO lekar) {
