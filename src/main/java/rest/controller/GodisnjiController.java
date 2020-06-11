@@ -4,6 +4,8 @@ import java.text.ParseException;
 import java.util.ArrayList;
 import java.util.List;
 
+import javax.servlet.http.HttpServletRequest;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
@@ -23,6 +25,7 @@ import rest.domain.Klinika;
 import rest.domain.Lekar;
 import rest.domain.MedicinskaSestra;
 import rest.domain.Pregled;
+import rest.domain.Uloga;
 import rest.domain.User;
 import rest.dto.GodisnjiDTO;
 import rest.dto.PregledDTO;
@@ -50,9 +53,19 @@ public class GodisnjiController {
 	private MSService msservice;
 	@Autowired
 	private MailService mailService;
+	@Autowired
+	public HttpServletRequest request;
+	
+	private Uloga tipKorisnika() {
+		User logedIn = (User) request.getSession().getAttribute("korisnik");
+		return logedIn.getUloga();
+	}
 	@GetMapping
 	(value = "/svi/{id}")
 	public ResponseEntity<List<GodisnjiDTO>> getGodisnjiKlinike(@PathVariable Integer id) throws ParseException {
+		if(tipKorisnika()!=Uloga.ADMINISTRATOR_KLINIKE && tipKorisnika()!=Uloga.ADMINISTRATOR_KLINICKOG_CENTRA ) {
+			return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
+		}
 		List<GodisnjiOdmor> god = gService.findAll();
 		//System.out.println(sltermini.isEmpty());
 		List<GodisnjiDTO> godto = new ArrayList<>();
@@ -76,7 +89,9 @@ public class GodisnjiController {
 	}
 	@PostMapping(value="/prihvati",consumes = "application/json")
 	public ResponseEntity<GodisnjiDTO> updateCourse(@RequestBody GodisnjiDTO gDTO) {
-
+		if(tipKorisnika()!=Uloga.ADMINISTRATOR_KLINIKE) {
+			return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
+		}
 		System.out.println(gDTO.getRazlog());
 		GodisnjiOdmor god = gService.findOne(gDTO.getId());
 
@@ -117,6 +132,9 @@ public class GodisnjiController {
 	}*/
 	@PostMapping(value="/posalji",consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
 	public ResponseEntity<User> dodajGodisnji(@RequestBody GodisnjiDTO g){
+		if(tipKorisnika()!=Uloga.LEKAR && tipKorisnika()!=Uloga.MEDICINSKA_SESTRA ) {
+			return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
+		}
 		User u=uservice.findOne(g.getMedOsoblje_id());
 		GodisnjiOdmor go= new GodisnjiOdmor(g.getId(),g.getDatumPocetka(),g.getDatumKraja(),g.getPrihvacenOdbijen(),u);
 

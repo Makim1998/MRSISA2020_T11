@@ -84,10 +84,21 @@ Vue.component("klinikaProfil", {
 				    	this.moscowMap.geoObjects.add(placemark);
 				    });
 		        }); 
-		    });
+		    })
+			.catch(response => {
+				alert("Pogresan unos.Greska.")
+			});
         },
 	},
 	mounted(){
+		axios
+	    .get('rest/login/getConcreteUser/AdminK')
+	    .then((response) => {
+	    	console.log(response.data);	
+	    })
+	    .catch(response => {
+			this.$router.push("/");
+		});
     	var moscowMap; 
 		axios
 	    .get('rest/login/getKlinika')

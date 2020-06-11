@@ -184,6 +184,14 @@ Vue.component('cenovnik', {
 	},
 	mounted(){
 		axios
+	    .get('rest/login/getConcreteUser/AdminK')
+	    .then((response) => {
+	    	console.log(response.data);	
+	    })
+	    .catch(response => {
+			this.$router.push("/");
+		});
+		axios
 	    .get('rest/login/getKlinika')
 	    .then((response) => {
 	    	this.kc_id=response.data.id;

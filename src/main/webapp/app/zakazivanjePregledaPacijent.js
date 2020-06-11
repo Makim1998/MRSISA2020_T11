@@ -113,6 +113,14 @@ Vue.component("zakazivanje", {
 	},
 		
 	mounted(){
+		axios
+	    .get('rest/login/getConcreteUser/Pacijent')
+	    .then((response) => {
+	    	console.log(response.data);	
+	    })
+	    .catch(response => {
+			this.$router.push("/");
+		});
 		console.log("zakazivanje");
 		$('#datetimepicker4').datetimepicker();
 		axios

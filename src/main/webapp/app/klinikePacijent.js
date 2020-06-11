@@ -274,6 +274,14 @@ Vue.component("klinikePacijent", {
 	
 	},
 	mounted(){
+		axios
+	    .get('rest/login/getConcreteUser/Pacijent')
+	    .then((response) => {
+	    	console.log(response.data);	
+	    })
+	    .catch(response => {
+			this.$router.push("/");
+		});
 		console.log("klinike");
 		console.log(this.$parent.component);
 		$('#datetimepicker4').datetimepicker();

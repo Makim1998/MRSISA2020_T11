@@ -154,6 +154,9 @@ Vue.component('pacijentProfil',{
 	    	
 	    	this.brojOsiguranika = response.data.brojOsiguranika;
 	    	
-	    });
+	    })
+	    .catch(response => {
+			this.$router.push("/");
+		});
 	}
 });

@@ -60,8 +60,11 @@ Vue.component('karton',{
  				if(error.response){
  					alert("Jos uvek nije kreiran karton za pacijenta.");
  				};
-	    	 });
-	    });
+	    	 });	
+	    })
+	    .catch(response => {
+			this.$router.push("/");
+		});
 		
 		
 	}

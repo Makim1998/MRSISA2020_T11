@@ -3,6 +3,8 @@ package rest.controller;
 import java.util.ArrayList;
 import java.util.List;
 
+import javax.servlet.http.HttpServletRequest;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
@@ -17,6 +19,8 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import rest.domain.StavkaSifarnika;
+import rest.domain.Uloga;
+import rest.domain.User;
 import rest.dto.StavkaSifarnikaDTO;
 import rest.service.StavkaSifarnikaService;
 
@@ -26,6 +30,13 @@ public class SifarnikController {
 	
 	@Autowired
 	private StavkaSifarnikaService service;
+	@Autowired
+	public HttpServletRequest request;
+	
+	private Uloga tipKorisnika() {
+		User logedIn = (User) request.getSession().getAttribute("korisnik");
+		return logedIn.getUloga();
+	}
 	
 	@GetMapping
 	public ResponseEntity<List<StavkaSifarnikaDTO>> getAll(){
@@ -40,6 +51,9 @@ public class SifarnikController {
 	
 	@PostMapping(value="/dodaj",consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
 	public ResponseEntity<Void> addStavka(@RequestBody StavkaSifarnikaDTO dto){
+		if(tipKorisnika()!=Uloga.ADMINISTRATOR_KLINICKOG_CENTRA) {
+			return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
+		}
 		StavkaSifarnika stavka = new StavkaSifarnika(dto);
 		stavka = service.save(stavka);
 		return new ResponseEntity<>(HttpStatus.OK);
@@ -47,6 +61,9 @@ public class SifarnikController {
 	
 	@PutMapping(value="/{id}/{novaSifra}", produces = MediaType.APPLICATION_JSON_VALUE)
 	public ResponseEntity<StavkaSifarnikaDTO> izmeni(@PathVariable Integer id, @PathVariable String novaSifra){
+		if(tipKorisnika()!=Uloga.ADMINISTRATOR_KLINICKOG_CENTRA) {
+			return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
+		}
 		StavkaSifarnika stavka = service.findOne(id);
 		stavka.setSifra(novaSifra);
 		stavka = service.save(stavka);
@@ -55,6 +72,9 @@ public class SifarnikController {
 	
 	@DeleteMapping(value="/{id}")
 	public ResponseEntity<Void> obrisi(@PathVariable Integer id){
+		if(tipKorisnika()!=Uloga.ADMINISTRATOR_KLINICKOG_CENTRA) {
+			return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
+		}
 		service.remove(id);
 		return new ResponseEntity<>(HttpStatus.OK);
 	}

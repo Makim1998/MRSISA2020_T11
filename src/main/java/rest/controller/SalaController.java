@@ -5,6 +5,8 @@ import java.util.Collections;
 import java.util.HashSet;
 import java.util.List;
 
+import javax.servlet.http.HttpServletRequest;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
@@ -21,6 +23,7 @@ import org.springframework.web.bind.annotation.RestController;
 import rest.domain.Klinika;
 import rest.domain.Pregled;
 import rest.domain.Sala;
+import rest.domain.Uloga;
 import rest.domain.User;
 import rest.dto.PregledDTO;
 import rest.dto.SalaDTO;
@@ -40,6 +43,13 @@ public class SalaController {
 	private KlinikaService klinikaService;
 	@Autowired
 	private PregledService pregledService;
+	@Autowired
+	public HttpServletRequest request;
+	
+	private Uloga tipKorisnika() {
+		User logedIn = (User) request.getSession().getAttribute("korisnik");
+		return logedIn.getUloga();
+	}
 	@GetMapping
 	public ResponseEntity<List<SalaDTO>> getSala() {
 		System.out.println("prvi maj");
@@ -61,7 +71,9 @@ public class SalaController {
 	}
 	@PutMapping(value="/izmeni",consumes = "application/json")
 	public ResponseEntity<SalaDTO> updateCourse(@RequestBody SalaDTO salaDTO) {
-
+		if(tipKorisnika()!=Uloga.ADMINISTRATOR_KLINIKE) {
+			return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
+		}
 		// a course must exis
 		SalaPK pk=new SalaPK(salaDTO.getBrojSale(),salaDTO.getKlinika());
 		Sala sala = salaService.findOne(pk);
@@ -77,6 +89,9 @@ public class SalaController {
 	}
 	@PostMapping(value = "/obrisi")
 	public ResponseEntity<Void> deleteCourse(@RequestBody SalaPK id) {
+		if(tipKorisnika()!=Uloga.ADMINISTRATOR_KLINIKE) {
+			return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
+		}
 		Sala sala = salaService.findOne(id);
 		System.out.println("brisanje");
 		List<Pregled> ztermini = pregledService.findZauzete(sala);
@@ -95,6 +110,9 @@ public class SalaController {
 	}
 	@PostMapping(value="/dodaj",consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
 	public ResponseEntity<User> dodajSalu(@RequestBody SalaDTO salaDTO){
+		if(tipKorisnika()!=Uloga.ADMINISTRATOR_KLINIKE) {
+			return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
+		}
 		//SalaPK pk=new SalaPK(salaDTO.getBrojSale(),salaDTO.getKlinika());
 		Klinika k= klinikaService.findOne(salaDTO.getKlinika());
 		/*SalaPK pk=new SalaPK(salaDTO.getBrojSale(),salaDTO.getKlinika());

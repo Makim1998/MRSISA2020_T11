@@ -4,6 +4,8 @@ import java.text.ParseException;
 import java.util.ArrayList;
 import java.util.List;
 
+import javax.servlet.http.HttpServletRequest;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -20,6 +22,7 @@ import rest.domain.Lekar;
 import rest.domain.Operacija;
 import rest.domain.Pacijent;
 import rest.domain.Pregled;
+import rest.domain.Uloga;
 import rest.domain.User;
 import rest.dto.LekarDTO;
 import rest.dto.KartonDTO;
@@ -35,6 +38,13 @@ public class PacijentController {
 	private PacijentService patientService;
 	@Autowired
 	private LekariService lekarService;
+	@Autowired
+	public HttpServletRequest request;
+	
+	private Uloga tipKorisnika() {
+		User logedIn = (User) request.getSession().getAttribute("korisnik");
+		return logedIn.getUloga();
+	}
 	
 	@GetMapping(value ="/svi", produces = "application/json")
 	public ResponseEntity<List<PacijentDTO>> getPacijenti() {
@@ -72,6 +82,9 @@ public class PacijentController {
 	@GetMapping
 	(value = "/pregledani/{id}")
 	public ResponseEntity<List<PacijentDTO>> getPregledaniPacijenti(@PathVariable Integer id) throws ParseException {
+		if(tipKorisnika()!=Uloga.LEKAR) {
+			return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
+		}
 		System.out.println("flamingosi0");
 		Lekar l=lekarService.findOne(id);
 		List<PacijentDTO> slterminiDTO = new ArrayList<>();
@@ -90,6 +103,7 @@ public class PacijentController {
 				}
 				if(postoji==false) {
 					slterminiDTO.add(new PacijentDTO(p));
+					kartoni.add(idk);
 				}
 			} catch (Exception e) {
 				System.out.println("flamingos");
@@ -109,6 +123,7 @@ public class PacijentController {
 				}
 				if(postoji==false) {
 					slterminiDTO.add(new PacijentDTO(p));
+					kartoni.add(idk);
 				}
 			} catch (Exception e) {
 				System.out.println("flamingos");
@@ -119,6 +134,9 @@ public class PacijentController {
 	@PutMapping(value ="/profil",consumes = "application/json", produces = "application/json")
 	public ResponseEntity<User> editProfile(@RequestBody PacijentDTO pacijent)
 			throws Exception {
+		if(tipKorisnika()!=Uloga.PACIJENT && tipKorisnika()!=Uloga.ADMINISTRATOR_KLINICKOG_CENTRA ) {
+			return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
+		}
 		System.out.println("izmena profila - pacijent");
 		Pacijent p = patientService.findByEmail(pacijent.getEmail());
 		

@@ -159,7 +159,7 @@ Vue.component('administratorKlinike',{
 			}
 	    })
 	    .catch(response => {
-	    	$('#lozinka').modal('show');
-	    });
+			this.$router.push("/");
+		});
 	}
 });

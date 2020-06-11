@@ -196,6 +196,14 @@ Vue.component("lekariPacijent", {
 	
 	},
 	mounted(){
+		axios
+	    .get('rest/login/getConcreteUser/Pacijent')
+	    .then((response) => {
+	    	console.log(response.data);	
+	    })
+	    .catch(response => {
+			this.$router.push("/");
+		});
 		console.log(this.klinika);
 		if (this.klinika == null){
 			console.log("Dosao iz navbara")

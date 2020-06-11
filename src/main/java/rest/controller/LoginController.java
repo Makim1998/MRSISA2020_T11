@@ -5,6 +5,7 @@ import java.util.Collection;
 import java.util.List;
 
 import javax.annotation.PostConstruct;
+import javax.servlet.http.HttpServletRequest;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -47,6 +48,8 @@ import rest.service.UserService;
 @RequestMapping("/rest/login")
 public class LoginController {
 	@Autowired
+	public HttpServletRequest request;
+	@Autowired
 	private UserService userService;
 	@Autowired
 	private PacijentService patientService;
@@ -57,7 +60,7 @@ public class LoginController {
 	@Autowired
 	private MSService msService;
 	
-	private User logedIn;
+	//private User logedIn;
 	
 	@PostConstruct
 	public void init(){
@@ -118,13 +121,19 @@ public class LoginController {
 	@GetMapping(value="/getUser",produces = MediaType.APPLICATION_JSON_VALUE)
 	public ResponseEntity<User> getlogedUser()
 			throws Exception {
+		User logedIn = (User) request.getSession().getAttribute("korisnik");
+		if(logedIn==null) {
+			return new ResponseEntity<User>(HttpStatus.BAD_REQUEST);
+		}
 		return new ResponseEntity<User>(logedIn, HttpStatus.OK);
 	}
 	@GetMapping(value="/odjava")
 	public ResponseEntity<User> Odjava() 
 		throws Exception {
-	logedIn = null;
-	return new ResponseEntity<User>(logedIn, HttpStatus.OK);
+	
+	request.getSession().removeAttribute("korisnik");
+	request.getSession().invalidate();
+	return new ResponseEntity<User>(HttpStatus.OK);
 	}
 	@PostMapping(value = "register",consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
 	public ResponseEntity<String> register(@RequestBody PacijentDTO pacijent)
@@ -177,6 +186,10 @@ public class LoginController {
 	@PostMapping(consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
 	public ResponseEntity<User> login(@RequestBody User user)
 			throws Exception {
+		User logedIn = (User) request.getSession().getAttribute("korisnik");
+		if(logedIn != null) {
+			return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+		}
 		System.out.println("logovanje");
 		System.out.println("halo");
 		User u = userService.findByEmail(user.getUsername());
@@ -193,8 +206,9 @@ public class LoginController {
 			return new ResponseEntity<User>(HttpStatus.BAD_REQUEST);
 		}
 		System.out.println(u.getUloga());
-		logedIn = u;
-		return new ResponseEntity<User>(logedIn, HttpStatus.OK);
+		//logedIn = u;
+		request.getSession().setAttribute("korisnik", u);
+		return new ResponseEntity<User>(u, HttpStatus.OK);
 	}
 
 	/*
@@ -202,6 +216,7 @@ public class LoginController {
 	 */
 	@GetMapping(value = "/getConcreteUser/Pacijent")
 	public ResponseEntity<User> isLogedPacijent() {
+		User logedIn = (User) request.getSession().getAttribute("korisnik");
 		if(logedIn == null) {
 			return new ResponseEntity<>(HttpStatus.NOT_FOUND);
 		}
@@ -215,6 +230,7 @@ public class LoginController {
 	}
 	@GetMapping(value = "/getConcreteUser/AdminK")
 	public ResponseEntity<AdministratorKlinike> isLogedAdminK() {
+		User logedIn = (User) request.getSession().getAttribute("korisnik");
 		if(logedIn == null) {
 			return new ResponseEntity<>(HttpStatus.NOT_FOUND);
 		}
@@ -227,6 +243,7 @@ public class LoginController {
 	}
 	@GetMapping(value = "/getConcreteUser/AdminKC")
 	public ResponseEntity<User> isLogedAdminKC() {
+		User logedIn = (User) request.getSession().getAttribute("korisnik");
 		if(logedIn == null) {
 			return new ResponseEntity<>(HttpStatus.NOT_FOUND);
 		}
@@ -237,6 +254,7 @@ public class LoginController {
 	}
 	@GetMapping(value = "/getConcreteUser/Lekar")
 	public ResponseEntity<User> isLogedLekar() {
+		User logedIn = (User) request.getSession().getAttribute("korisnik");
 		if(logedIn == null) {
 			return new ResponseEntity<>(HttpStatus.NOT_FOUND);
 		}
@@ -248,7 +266,7 @@ public class LoginController {
 	}
 	@GetMapping(value = "/getConcreteUser/MedicinskaS")
 	public ResponseEntity<User> isLogedMedicinskaS() {
-		System.out.println("ZASTOOOO");
+		User logedIn = (User) request.getSession().getAttribute("korisnik");
 		if(logedIn == null) {
 			System.out.println("ZATOOOO");
 			return new ResponseEntity<>(HttpStatus.NOT_FOUND);
@@ -263,6 +281,7 @@ public class LoginController {
 	}
 	@GetMapping(value = "/getKlinika")
 	public ResponseEntity<KlinikaDTO> getKlinika() {
+		User logedIn = (User) request.getSession().getAttribute("korisnik");
 		if(logedIn == null) {
 			return new ResponseEntity<>(HttpStatus.NOT_FOUND);
 		}
@@ -286,5 +305,4 @@ public class LoginController {
 		}
 		return new ResponseEntity<>(HttpStatus.NOT_FOUND);
 	}
-
 }

@@ -3,6 +3,8 @@ package rest.controller;
 import java.util.ArrayList;
 import java.util.List;
 
+import javax.servlet.http.HttpServletRequest;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
@@ -20,6 +22,7 @@ import rest.domain.Cenovnik;
 import rest.domain.Pregled;
 import rest.domain.StavkaCenovnika;
 import rest.domain.TipPregleda;
+import rest.domain.Uloga;
 import rest.domain.User;
 import rest.dto.CenovnikDTO;
 import rest.dto.StavkaCenovnikaDTO;
@@ -38,6 +41,14 @@ public class CenovnikController {
 	private CenovnikService cenovnikService;
 	@Autowired
 	private StavkaCenovnikaService stavkaCenovnikaService;
+	
+	@Autowired
+	public HttpServletRequest request;
+	
+	private Uloga tipKorisnika() {
+		User logedIn = (User) request.getSession().getAttribute("korisnik");
+		return logedIn.getUloga();
+	}
 
 	@GetMapping(value = "/{id}")
 	public ResponseEntity<CenovnikDTO> getCenovnik(@PathVariable Integer id) {
@@ -52,7 +63,9 @@ public class CenovnikController {
 	}
 	@PutMapping(value="/izmeniStavku",consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
 	public ResponseEntity<StavkaCenovnikaDTO> updateCourse(@RequestBody StavkaCenovnikaDTO stavkaCenovnikaDTO) {
-
+		if(tipKorisnika()!=Uloga.ADMINISTRATOR_KLINIKE) {
+			return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
+		}
 		StavkaCenovnika stavka= stavkaCenovnikaService.findOne(stavkaCenovnikaDTO.getId());
 
 		if (stavka == null) {
@@ -66,6 +79,9 @@ public class CenovnikController {
 	}
 	@DeleteMapping(value = "/obrisiStavku/{id}")
 	public ResponseEntity<Void> deleteCourse(@PathVariable Integer id) {
+		if(tipKorisnika()!=Uloga.ADMINISTRATOR_KLINIKE) {
+			return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
+		}
 		StavkaCenovnika stavka= stavkaCenovnikaService.findOne(id);
 		List<Pregled> ztermini = pregledService.findZauzete(stavka);
 		if (ztermini.isEmpty()){
@@ -83,6 +99,9 @@ public class CenovnikController {
 	}
 	@PostMapping(value="/dodajStavku",consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
 	public ResponseEntity<Void> dodajStavku(@RequestBody StavkaCenovnikaDTO stavkaCenovnikaDTO){
+		if(tipKorisnika()!=Uloga.ADMINISTRATOR_KLINIKE) {
+			return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
+		}
 		Integer id= stavkaCenovnikaDTO.getC_id();
 		Cenovnik cenovnik=cenovnikService.findOne(stavkaCenovnikaDTO.getC_id());
 		StavkaCenovnika stavka= new StavkaCenovnika(stavkaCenovnikaDTO,cenovnik);

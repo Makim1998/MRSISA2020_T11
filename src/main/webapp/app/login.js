@@ -4,7 +4,8 @@ Vue.component("login", {
 		    	 input: {
 	                    username: "",
 	                    password: ""
-	                }
+	                },
+	             podaci:null,
 		    }
 	},
 	template: `
@@ -27,11 +28,32 @@ Vue.component("login", {
 </div>		  
 ` 
 		,
-/*	mounted() {
-		console.log("redirekt")
-       this.$router.replace({ name: "pacijentHome" });
-
-    },*/
+	mounted() {
+		axios
+	    .get('rest/login/getUser')
+	    .then((response) => {
+			if(response.data.uloga == "PACIJENT"){
+				console.log("Ulogovao se pacijent");
+				this.$router.replace({ name: "pacijentHome" });
+			}
+			else if(response.data.uloga== "ADMINISTRATOR_KLINIKE"){
+				console.log("Ulogovao se administrator klinike");
+				this.$router.replace({ name: "administratorKlinike" });
+			}
+			else if(response.data.uloga == "ADMINISTRATOR_KLINICKOG_CENTRA"){
+				console.log("Ulogovao se admin centra");
+				this.$router.replace({ name: "administratorCentra" });
+			}
+			else if(response.data.uloga== "LEKAR"){
+				console.log("Ulogovao se lekar");
+				this.$router.replace({ name: "lekar" })
+			}
+			else{
+				console.log("Ulogovala se medicinska sestra");
+				this.$router.replace({ name: "MSHome" }) 
+			}	
+		});
+	    },
 	methods : {
 		login() {
             if(this.input.username != "" && this.input.password != "") {
