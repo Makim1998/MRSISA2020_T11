@@ -33,12 +33,7 @@ insert into tip_pregleda (id,naziv,klinika) values (9,'Oftamoloski',4);
 insert into tip_pregleda (id,naziv,klinika) values (10,'Oftamoloski',5);
 --Cenovnik
 insert into cenovnik (id,klinika_id) values (1,1);
-insert into cenovnik (id,klinika_id) values (2,2);
 
-
-insert into stavka_cenovnika (cenovnik_id,id,cena,usluga) values (1,20,1700,'Sistematski');
-insert into stavka_cenovnika (cenovnik_id,id,cena,usluga) values (1,30,1500,'Klinicki');
-insert into stavka_cenovnika (cenovnik_id,id,cena,usluga) values (2,40,2500,'Oftamoloski');
 
 insert into stavka_cenovnika (cenovnik_id,id,cena,usluga) values (1,1,2000,'Opsti pregled');
 insert into stavka_cenovnika (cenovnik_id,id,cena,usluga) values (1,2,2500,'Sistematski pregled');
