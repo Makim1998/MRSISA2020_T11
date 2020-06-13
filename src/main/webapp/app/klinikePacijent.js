@@ -1,6 +1,7 @@
 Vue.component("klinikePacijent", {
 	data: function () {
 	    return {
+	    	email: "",
 	    	tipovi: [],
 	    	poruka:{
 	    		datum:"",
@@ -169,12 +170,17 @@ Vue.component("klinikePacijent", {
 
         	console.log("ocena");
         	axios
-    	    .post('rest/klinika/ocena?ocena='+this.ocena +'&klinika='+this.zaOcenu )
+    	    .post('rest/klinika/ocena?ocena='+this.ocena +'&klinika='+this.zaOcenu + '&pacijent=' + this.email)
     	    .then(response => {
     	    	$('#oceniKlinikuModal').modal('hide');
             	$('.modal-backdrop').remove();
     	    	console.log("uspeh");
-    	    	this.init()});
+    	    	this.init()})
+        	.catch(function(error){
+				if(error.response){
+					alert(error.response.data.naziv);
+				};
+        	});
     	    
         	
         },
@@ -203,8 +209,33 @@ Vue.component("klinikePacijent", {
     	    	$('#pretraziKlinikuModal').modal('hide');
             	$('.modal-backdrop').remove();
     	    	console.log("uspeh");
-    	    	this.klinike = response.data});
-    	    
+    	    	this.klinike = response.data;
+    	    	kolona = $("table th:contains('Cena pregleda: ')");
+            	if(kolona.length !== 0){
+            		console.log("obrisi kolonu thead cena");
+            		kolona.remove();
+            	}
+    	    	$('.table thead tr').append('<th scope = "col">Cena pregleda: </th>');
+    	    	for (i = 0; i < this.klinike.length; i++) {
+    	    		console.log(i);
+  	    			console.log(this.klinike[i].cena);
+  	    			if(this.klinike[i].cena == 0){
+  	    				$('.table tbody').find('tr').eq(i).find('td').eq(3).after('<td>'+ "Nije dostupna" + '</td>');
+  	    			}
+  	    			else{
+  	    				$('.table tbody').find('tr').eq(i).find('td').eq(3).after('<td>'+ this.klinike[i].cena + '</td>');
+  	    			}
+  	    			kraj = $(".table tbody tr").eq(i).find("td").eq(7);// bilo 6
+        			if(kraj.length !== 0){
+        				console.log("obrisi 5 kolonu");
+        				$(".table tbody tr").eq(i).find("td").eq(5).remove();
+        			}
+        			
+  	    			
+  	    		
+    	    	}
+    	    	
+    	    });
         	
         },
         ponistiFilter(){
@@ -212,9 +243,25 @@ Vue.component("klinikePacijent", {
         	this.filter.adresa = "";
         	this.filter.prosek = "";
         	this.filter.naziv = "";
+        	kolona = $("table th:contains('Cena pregleda: ')");
+        	if(kolona){
+        		kolona.remove();
+        	}
         	axios
     	    .get('rest/klinika')
     	    .then(response => (this.klinike=response.data));
+        	if(kolona !== 0){
+        		for (i = 0; i < this.klinike.length; i++) {
+        			console.log(i);
+        			
+        			kraj = $(".table tbody tr").eq(i).find("td").eq(6);
+        			if(kraj.length !== 0){
+        				console.log("obrisi 5 kolonu");
+        				$(".table tbody tr").eq(i).find("td").eq(4).remove();
+        			}
+        			
+    	    	} 
+        	}
         },
         skok(klinika){
         	console.log("skok");
@@ -226,6 +273,7 @@ Vue.component("klinikePacijent", {
     		axios
     	    .get('rest/klinika')
     	    .then(response => (this.klinike=response.data));
+    		
 		}
 	},
 	computed: {
@@ -278,6 +326,9 @@ Vue.component("klinikePacijent", {
 	    .get('rest/login/getConcreteUser/Pacijent')
 	    .then((response) => {
 	    	console.log(response.data);	
+	    	
+	    	this.email = response.data.username;
+	    	console.log(this.email);
 	    })
 	    .catch(response => {
 			this.$router.push("/");

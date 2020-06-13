@@ -2,6 +2,7 @@ Vue.component("lekariPacijent", {
 	props : ['klinika'],
 	data: function () {
 	    return {
+	    	email: "",
 	    	lekari:[],
 	    	zaOcenu: "",
 	    	ocena: "",
@@ -146,12 +147,17 @@ Vue.component("lekariPacijent", {
 
         	console.log("ocena");
         	axios
-    	    .post('rest/lekari/ocena?ocena='+this.ocena +'&lekar='+this.zaOcenu )
+    	    .post('rest/lekari/ocena?ocena='+this.ocena +'&lekar='+this.zaOcenu  +'&pacijent='+this.email )
     	    .then(response => {
     	    	$('#oceniLekaraModal').modal('hide');
             	$('.modal-backdrop').remove();
     	    	console.log("uspeh");
-    	    	this.init()});
+    	    	this.init()})
+        	.catch(function(error){
+				if(error.response){
+					alert(error.response.data.ime);
+				};
+        	});
 		}
 		
 	
@@ -200,6 +206,8 @@ Vue.component("lekariPacijent", {
 	    .get('rest/login/getConcreteUser/Pacijent')
 	    .then((response) => {
 	    	console.log(response.data);	
+	    	this.email = response.data.username;
+	    	console.log(this.email);
 	    })
 	    .catch(response => {
 			this.$router.push("/");

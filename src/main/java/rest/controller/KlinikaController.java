@@ -28,12 +28,14 @@ import rest.domain.GodisnjiOdmor;
 import rest.domain.Klinika;
 import rest.domain.Lekar;
 import rest.domain.Pregled;
+import rest.domain.StavkaCenovnika;
 import rest.domain.Uloga;
 import rest.domain.User;
 import rest.dto.KlinikaDTO;
 import rest.dto.LekarDTO;
 import rest.service.KlinikaService;
 import rest.service.PregledService;
+import rest.service.StavkaCenovnikaService;
 
 
 @RestController
@@ -45,6 +47,9 @@ public class KlinikaController {
 	
 	@Autowired
 	private PregledService pregledi;
+	
+	@Autowired
+	private StavkaCenovnikaService stavke;
 	
 	@Autowired
 	public HttpServletRequest request;
@@ -147,7 +152,7 @@ public class KlinikaController {
 	}
 	
 	@PostMapping(value="/ocena",  produces=MediaType.APPLICATION_JSON_VALUE)
-	public ResponseEntity<KlinikaDTO> ocene(@RequestParam String klinika,@RequestParam String ocena){
+	public ResponseEntity<KlinikaDTO> ocene(@RequestParam String klinika,@RequestParam String ocena,@RequestParam String pacijent){
 		if(tipKorisnika()!=Uloga.PACIJENT) {
 			return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
 		}
@@ -162,6 +167,22 @@ public class KlinikaController {
 		if(ocena.equals("")) {
 			System.out.println("Ocena nevalidna");
 			return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
+		}
+		List<Pregled> svi = pregledi.findAll();
+		boolean moze = false;
+		for(Pregled p : svi) {
+			if (p.getLekar().getKlinika().getNaziv().equals(klinika)) {
+				if(p.getKarton() != null) {
+					if(p.getKarton().getPacijent().getEmail().equals(pacijent)) {
+						moze = true;
+					}
+				}
+			}
+		}
+		if(!moze) {
+			KlinikaDTO ki= new KlinikaDTO();
+			ki.setNaziv("Ne mozete oceniti kliniku u kojoj niste imali pregled!");
+			return new  ResponseEntity<>(ki,HttpStatus.BAD_REQUEST);
 		}
 		k.getOcene().add(Integer.parseInt(ocena));
 		service.save(k);
@@ -217,6 +238,16 @@ public class KlinikaController {
 			if(zadovoljenaKlinika) {
 				System.out.println(k.getNaziv());
 				KlinikaDTO dto = new KlinikaDTO(k);
+				List<StavkaCenovnika> sce = stavke.findAll();
+				int cena = 0;
+				for(StavkaCenovnika sc: sce ) {
+					if(sc.getUsluga().equals(tip + " pregled")) {
+						cena = sc.getCena();
+						break;
+					}
+				}
+				System.out.println(cena);
+				dto.setCena(cena);
 				dto.setProsek(k);
 				dto.setLekari(pronadjeniLekari);
 				pronadjene.add(dto);

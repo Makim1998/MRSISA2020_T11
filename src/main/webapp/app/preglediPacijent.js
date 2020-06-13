@@ -2,7 +2,8 @@ Vue.component('pregledi',{
 	data:function(){
 		return{
 			pregledi:[],
-			email: ""
+			email: "",
+			dijagnoza: ""
 		}
 	},
 	template: ` 
@@ -29,13 +30,33 @@ Vue.component('pregledi',{
 			<td >{{p.lekar.ime}} {{p.lekar.prezime}}</td>
 			<td>{{p.cena.cena}}</td>
 			<td>
-			<button type="button"  class="btn btn-primary" data-toggle="modal" data-target="#detaljiModal">
+			<button type="button"  v-on:click = "dijagnoza = p.opis" class="btn btn-primary" data-toggle="modal" data-target="#detaljiModal">
 				Detalji
 			</button>
 			</td>
 		</tr>
   </tbody>
 </table>
+
+<!-- Modal -->
+<div class="modal fade" id="detaljiModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+  <div class="modal-dialog" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="exampleModalLabel">Dijagnoza pregleda: </h5>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body">
+		<p>{{dijagnoza}}</p>
+	  </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" data-dismiss="modal">Zatvori</button>
+      </div>
+    </div>
+  </div>
+</div>
 
 <h5 class="text-center" id = "rezultatiPretrage"></h5>
 </div>		  		  

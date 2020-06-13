@@ -1,5 +1,7 @@
 package rest.service;
 
+import java.util.List;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -19,6 +21,10 @@ public class StavkaCenovnikaService {
 	public void remove(Integer id) {
 		stavkaCenovnikaRepository.deleteById(id);
 		
+	}
+	public List<StavkaCenovnika> findAll() {
+		// TODO Auto-generated method stub
+		return stavkaCenovnikaRepository.findAll();
 	}
 	public StavkaCenovnika findOne(Integer id) {
 		return stavkaCenovnikaRepository.findById(id).orElseGet(null);

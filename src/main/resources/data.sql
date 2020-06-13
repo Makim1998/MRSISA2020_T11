@@ -158,8 +158,8 @@ update lekar set tip_pregleda = 8 where id = 19;
 update lekar set tip_pregleda = 10 where id = 20;
 update lekar set tip_pregleda = 1 where id = 21;
 --Dijagnoze 
-insert into dijagnoza (id) values (1);
-insert into dijagnoza (id) values (2);
+insert into dijagnoza (id,opis) values (1,'Pacijent je zdrav.');
+insert into dijagnoza (id,opis) values (2,'Redovno dolaziti na preglede svakih godinu dana.');
 --Pregledi koje pacijenti mogu zakazati (prepoznajemo ih jer nemaju ni karton a imaju salu)
 insert into pregled(id,datum,trajanje,cena_id,lekar_id,sala_klinika_id,sala_broj_sale,tip_id) values (1,'2020-07-10 17:00:00',50,1,10,1,1,1);
 insert into pregled(id,datum,trajanje,cena_id,lekar_id,sala_klinika_id,sala_broj_sale,tip_id) values (2,'2020-07-10 17:00:00',50,1,11,1,2,1);

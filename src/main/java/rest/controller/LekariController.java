@@ -21,10 +21,12 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
+import rest.controller.PregledController.PreglediSale;
 import rest.domain.Lekar;
 import rest.domain.Pregled;
 import rest.domain.Uloga;
 import rest.domain.User;
+import rest.dto.KlinikaDTO;
 import rest.dto.LekarDTO;
 import rest.service.LekariService;
 import rest.service.PregledService;
@@ -115,7 +117,7 @@ public class LekariController {
 		return new ResponseEntity<>(HttpStatus.OK);
 	}
 	@PostMapping(value="/ocena",  produces=MediaType.APPLICATION_JSON_VALUE)
-	public ResponseEntity<LekarDTO> ocene(@RequestParam String lekar,@RequestParam String ocena){
+	public ResponseEntity<LekarDTO> ocene(@RequestParam String lekar,@RequestParam String ocena,@RequestParam String pacijent){
 		if(tipKorisnika()!=Uloga.PACIJENT) {
 			return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
 		}
@@ -130,6 +132,22 @@ public class LekariController {
 		if(ocena.equals("")) {
 			System.out.println("Ocena nevalidna");
 			return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
+		}
+		List<Pregled> svi = pregledService.findAll();
+		boolean moze = false;
+		for(Pregled p : svi) {
+			if (p.getLekar().getEmail().equals(lekar)) {
+				if(p.getKarton() != null) {
+					if(p.getKarton().getPacijent().getEmail().equals(pacijent)) {
+						moze = true;
+					}
+				}
+			}
+		}
+		if(!moze) {
+			LekarDTO lto = new LekarDTO();
+			lto.setIme("Ne mozete oceniti lekara koji Vas nije pregledao!");
+			return new  ResponseEntity<>(lto,HttpStatus.BAD_REQUEST);
 		}
 		l.getOcene().add(Integer.parseInt(ocena));
 		lekariService.save(l);

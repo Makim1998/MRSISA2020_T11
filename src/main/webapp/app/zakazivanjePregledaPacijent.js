@@ -145,7 +145,8 @@ Vue.component("zakazivanje", {
 		}
 		else{
 			$("#datetimepicker4").val(this.date);
-			this.tip = this.type;
+			//this.tip = this.type;
+			this.tip = this.lekarodabran.tip;
 			this.lekar = this.lekarodabran.username;
 			this.klinika = this.klinikaodabrana.naziv;
 		}

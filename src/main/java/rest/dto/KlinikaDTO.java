@@ -13,6 +13,7 @@ public class KlinikaDTO {
 	private String opis;
 	public String prosecnaOcena;
 	private ArrayList<LekarDTO> lekari = new ArrayList<LekarDTO>();
+	private int cena;
 	
 	public KlinikaDTO(Klinika klinika) {
 		this.id = klinika.getId();
@@ -28,6 +29,16 @@ public class KlinikaDTO {
 		this.setProsek(klinika);
 	}
 	
+	
+	public int getCena() {
+		return cena;
+	}
+
+
+	public void setCena(int cena) {
+		this.cena = cena;
+	}
+
 
 	public void setProsek(Klinika klinika) {
 		System.out.println(klinika.getOcene());

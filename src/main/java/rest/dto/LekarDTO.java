@@ -14,6 +14,7 @@ import rest.domain.Lekar;
 		private String adresa;
 		private String grad;
 		private String drzava;
+		private String tip;
 		private String radnoVremeDo;
 		private String radnoVremeOd;
 		private String prosecnaOcena;
@@ -39,6 +40,14 @@ import rest.domain.Lekar;
 		
 		public String getKlinika() {
 			return klinika;
+		}
+		
+		public String getTip() {
+			return tip;
+		}
+
+		public void setTip(String tip) {
+			this.tip = tip;
 		}
 
 		public void setKlinika(String klinika) {
@@ -141,6 +150,7 @@ import rest.domain.Lekar;
 			this.setGrad(s.getGrad());
 			this.setRadnoVremeOd(s.getRadnoVremeOd().toString().substring(11,16));
 			System.out.println("USER:"+s.getKlinika().getId());
+			this.setTip(s.getTipPregleda().getNaziv());
 			this.setKc_id(s.getKlinika().getId());
 			this.setPrviPut(s.getPrviPut());
 			this.setKlinika( s.getKlinika().getNaziv());
