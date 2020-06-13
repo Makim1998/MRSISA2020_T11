@@ -136,6 +136,7 @@ Vue.component("zakazivanje", {
 	    .get('rest/tipPregleda')
 	    .then(response => (this.tipovi=response.data));
 		
+		
 		console.log(this.klinikaodabrana);
 		console.log(this.date);
 		console.log(this.type);
