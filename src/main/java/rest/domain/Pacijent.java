@@ -14,8 +14,8 @@ public class Pacijent extends User{
     @JoinColumn(name = "karton_id", referencedColumnName = "id")
 	private Karton karton;
 	
-	@Column
-	private Boolean odobren;
+	@Column(name="odobren")
+	private Boolean odobren = Boolean.TRUE;
 	
 	public Karton getKarton() {
 		return karton;

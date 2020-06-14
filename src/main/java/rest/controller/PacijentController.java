@@ -55,7 +55,8 @@ public class PacijentController {
 
 		List<PacijentDTO> pacijentiDTO = new ArrayList<>();
 		for (Pacijent s : pacijenti) {
-			pacijentiDTO.add(new PacijentDTO(s));
+			if (s.getOdobren() == Boolean.TRUE)
+				pacijentiDTO.add(new PacijentDTO(s));
 		}
 
 		return new ResponseEntity<>(pacijentiDTO, HttpStatus.OK);
@@ -180,7 +181,7 @@ public class PacijentController {
 	@PutMapping(value="/prihvati/{id}", consumes=MediaType.APPLICATION_JSON_VALUE, produces=MediaType.APPLICATION_JSON_VALUE)
 	public ResponseEntity<Void> prihvati(@PathVariable Integer id){
 		Pacijent pacijent = patientService.findOne(id);
-		pacijent.setOdobren(true);
+		pacijent.setOdobren(Boolean.TRUE);
 		patientService.save(pacijent);
 		return new ResponseEntity<>(HttpStatus.OK);
 	}
@@ -193,11 +194,13 @@ public class PacijentController {
 	
 	@GetMapping(value="/zahtevi")
 	public ResponseEntity<List<PacijentDTO>> zahtevi(){
+		
+		System.out.println("Stiglo je do prikupljanja zahteva");
 		List<Pacijent> pacijenti = patientService.findAll();
 
-		List<PacijentDTO> pacijentiDTO = new ArrayList<>();
+		List<PacijentDTO> pacijentiDTO = new ArrayList<PacijentDTO>();
 		for (Pacijent s : pacijenti) {
-			if (!s.getOdobren())
+			if (s.getOdobren() == Boolean.FALSE)
 				pacijentiDTO.add(new PacijentDTO(s));
 		}
 

@@ -121,13 +121,13 @@ insert into medicinska_sestra (id,od,do,klinika) values (26,'1998-12-31 23:59:59
 insert into medicinska_sestra (id,od,do,klinika) values (27,'1998-12-31 23:59:59','1999-12-31 12:59:59',5);
 insert into medicinska_sestra (id,od,do,klinika) values (28,'1998-12-31 23:59:59','1999-12-31 12:59:59',2);
 --Pacijenti
-insert into pacijent (id) values (29);
-insert into pacijent (id) values (30);
-insert into pacijent (id) values (31);
-insert into pacijent (id) values (32);
-insert into pacijent (id) values (33);
-insert into pacijent (id) values (34);
-insert into pacijent (id) values (35);
+insert into pacijent (id,odobren) values (29,TRUE);
+insert into pacijent (id,odobren) values (30,TRUE);
+insert into pacijent (id,odobren) values (31,TRUE);
+insert into pacijent (id,odobren) values (32,TRUE);
+insert into pacijent (id,odobren) values (33,TRUE);
+insert into pacijent (id,odobren) values (34,TRUE);
+insert into pacijent (id,odobren) values (35,TRUE);
 --Kartoni
 insert into karton (id,ime,prezime,pol,datum_rodjenja,krvna_grupa) values (1,'Sasa','Pavlovic',0,'1998-12-31 23:59:59','A+');
 insert into karton (id,ime,prezime,pol,datum_rodjenja,krvna_grupa) values (2,'Kevin','Durant',0,'1998-12-31 23:59:59','A+');

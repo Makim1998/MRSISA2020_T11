@@ -177,7 +177,7 @@ public class LoginController {
 		p.setGrad(pacijent.getGrad());
 		p.setPassword(pacijent.getPassword());
 		p.setPrviPut(true);
-		p.setOdobren(false);
+		p.setOdobren(Boolean.FALSE);
 		System.out.println(p.getEmail());
 		
 		patientService.save(p);
@@ -228,7 +228,7 @@ public class LoginController {
 			//System.out.println("Ulogovan pacijent");
 			System.out.println(p.getAdresa()+"SSSSSSSSSS");
 			
-			if (!p.getOdobren())
+			if (p.getOdobren() == Boolean.FALSE)
 				return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
 				
 			return new ResponseEntity<User>(p, HttpStatus.OK);

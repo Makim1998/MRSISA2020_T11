@@ -70,10 +70,8 @@ Vue.component("login", {
     				console.log(response);
     				console.log(response.data.uloga);
     				if(response.data.uloga == "PACIJENT"){
-    					if (reponse.data.odobren){
-    						console.log("Ulogovao se pacijent");
-    						this.$router.replace({ name: "pacijentHome" });
-    					}
+    					console.log("Ulogovao se pacijent");
+    					this.$router.replace({ name: "pacijentHome" });
     				}
     				else if(response.data.uloga== "ADMINISTRATOR_KLINIKE"){
     					console.log("Ulogovao se administrator klinike");
