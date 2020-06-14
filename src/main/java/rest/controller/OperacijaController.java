@@ -1,8 +1,10 @@
 package rest.controller;
 
 import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Collections;
+import java.util.Date;
 import java.util.HashSet;
 import java.util.List;
 
@@ -22,6 +24,8 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
+import rest.controller.PregledController.PregledSala;
+import rest.controller.PregledController.PreglediSale;
 import rest.domain.AdministratorKlinike;
 import rest.domain.Karton;
 import rest.domain.Klinika;
@@ -37,6 +41,7 @@ import rest.dto.KartonDTO;
 import rest.dto.LekarDTO;
 import rest.dto.OperacijaDTO;
 import rest.dto.PregledDTO;
+import rest.dto.SalaDTO;
 import rest.pk.SalaPK;
 import rest.service.AdminKService;
 import rest.service.KartonService;
@@ -121,51 +126,64 @@ public class OperacijaController {
 		}
 		System.out.println("kiko3");
 		return new ResponseEntity<>(slterminiDTO, HttpStatus.OK);
-	}
+	}*/
 	@GetMapping
 	(value = "/zavrseni/{id}")
-	public ResponseEntity<List<PregledDTO>> getZavrseniTerminiPregleda(@PathVariable Integer id) throws ParseException {
-		List<Pregled> sltermini = pregledService.findZavrsene();
+	public ResponseEntity<List<OperacijaDTO>> getZavrseniTerminiPregleda(@PathVariable Integer id) throws ParseException {
+		List<Operacija> sltermini = operacijaService.findZavrsene();
 		System.out.println(sltermini.isEmpty());
-		List<PregledDTO> slterminiDTO = new ArrayList<PregledDTO>();
-		for (Pregled s : sltermini) {
-			if(s.getLekar().getKlinika().getId()==id) {
-				slterminiDTO.add(new PregledDTO(s));
+		List<OperacijaDTO> slterminiDTO = new ArrayList<OperacijaDTO>();
+		for (Operacija s : sltermini) {
+			for (Lekar l: s.getLekari() ) {
+				if(l.getKlinika().getId()==id) {
+					slterminiDTO.add(new OperacijaDTO(s));
+					break;
+				}
 			}
 		}
 		Collections.sort(slterminiDTO);
 		return new ResponseEntity<>(slterminiDTO, HttpStatus.OK);
 	}
+	
 	@GetMapping
 	(value = "/zahtevi/{id}")
-	public ResponseEntity<List<PregledDTO>> getZahteviregleda(@PathVariable Integer id) throws ParseException {
+	public ResponseEntity<List<OperacijaDTO>> getZahteviregleda(@PathVariable Integer id) throws ParseException {
 		System.out.println("kiko1");
 		AdministratorKlinike ak=akService.findOne(id);
-		List<Pregled> sltermini = pregledService.findZakazane();
+		Klinika k=klinikaService.findOne(ak.getKlinika().getId());
+		List<Operacija> sltermini = operacijaService.findZakazane();
 		System.out.println(sltermini.isEmpty());
-		List<PregledDTO> slterminiDTO = new ArrayList<>();
-		for (Pregled s : sltermini) {
-			System.out.println("kyle");
-			slterminiDTO.add(new PregledDTO(s));
+		List<OperacijaDTO> slterminiDTO = new ArrayList<>();
+		for (Operacija s : sltermini) {
+			System.out.println("mila moja");
+			Lekar l=lekarService.findOne(s.getLekari().iterator().next().getId());
+			if(l.getKlinika().getId()==k.getId()) {
+				slterminiDTO.add(new OperacijaDTO(s));
+			}
 		}
 		System.out.println("kiko3");
 		return new ResponseEntity<>(slterminiDTO, HttpStatus.OK);
 	}
 	@GetMapping
 	(value = "/nezahtevi/{id}")
-	public ResponseEntity<List<PregledDTO>> getNeZahteviregleda(@PathVariable Integer id) throws ParseException {
+	public ResponseEntity<List<OperacijaDTO>> getNeZahteviregleda(@PathVariable Integer id) throws ParseException {
 		System.out.println("kiko1");
 		AdministratorKlinike ak=akService.findOne(id);
-		List<Pregled> sltermini = pregledService.findNeZakazane();
+		Klinika k=klinikaService.findOne(ak.getKlinika().getId());
+		List<Operacija> sltermini = operacijaService.findNeZakazane();
 		System.out.println(sltermini.isEmpty());
-		List<PregledDTO> slterminiDTO = new ArrayList<>();
-		for (Pregled s : sltermini) {
+		List<OperacijaDTO> slterminiDTO = new ArrayList<>();
+		for (Operacija s : sltermini) {
 			System.out.println("kyle");
-			slterminiDTO.add(new PregledDTO(s));
+			Lekar l=lekarService.findOne(s.getLekari().iterator().next().getId());
+			if(l.getKlinika().getId()==k.getId()) {
+				slterminiDTO.add(new OperacijaDTO(s));
+			}
 		}
 		System.out.println("kiko3");
 		return new ResponseEntity<>(slterminiDTO, HttpStatus.OK);
 	}
+	/*
 	@GetMapping
 	(value="/svi")
 	public ResponseEntity<List<PregledDTO>> getSviPregledi() {
@@ -252,6 +270,259 @@ public class OperacijaController {
 			mailService.SendMail(mail, naslov, tekst);
 		}
 		return new ResponseEntity<>(HttpStatus.OK);
+	}
+	static class PregledSala{
+		public OperacijaDTO pregled;
+		public SalaDTO sala;
+	}
+	@PutMapping(value="/ispitaj",consumes = "application/json")
+	public ResponseEntity<OperacijaDTO> ispitajPregled(@RequestBody PregledSala pregledSala) throws ParseException {
+		if(tipKorisnika()!=Uloga.ADMINISTRATOR_KLINIKE) {
+			return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
+		}
+		SalaDTO sala=pregledSala.sala;
+		OperacijaDTO pregled=pregledSala.pregled;
+		//System.out.println("((((((((((((((((((((((((((((((((((((((((((((((");
+		//System.out.println("POSLAT PREGLED:"+pregled.getDatum()+pregled.getLekar().getUsername()+sala.getNaziv()+sala.getBrojSale());
+		//System.out.println("((((((((((((((((((((((((((((((((((((((((((((((");
+		Operacija p = operacijaService.findOne(pregled.getId());
+		SalaPK kljuc=new SalaPK(sala.getBrojSale(),sala.getKlinika());
+		Sala s=salaService.findOne(kljuc);
+		System.out.println(p.getId()+" "+s.getId());
+		System.out.println("=================================================================");
+		p=pronadjiSlobodniTermin(p,s);
+		System.out.println("=================================================================");
+		OperacijaDTO pregledDTO=new OperacijaDTO(p);
+		//System.out.println("poslije poslatog PREGLED:"+pregledDTO.getDatum()+pregledDTO.getSala().getNaziv()+pregledDTO.getLekar().getUsername());
+		return new ResponseEntity<OperacijaDTO>(pregledDTO, HttpStatus.OK);
+	}
+	static class PreglediSale implements Comparable<PreglediSale>{
+		public Date pocetak;
+		public Date kraj;
+		public boolean slobodan;
+		public PreglediSale(Date pocetak2, Date kraj2) {
+			pocetak=pocetak2;
+			kraj=kraj2;
+		}
+		@Override
+		public int compareTo(PreglediSale o) {
+			return pocetak.compareTo(o.pocetak);
+		}
+	}
+	private Operacija pronadjiSlobodniTermin(Operacija p, Sala sala) throws ParseException {
+		Lekar l=p.getLekari().iterator().next();
+		boolean nasLekar=false,pronasao=false;
+		Lekar potreban=l;
+		HashSet<Lekar> lekari=new HashSet<Lekar>();
+		p.getLekari().clear();
+		Klinika k=klinikaService.findOne(sala.getKlinika().getId());
+		String sDate1="31/12/2030";  
+		Date pregledPrijePocetak=new SimpleDateFormat("dd/MM/yyyy").parse(sDate1);	
+		Date pregledPrijeKraj=new SimpleDateFormat("dd/MM/yyyy").parse(sDate1);
+		Date pregledPoslijePocetak=new Date(0);
+		Date pregledPoslijeKraj=new Date(0);
+		Date pregledPocetak=p.getDatum();
+		Date pregledKraj=new Date();
+		pregledKraj.setTime(pregledPocetak.getTime()+ p.getTrajanje()*60000);
+		List<Pregled> pregledi=sala.getPregledi();
+		List<Operacija> operacije = sala.getOperacije();
+		List<PreglediSale> sviPregledi=new ArrayList<PreglediSale>();
+		sviPregledi.add(new PreglediSale(pregledPrijePocetak,pregledPrijeKraj));
+		for(Pregled pr:pregledi) {
+			Date pocetak=pr.getDatum();
+			Date kraj =new Date();
+			kraj.setTime(pocetak.getTime()+pr.getTrajanje()*60000);
+			sviPregledi.add(new PreglediSale(pocetak,kraj));
+		}
+		for(Operacija pr:operacije) {
+			Date pocetak=pr.getDatum();
+			Date kraj =new Date();
+			kraj.setTime(pocetak.getTime()+pr.getTrajanje()*60000);
+			sviPregledi.add(new PreglediSale(pocetak,kraj));
+		}
+		Collections.sort(sviPregledi);
+		//++++++++++++++++++++++++++++++++
+		for(PreglediSale pr:sviPregledi) {
+			pregledPrijePocetak =new Date();
+			pregledPrijePocetak.setTime(pregledPoslijePocetak.getTime());
+			pregledPrijeKraj =new Date();
+			pregledPrijeKraj.setTime(pregledPoslijeKraj.getTime());
+			pregledPoslijePocetak =new Date();
+			pregledPoslijePocetak.setTime(pr.pocetak.getTime());
+			pregledPoslijeKraj =new Date();
+			pregledPoslijeKraj.setTime(pr.kraj.getTime());
+			if((pregledPocetak.after(pregledPrijeKraj) && pregledKraj.before(pregledPoslijePocetak))) {
+				//znaci period se nalazi izmedju 2 pregleda/operacije
+				nasLekar=false;
+				pronasao=false;
+				for (Lekar lek: k.getLekari()) {
+					if(l.getBrojOsiguranika()==lek.getBrojOsiguranika()) {
+						nasLekar=true;//lekar koji je zatrazio pregled bi trebao  ga dobiti 
+					}
+					PreglediSale ps=JelSlobodanLekar(lek,pregledPocetak,pregledKraj,p,1);
+					if(ps.slobodan==true) {
+						p.setDatum(pregledPocetak);
+						p.setSala(sala);
+						potreban=lek;
+						pronasao=true;
+					}
+					if(nasLekar==true) {
+						lekari.add(potreban);
+						p.setLekari(lekari);
+						return p;
+					}			
+				}
+				if(pronasao==true) {
+					lekari.add(potreban);
+					p.setLekari(lekari);
+					return p;
+				}
+			}
+		}
+		pregledPoslijePocetak=new Date(0);
+		pregledPoslijeKraj=new Date(0);
+		System.out.println("pregledPrijePocetak: "+pregledPrijePocetak.toString());
+		System.out.println("pregledPrijeKraj: "+pregledPrijeKraj.toString());
+		System.out.println("pregledPoslijePocetak: "+pregledPoslijePocetak.toString());
+		System.out.println("pregledPoslijeKraj: "+pregledPoslijeKraj.toString());
+		System.out.println("pregledPocetak: "+pregledPocetak.toString());
+		System.out.println("pregledPocetak: "+pregledKraj.toString());
+		for(PreglediSale pr:sviPregledi) {
+			pregledPrijePocetak =new Date();
+			pregledPrijePocetak.setTime(pregledPoslijePocetak.getTime());
+			pregledPrijeKraj =new Date();
+			pregledPrijeKraj.setTime(pregledPoslijeKraj.getTime());
+			pregledPoslijePocetak =new Date();
+			pregledPoslijePocetak.setTime(pr.pocetak.getTime());
+			pregledPoslijeKraj =new Date();
+			pregledPoslijeKraj.setTime(pr.kraj.getTime());
+			if((pregledPocetak.before(pregledPrijeKraj) && ((pregledPoslijePocetak.getTime()-pregledPrijeKraj.getTime())>=60000*p.getTrajanje()))){
+				nasLekar=false;
+				pronasao=false;
+				for (Lekar lek: k.getLekari()) {
+					if(l.getBrojOsiguranika()==lek.getBrojOsiguranika()) {
+						nasLekar=true;
+					}
+					PreglediSale ps=JelSlobodanLekar(lek,pregledPrijeKraj,pregledPoslijePocetak,p,2);
+					if(ps.slobodan==true) {
+						p.setDatum(ps.pocetak);
+						p.setSala(sala);
+						potreban=lek;
+						pronasao=true;
+					}
+					if(nasLekar==true) {
+						lekari.add(potreban);
+						p.setLekari(lekari);
+						return p;
+					}			
+				}
+				if(pronasao==true) {
+					lekari.add(potreban);
+					p.setLekari(lekari);
+					return p;
+				}
+			}			
+		}
+		lekari.add(potreban);
+		p.setLekari(lekari);
+		return p;
+	}
+	private PreglediSale JelSlobodanLekar(Lekar l, Date pPocetak, Date pPoslije,Operacija pregledTaj,int nacin) throws ParseException {
+		System.out.println("JEL SLOBODAN LEKAR"+l.getEmail()+pPocetak.toString()+pPoslije.toString()+pregledTaj.getId()+" nacin:"+nacin);
+		PreglediSale ps=new PreglediSale(new Date(),new Date());
+		List<PreglediSale> sviPregledi=new ArrayList<PreglediSale>();
+		Date pocetak=new Date(0);
+		Date kraj =new Date(0);
+		PreglediSale piS=new PreglediSale(pocetak,kraj);
+		sviPregledi.add(piS);
+		String sDate1="31/12/2030";  
+		Date staripocetak=new SimpleDateFormat("dd/MM/yyyy").parse(sDate1);
+		Date starikraj =new SimpleDateFormat("dd/MM/yyyy").parse(sDate1);
+		sviPregledi.add(new PreglediSale(staripocetak,starikraj));
+		for(Pregled pr:l.getPregledi()) {
+			System.out.println(pr.getId()+" xyle");
+			Date npocetak=pr.getDatum();
+			Date nkraj =new Date();
+			nkraj.setTime(npocetak.getTime()+pr.getTrajanje()*60000);
+			sviPregledi.add(new PreglediSale(npocetak,nkraj));
+		}
+		for(Operacija pr:l.getOperacije()) {
+			Date npocetak=pr.getDatum();
+			Date nkraj =new Date();
+			nkraj.setTime(npocetak.getTime()+pr.getTrajanje()*60000);
+			sviPregledi.add(new PreglediSale(npocetak,nkraj));
+		}
+		Collections.sort(sviPregledi);
+		if(nacin==1) {
+			boolean mozel=true;
+			for (Pregled pr : l.getPregledi()) {
+				Date prPoslije=new Date();
+				prPoslije.setTime(pr.getDatum().getTime()+ pr.getTrajanje()*60000);
+				if((pPocetak.after(pr.getDatum()) && pPocetak.before(prPoslije))|| (pPoslije.after(pr.getDatum()) && pPoslije.before(prPoslije)) ||
+				(pPocetak.before(pr.getDatum()) && pPocetak.before(prPoslije) && 
+				pPoslije.after(pr.getDatum()) && pPoslije.after(prPoslije)) || (pPocetak.equals(pr.getDatum()))) {
+					if(pregledTaj.getId()!=pr.getId()) {
+						System.out.println("SISO3");
+						ps.slobodan=false;
+						return ps;
+					}
+				}
+			}
+			if(mozel==true) {
+				for (Operacija pr : l.getOperacije()) {
+					Date prPoslije=new Date();
+					prPoslije.setTime(pr.getDatum().getTime()+ pr.getTrajanje()*60000);
+					if((pPocetak.after(pr.getDatum()) && pPocetak.before(prPoslije))|| (pPoslije.after(pr.getDatum()) && pPoslije.before(prPoslije)) ||
+					(pPocetak.before(pr.getDatum()) && pPocetak.before(prPoslije) && 
+					pPoslije.after(pr.getDatum()) && pPoslije.after(prPoslije)) ||(pPocetak.equals(pr.getDatum()))) {
+						System.out.println("SISO2");
+						ps.slobodan=false;
+						return ps;
+					}
+				}	
+			}
+			ps.slobodan=true;
+			System.out.println("SISO4");
+			return ps;
+		}else {
+			Date proslikraj=null;
+			System.out.println("+++++++++++++++++++++++++++++++++++++++++++++++++++");
+			for(PreglediSale apr:sviPregledi) {
+				System.out.println("Pocetak: "+apr.pocetak.toString()+",Kraj:"+apr.kraj.toString());
+			}
+			System.out.println("+++++++++++++++++++++++++++++++++++++++++++++++++++");
+			for (PreglediSale pr : sviPregledi) {
+				if(proslikraj==null) {
+					proslikraj=new Date();
+					proslikraj.setTime(pr.kraj.getTime());
+				}
+				PreglediSale presjek=pronadjiPresjek(pPocetak,pPoslije,proslikraj,pr.pocetak);
+				System.out.println("presjek pocetak: "+presjek.pocetak.toString());
+				System.out.println("presjek kraj: "+presjek.kraj.toString());
+				System.out.println(((presjek.kraj.getTime()-presjek.pocetak.getTime())-60000*pregledTaj.getTrajanje()));
+				if(presjek.kraj.getTime()-presjek.pocetak.getTime()>=60000*pregledTaj.getTrajanje()){
+					System.out.println("SISO");
+					ps.pocetak=new Date();
+					ps.pocetak.setTime(presjek.pocetak.getTime());
+					ps.slobodan=true;
+					return ps;
+				}
+			}
+		}
+		ps.slobodan=false;
+		System.out.println("SISO5");
+		return ps;
+	}
+	private PreglediSale pronadjiPresjek(Date pPocetak, Date pPoslije, Date pocetak, Date kraj) {
+		PreglediSale presjek=new PreglediSale(new Date(), new Date());
+		if(pocetak.compareTo(pPoslije)>0 || kraj.compareTo(pPocetak)<0) {
+			presjek.pocetak=new Date();
+			presjek.kraj=new Date();
+		}else {
+			presjek.pocetak.setTime(Math.max(pPocetak.getTime(),pocetak.getTime()));
+			presjek.kraj.setTime(Math.max(pPoslije.getTime(),kraj.getTime()));
+		}
+		return presjek;
 	}
 }
 

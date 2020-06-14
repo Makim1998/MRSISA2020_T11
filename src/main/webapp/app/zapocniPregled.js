@@ -161,6 +161,7 @@ Vue.component("zakazaniPregledi", {
 	methods : {
 		zapocni(a){
 			this.input.karton=a;
+			alert("Nije implementirano");
 			document.getElementById("myForm").style.display = "block";
 			document.getElementById("modaldark").style.display = "block";
 			document.getElementById("modaldark").style.opacity="1";
@@ -193,6 +194,14 @@ Vue.component("zakazaniPregledi", {
 			document.getElementById("modaldark").style.opacity="0";
 		},
 		zakaziOperaciju() {
+			if(!moment( $("#od").val(), 'YYYY-MM-DDTHH:mm', true).isAfter(moment())){
+        		alert("Odaberite datum i vreme u buducnosti!");
+        		return;
+        	}
+			if(!moment( $("#od").val(), 'YYYY-MM-DDTHH:mm', true).isValid()){
+        		alert("Datum nije u ispravnom formatu!\n (YYYY-MM-DD HH:mm)");
+        		return;
+        	}
         	this.input.lekari=[];
         	this.input.lekari.push(this.input.lekar);
         	axios
@@ -208,6 +217,14 @@ Vue.component("zakazaniPregledi", {
 			});
         },
 		zakaziPregled() {
+			if(!moment( $("#od").val(), 'YYYY-MM-DDTHH:mm', true).isAfter(moment())){
+        		alert("Odaberite datum i vreme u buducnosti!");
+        		return;
+        	}
+			if(!moment( $("#od").val(), 'YYYY-MM-DDTHH:mm', true).isValid()){
+        		alert("Datum nije u ispravnom formatu!\n (YYYY-MM-DD HH:mm)");
+        		return;
+        	}
         	axios
         	.post('rest/Pregled/dodaj', {"id":null,"datum":this.input.datum,"karton":this.input.karton,
         		"trajanje":this.input.trajanje,"tip":null,"cena":this.input.cena,

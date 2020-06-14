@@ -44,7 +44,7 @@ Vue.component("terminPregleda", {
 		   <th>Cena</th>
 		   <th>Brisanje</th>
 		</tr>
-		<tr v-for="tp in pregledi" class="filterDiv ">
+		<tr v-for="tp in pregledi" v-if="tp.sala.klinika==cenovnik.klinika_id" class="filterDiv ">
 			<td class="myclass">{{tp.datum.substring(0,10)}} {{tp.datum.substring(11,16)}}</td>
 			<td class="myclass">{{tp.tip.naziv}}</td>
 			<td class="myclass">{{tp.trajanje}}</td>
@@ -192,6 +192,14 @@ Vue.component("terminPregleda", {
           }
         },
 		dodaj() {
+			if(!moment( $("#od").val(), 'YYYY-MM-DDTHH:mm', true).isAfter(moment())){
+        		alert("Odaberite datum i vreme u buducnosti!");
+        		return;
+        	}
+			if(!moment( $("#od").val(), 'YYYY-MM-DDTHH:mm', true).isValid()){
+        		alert("Datum nije u ispravnom formatu!\n (YYYY-MM-DD HH:mm)");
+        		return;
+        	}
         	axios
         	.post('rest/Pregled/dodaj', {"id":null,"datum":this.input.datum,
         		"trajanje":this.input.trajanje,"tip":this.input.tipPregleda,"cena":this.input.cena,
@@ -204,7 +212,12 @@ Vue.component("terminPregleda", {
             	$('.modal-backdrop').remove();
             })
 			.catch(error => {
-				alert("Nevalidan unos. Pokusajte ponovo.");
+ 				if(error.response.data==="Lekar nije specijalizovan za dati tip pregleda!" || error.response.data==="Nemate pravo pristupa" ||
+ 						error.response.data==="Lekar nije specijalizovan za dati tip pregleda!"){
+ 					alert(error.response.data);
+ 				}else{
+ 					alert("Greska");
+ 				}
 			});
         }
 	},
