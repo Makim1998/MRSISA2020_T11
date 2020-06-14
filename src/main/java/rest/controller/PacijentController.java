@@ -180,6 +180,8 @@ public class PacijentController {
 	
 	@PutMapping(value="/prihvati/{id}", consumes=MediaType.APPLICATION_JSON_VALUE, produces=MediaType.APPLICATION_JSON_VALUE)
 	public ResponseEntity<Void> prihvati(@PathVariable Integer id){
+		if (tipKorisnika() != Uloga.PACIJENT)
+			return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
 		Pacijent pacijent = patientService.findOne(id);
 		pacijent.setOdobren(Boolean.TRUE);
 		patientService.save(pacijent);
@@ -188,6 +190,8 @@ public class PacijentController {
 	
 	@DeleteMapping(value="/odbij/{id}", consumes=MediaType.APPLICATION_JSON_VALUE, produces=MediaType.APPLICATION_JSON_VALUE)
 	public ResponseEntity<Void> odbij(@PathVariable Integer id){
+		if (tipKorisnika() != Uloga.PACIJENT)
+			return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
 		patientService.remove(id);
 		return new ResponseEntity<>(HttpStatus.OK);
 	}
