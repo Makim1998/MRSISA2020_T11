@@ -197,6 +197,7 @@ Vue.component("pacijenti", {
 				alert("too");
 			}
 			*/
+			alert("Nije implementirano");
 			document.getElementById("pKartona").style.display="none";
 			document.getElementById("zPregled").style.display="none";
 			document.getElementById("zkarton").style.display="block";

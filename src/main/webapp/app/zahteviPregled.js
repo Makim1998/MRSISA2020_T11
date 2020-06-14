@@ -147,7 +147,6 @@ Vue.component("zahteviPregled", {
     		    .then(response => {
     		    	if(response.data.length==0){
     		    		alert("Trenutno nema zahteva za pregled");
-    		    		this.$router.push("/");
     		    	}else{
     		    		this.pregledi=response.data;
     			    	this.saljemPregled=this.pregledi[0];
@@ -252,7 +251,6 @@ Vue.component("zahteviPregled", {
 		    .then(response => {
 		    	if(response.data.length==0){
 		    		alert("Trenutno nema zahteva za pregled");
-		    		this.$router.push("/");
 		    	}else{
 		    		this.pregledi=response.data;
 			    	this.saljemPregled=this.pregledi[0];

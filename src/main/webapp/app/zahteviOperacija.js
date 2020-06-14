@@ -229,7 +229,6 @@ Vue.component("zahteviOperacija", {
 		    .then(response => {
 		    	if(response.data.length==0){
 		    		alert("Trenutno nema zahteva za operaciju");
-		    		this.$router.push("/");
 		    	}else{
 		    		this.operacije=response.data;
 			    	this.saljemPregled=this.operacije[0];

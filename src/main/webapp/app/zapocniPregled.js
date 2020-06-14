@@ -161,6 +161,7 @@ Vue.component("zakazaniPregledi", {
 	methods : {
 		zapocni(a){
 			this.input.karton=a;
+			alert("Nije implementirano");
 			document.getElementById("myForm").style.display = "block";
 			document.getElementById("modaldark").style.display = "block";
 			document.getElementById("modaldark").style.opacity="1";
