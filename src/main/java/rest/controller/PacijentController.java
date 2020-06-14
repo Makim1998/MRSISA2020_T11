@@ -8,7 +8,9 @@ import javax.servlet.http.HttpServletRequest;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PutMapping;
@@ -173,5 +175,32 @@ public class PacijentController {
 			return false;
 		}
 		return true;
+	}
+	
+	@PutMapping(value="/prihvati/{id}", consumes=MediaType.APPLICATION_JSON_VALUE, produces=MediaType.APPLICATION_JSON_VALUE)
+	public ResponseEntity<Void> prihvati(@PathVariable Integer id){
+		Pacijent pacijent = patientService.findOne(id);
+		pacijent.setOdobren(true);
+		patientService.save(pacijent);
+		return new ResponseEntity<>(HttpStatus.OK);
+	}
+	
+	@DeleteMapping(value="/odbij/{id}", consumes=MediaType.APPLICATION_JSON_VALUE, produces=MediaType.APPLICATION_JSON_VALUE)
+	public ResponseEntity<Void> odbij(@PathVariable Integer id){
+		patientService.remove(id);
+		return new ResponseEntity<>(HttpStatus.OK);
+	}
+	
+	@GetMapping(value="/zahtevi")
+	public ResponseEntity<List<PacijentDTO>> zahtevi(){
+		List<Pacijent> pacijenti = patientService.findAll();
+
+		List<PacijentDTO> pacijentiDTO = new ArrayList<>();
+		for (Pacijent s : pacijenti) {
+			if (!s.getOdobren())
+				pacijentiDTO.add(new PacijentDTO(s));
+		}
+
+		return new ResponseEntity<>(pacijentiDTO, HttpStatus.OK);
 	}
 }

@@ -14,6 +14,9 @@ public class Pacijent extends User{
     @JoinColumn(name = "karton_id", referencedColumnName = "id")
 	private Karton karton;
 	
+	@Column
+	private Boolean odobren;
+	
 	public Karton getKarton() {
 		return karton;
 	}
@@ -30,4 +33,11 @@ public class Pacijent extends User{
 		this.karton = karton;
 	}
 	
+	public Boolean getOdobren() {
+		return odobren;
+	}
+	public void setOdobren(Boolean odobren) {
+		this.odobren = odobren;
+	}
+		
 }

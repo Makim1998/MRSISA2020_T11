@@ -177,8 +177,11 @@ public class LoginController {
 		p.setGrad(pacijent.getGrad());
 		p.setPassword(pacijent.getPassword());
 		p.setPrviPut(true);
+		p.setOdobren(false);
 		System.out.println(p.getEmail());
+		
 		patientService.save(p);
+		
 		return new ResponseEntity<>("ok", HttpStatus.OK);
 	}
 
@@ -224,6 +227,10 @@ public class LoginController {
 			Pacijent p = patientService.findByEmail(logedIn.getEmail());
 			//System.out.println("Ulogovan pacijent");
 			System.out.println(p.getAdresa()+"SSSSSSSSSS");
+			
+			if (!p.getOdobren())
+				return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
+				
 			return new ResponseEntity<User>(p, HttpStatus.OK);
 		}
 		return new ResponseEntity<>(HttpStatus.NOT_FOUND);

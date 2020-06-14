@@ -87,7 +87,7 @@ Vue.component("register", {
 		            "brojOsiguranika":  this.input.brojOsiguranika
 				})
 			    .then((response) => {
-			    	alert("Uspesno ste se registrovali!");
+			    	alert('Vas zahtev za registraciju je uspesno poslat!');
 			    	console.log(response.data);
 			    	
 			    })

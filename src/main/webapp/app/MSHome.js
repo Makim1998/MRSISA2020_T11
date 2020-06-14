@@ -1,5 +1,4 @@
 //const RadniKalendar = { template : '<radniKalendar></radniKalendar>' }
-//const GodisnjiL = { template : '<godisnjiL></godisnjiL>' }
 //const Overavanje = { template : '<overavanje></overavanje>' }
 
 Vue.component("MSHome", {
@@ -28,7 +27,7 @@ Vue.component("MSHome", {
 		<div  id="mySidenav" class="sidenav">
 	      	<a href = "#pacijenti" v-on:click = "component = 'pacijenti'" >Pacijenti</a>
 	      	<a href = "#radniKalendar" v-on:click = "component = 'radniKalendar'" >Radni kalendar</a>
-			<a href = "#godisnjiL" v-on:click = "component = 'godisnjiL'" >Godisnji</a>
+			<a href = "#godisnjiSlanjeMS" v-on:click = "component = 'godisnjiSlanjeMS'" >Godisnji</a>
 			<a href = "#MSProfil" v-on:click = "component = 'MSProfil'" >Profil</a>
 			<a href = "#overavanje" v-on:click = "component = 'overavanje'" >Overavanje recepata</a>
 			<div class="align-self-center mx-auto"> 
@@ -81,7 +80,6 @@ Vue.component("MSHome", {
 		, 
 		components:{
 			//'radniKalendar': RadniKalendar,
-			//'godisnjiL': GodisnjiL,
 			//'overavanje': Overavanje
 		},
 		

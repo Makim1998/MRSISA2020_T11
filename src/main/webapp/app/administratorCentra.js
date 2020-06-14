@@ -1,5 +1,5 @@
 //const Klinika = { template : '<klinika></klinika>' }
-const Zahtevi = { template : '<zahtevi></zahtevi>' }
+//const Zahtevi = { template : '<zahtevi></zahtevi>' }
 
 Vue.component('administratorCentra',{
 	data: function(){
@@ -54,7 +54,7 @@ Vue.component('administratorCentra',{
 	, 
 	components:{
 		//'klinika': Klinika,
-		'zahtevi': Zahtevi
+		//'zahtevi': Zahtevi
 	},
 	
 	methods : {

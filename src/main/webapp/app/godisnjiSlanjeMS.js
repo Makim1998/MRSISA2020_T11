@@ -1,4 +1,4 @@
-Vue.component('godisnjiSlanje',{
+Vue.component('godisnjiSlanjeMS',{
 	data:function(){
 		return{
 			id:null,
@@ -70,7 +70,7 @@ Vue.component('godisnjiSlanje',{
 	},
 	mounted(){
 		axios
-	    .get('rest/login/getConcreteUser/Lekar')
+	    .get('rest/login/getConcreteUser/MedicinskaS')
 	    .then((response) => {
 	    	this.id=response.data.id;
 	    	this.username = response.data.email;
