@@ -369,7 +369,6 @@ public class PregledController {
 		p.setSala(s);
 		Lekar l=lekarService.findOne(preg.getLekar().getId());
 		p.setLekar(l);
-		/*
 		String mail=l.getEmail();
 		String naslov="Zakazivanje pregleda";
 		String tekst="Poštovani,"
@@ -378,8 +377,8 @@ public class PregledController {
 		mailService.SendMail(mail, naslov, tekst);
 		Pacijent pacijent=patientService.findOneByKarton(p.getKarton());
 		mail=pacijent.getEmail();
+		//"srbislav30111998@gmail.com"
 		mailService.SendMail(mail, naslov, tekst);
-		*/
 		pregledService.save(p);
 		return new ResponseEntity<PregledDTO>(new PregledDTO(p), HttpStatus.OK);
 	}
@@ -411,12 +410,20 @@ public class PregledController {
 		}
 	}
 	@PostMapping(value="/dodaj",consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
-	public ResponseEntity<User> login(@RequestBody PregledDTO pregledDTO){
+	public ResponseEntity<String> login(@RequestBody PregledDTO pregledDTO){
 		if(tipKorisnika()!=Uloga.ADMINISTRATOR_KLINIKE && tipKorisnika()!=Uloga.LEKAR) {
-			return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
+			return new ResponseEntity<>("Nemate pravo pristupa",HttpStatus.BAD_REQUEST);
 		}
 		StavkaCenovnika st=stavkaCenovnikaService.findOne(pregledDTO.getCena().getId());
 		Lekar l=lekarService.findOne(pregledDTO.getLekar().getId());
+		if(l.getTipPregleda() == null) {
+			return new ResponseEntity<>("Lekar nije specijalizovan za dati tip pregleda!",HttpStatus.BAD_REQUEST);
+		}
+		if(pregledDTO.getTip()!=null) {
+			if(!l.getTipPregleda().getNaziv().equals(pregledDTO.getTip().getNaziv())) {
+				return new ResponseEntity<>("Lekar nije specijalizovan za dati tip pregleda!",HttpStatus.BAD_REQUEST);
+			}
+		}
 		Sala s=null;
 		TipPregleda t=null;
 		try {
@@ -443,6 +450,7 @@ public class PregledController {
 			String tekst="Poštovani,"
 					+ "\nNovi pregled zakazan je za  "+pregled.getDatum().toString().substring(0,16)
 			        + "\nMolimo vas da rezervisete salu u toku dana.";
+			//"srbislav30111998@gmail.com"
 			mailService.SendMail(mail, naslov, tekst);
 		}
 		pregledService.save(pregled);

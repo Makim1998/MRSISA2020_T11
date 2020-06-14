@@ -188,6 +188,11 @@ insert into pregled(id,datum,trajanje,cena_id,lekar_id,tip_id,karton_id) values 
 insert into pregled(id,datum,trajanje,cena_id,lekar_id,tip_id,karton_id) values (22,'2020-07-09 15:30:00',50,1,10,2,3);
 insert into pregled(id,datum,trajanje,cena_id,lekar_id,tip_id,karton_id) values (23,'2020-07-09 17:00:00',50,1,10,2,2);
 insert into pregled(id,datum,trajanje,cena_id,lekar_id,tip_id,karton_id) values (24,'2020-07-09 17:30:00',50,5,15,5,5);
+--Operacije koji su zakazane i administrator ih treba odobriti (nemaju salu)
+insert into operacija(id,datum,trajanje,cena_id,karton_id) values (1,'2020-07-13 14:30:00',50,1,1);
+insert into operacija_lekari(operacije_id,lekari_id) values(1,10);
+insert into operacija(id,datum,trajanje,cena_id,karton_id) values (2,'2020-07-12 12:00:00',50,5,5);
+insert into operacija_lekari(operacije_id,lekari_id) values(2,15);
 --Lekovi
 insert into lek (id,naziv,sifra) values (1,'lek1','x1t1s2');
 insert into lek (id,naziv,sifra) values (2,'lek2','x2t2s3');

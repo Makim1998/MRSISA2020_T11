@@ -112,7 +112,10 @@ Vue.component('godisnjiPrihvatanje', {
 					/*document.getElementById("myForm").style.display = "none";
 					document.getElementById("modaldark").style.display = "none";
 					document.getElementById("modaldark").style.opacity="0";*/   	
-			    });
+				})
+				.catch(response => {
+					alert("Greska.Mail nije validan.");
+				});
 	    },
 	},
 	mounted(){

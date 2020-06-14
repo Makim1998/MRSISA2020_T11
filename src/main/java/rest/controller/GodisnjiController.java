@@ -108,6 +108,7 @@ public class GodisnjiController {
 			naslov+="Odbijen";
 		}
 		String tekst=gDTO.getRazlog();
+		//srbislav30111998@gmail.com;
 		mailService.SendMail(mail, naslov, tekst);
 		god=gService.save(god);
 		return new ResponseEntity<>(gDTO, HttpStatus.OK);

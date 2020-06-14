@@ -19,6 +19,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import rest.domain.Cenovnik;
+import rest.domain.Klinika;
 import rest.domain.Pregled;
 import rest.domain.StavkaCenovnika;
 import rest.domain.TipPregleda;
@@ -27,6 +28,7 @@ import rest.domain.User;
 import rest.dto.CenovnikDTO;
 import rest.dto.StavkaCenovnikaDTO;
 import rest.service.CenovnikService;
+import rest.service.KlinikaService;
 import rest.service.PregledService;
 import rest.service.StavkaCenovnikaService;
 
@@ -41,6 +43,8 @@ public class CenovnikController {
 	private CenovnikService cenovnikService;
 	@Autowired
 	private StavkaCenovnikaService stavkaCenovnikaService;
+	@Autowired
+	private KlinikaService klinikaService;
 	
 	@Autowired
 	public HttpServletRequest request;
@@ -55,6 +59,15 @@ public class CenovnikController {
 		System.out.println("aaa2");
 		
 		Cenovnik cenovnik = cenovnikService.findOneByKlinika(id);
+		if(cenovnik==null) {
+			Klinika k=klinikaService.findOne(id);
+			if(k.getCenovnik()==null) {
+				cenovnik=new Cenovnik();
+				cenovnik.setId(id);
+				cenovnik.setKlinika(k);
+				cenovnikService.save(cenovnik);
+			}
+		}
 		System.out.println("AA "+cenovnik.getKlinika().getId());
 
 		CenovnikDTO cenovnikDTO = new CenovnikDTO(cenovnik);

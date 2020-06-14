@@ -21,6 +21,11 @@ public class CenovnikDTO {
 
 	}
 
+	public CenovnikDTO(Integer ida) {
+		this.id=ida;
+		this.klinikaID=ida;
+	}
+
 	public Integer getId() {
 		return id;
 	}

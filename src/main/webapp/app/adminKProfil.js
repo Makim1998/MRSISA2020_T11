@@ -98,7 +98,10 @@ Vue.component('adminKProfil',{
 			    	this.grad = response.data.grad;
 			    	this.drzava = response.data.drzava;		    	
 			    	this.kc_id=response.data.kc_id;
-		    });
+			    })
+			    .catch(response => {
+			    	alert("Popunite ispravno sva polja(lozinka 6-10 karak.)");
+			    });
 	    	}
 	    	else{
 	    		alert("Popunite ispravno sva polja");

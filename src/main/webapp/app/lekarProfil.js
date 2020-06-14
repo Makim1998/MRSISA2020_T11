@@ -108,6 +108,9 @@ Vue.component('lekarProfil',{
 			    	this.radnoVremeOd=response.data.radnoVremeOd;
 			    	this.kc_id=response.data.kc_id;
 			    	
+			    })
+			    .catch(response => {
+			    	alert("Popunite ispravno sva polja(lozinka 6-10 karak.)");
 			    });
 	    	}
 	    	else{

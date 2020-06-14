@@ -33,5 +33,9 @@ public class CenovnikService {
 	public Cenovnik findOne(Integer id) {
 		return cenovnikRepository.findById(id).orElseGet(null);
 	}
+	public void save(Cenovnik cenovnik) {
+		cenovnikRepository.save(cenovnik);
+		
+	}
 
 }

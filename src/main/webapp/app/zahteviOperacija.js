@@ -1,4 +1,4 @@
-Vue.component("zahteviPregled", {
+Vue.component("zahteviOperacija", {
 	data: function () {
 	    return {
 	    	pregledi:[],
@@ -16,25 +16,22 @@ Vue.component("zahteviPregled", {
 	template: ` 
 <div class="oneoption">
 <div>
-<h2 class="text-center">Zahtevi lekara za pregled</h2>
+<h2 class="text-center">Zahtevi lekara za operaciju</h2>
 <br>
    <table align="left" class="table klasicna-tabela">
 		<tr>
-		   <th>Datum i vreme pregleda</th>
+		   <th>Datum i vreme operacije</th>
 		   <th>Trajanje</th>
-		   <th>Tip pregleda</th>
-		   <th>Lekar</th>
 		   <th>Zdravstveni karton</th>
-		   <th>Pregled</th>
+		   <th>Operacija</th>
 		</tr>
-		<tr v-for="tp in pregledi" class="filterDiv ">
+		<tr v-for="tp in operacije" class="filterDiv ">
 			<td class="myclass">{{tp.datum.substring(0,10)}} {{tp.datum.substring(11,16)}}</td>
 			<td class="myclass">{{tp.trajanje}} minuta</td>
-			<td class="myclass">{{tp.tip.naziv}}</td>
-			<td class="myclass">{{tp.lekar.username}}</td>
 			<td><input class="btn btn-primary" type='button' value='Detalji'  v-on:click="karton(tp.karton)"/></td>
 			<td><input class="btn btn-primary" value='Zakazite' type='button' v-on:click="zakazite(tp.datum,tp.trajanje,tp,0)"/></td>
-		</tr>	
+		</tr>
+	
 </table>
 <div id="modaldark">
 		<div id="myForm" style="display:none;">
@@ -69,9 +66,8 @@ Vue.component("zahteviPregled", {
 	   <div id="poruka">
 			<p v-if="saljemPregled.datum===ispitanPregled.datum" >Ova sala je slobodna za datum pregleda</p>
 			<p v-else>Ova sala nije slobodna za datum pregleda.Prvi slobodni termin je {{ispitanPregled.datum.substring(0,10)}} {{ispitanPregled.datum.substring(11,16)}}</p>
-		  	<p v-if="saljemPregled.lekar.username!=ispitanPregled.lekar.username" >Lekar koji je poslao zahtev nije dostupan za ovaj termin. Lekar koji ce izvrsiti ovaj pregled je {{ispitanPregled.lekar.username}}</p>
-			<p v-else>Lekaru koji je poslao zahtev ovaj pregled ce biti dodeljen.</p>
-		   <input class="btn btn-success leftbutton" value='Potvrdi' type='button' data-toggle="modal" v-on:click="potvrdiRezervisanje();otkaziRezervisanje();"/>
+		  	<p>U nastavku navedite lekare koji ce prisustvovati operaciji.</p>
+		   <input class="btn btn-success leftbutton" value='Dalje' type='button' data-toggle="modal" v-on:click="potvrdiRezervisanje();otkaziRezervisanje();"/>
 		   <input class="btn btn-danger rightbutton" value='Otkazi' type='button' v-on:click="otkaziRezervisanje()"/>
 	   </div>
 	   </div>
@@ -98,6 +94,7 @@ Vue.component("zahteviPregled", {
 					<ul>
 						<li v-for="a in tp.pregledi" v-if="a.datum.substring(0,10)===datumPretrage.substring(0,10)" class="nfitem">{{a.datum.substring(11,16)}},trajanje:{{a.trajanje}}min</li>
 						<li v-for="a in tp.operacije" v-if="a.datum.substring(0,10)===datumPretrage.substring(0,10)" class="nfitem">{{a.datum.substring(11,16)}},trajanje:{{a.trajanje}}min</li>
+					
 					</ul>
 				</div>	
 			</td>
@@ -139,37 +136,16 @@ Vue.component("zahteviPregled", {
 			document.getElementById("modaldark").style.opacity="1";
 		},
 		potvrdiRezervisanje(){
-			axios
-        	.put('rest/Pregled/potvrdi',this.ispitanPregled)
-            .then(response =>{
-    			axios
-    		    .get('rest/Pregled/zahtevi/'+this.admin.id,this.admin.id)
-    		    .then(response => {
-    		    	if(response.data.length==0){
-    		    		alert("Trenutno nema zahteva za pregled");
-    		    		this.$router.push("/");
-    		    	}else{
-    		    		this.pregledi=response.data;
-    			    	this.saljemPregled=this.pregledi[0];
-    			    	this.ispitanPregled=this.pregledi[0];
-    		    	}
-    		    	})
-    			.catch(response => {
-    				this.$router.push("/");
-    			});
-            	alert("Uspesno ste potvrdili pregled.");
-            	document.getElementById("sa").style.display = "none";
-    			document.getElementById("myForm3").style.display = "none";
-    			document.getElementById("modaldark").style.display = "none";
-    			document.getElementById("modaldark").style.opacity="0";
-            })
-    	    .catch(error => {
-    			alert("Svi lekari su zauzeti.");
-    		});
+            alert("Nije implementirano.");
+            document.getElementById("sa").style.display = "none";
+    		document.getElementById("myForm3").style.display = "none";
+    		document.getElementById("modaldark").style.display = "none";
+    		document.getElementById("modaldark").style.opacity="0";
+   			this.ispitanPregled=[];
 		},
 		rezervisi(tp){
         	axios
-        	.put('rest/Pregled/ispitaj',{"pregled":this.saljemPregled,"sala":tp})
+        	.put('rest/Operacija/ispitaj',{"pregled":this.saljemPregled,"sala":tp})
             .then(response =>{
             	this.ispitanPregled=response.data;
     			document.getElementById("sa").style.display = "none";
@@ -230,6 +206,7 @@ Vue.component("zahteviPregled", {
 		karton(k) {
         	this.trenutniKarton=[];
 			this.trenutniKarton=k;
+			document.getElementById("sa").style.display = "none";
 			document.getElementById("myForm").style.display = "block";
 			document.getElementById("modaldark").style.display = "block";
 			document.getElementById("modaldark").style.opacity="1";
@@ -248,22 +225,22 @@ Vue.component("zahteviPregled", {
 		.get('rest/login/getConcreteUser/AdminK')
 	    .then((response) => {
 			axios
-		    .get('rest/Pregled/zahtevi/'+response.data.id,response.data.id)
+		    .get('rest/Operacija/zahtevi/'+response.data.id,response.data.id)
 		    .then(response => {
 		    	if(response.data.length==0){
-		    		alert("Trenutno nema zahteva za pregled");
+		    		alert("Trenutno nema zahteva za operaciju");
 		    		this.$router.push("/");
 		    	}else{
-		    		this.pregledi=response.data;
-			    	this.saljemPregled=this.pregledi[0];
-			    	this.ispitanPregled=this.pregledi[0];
+		    		this.operacije=response.data;
+			    	this.saljemPregled=this.operacije[0];
+			    	this.ispitanPregled=this.operacije[0];
 		    	}
 		    	})
 			.catch(response => {
 				this.$router.push("/");
 			});
 			axios
-		    .get('rest/Pregled/nezahtevi/'+response.data.id,response.data.id)
+		    .get('rest/Operacija/nezahtevi/'+response.data.id,response.data.id)
 		    .then(response => {this.nepregledi=response.data
 				axios
 			    .get('rest/sala')
@@ -281,6 +258,5 @@ Vue.component("zahteviPregled", {
 	    .catch(response => {
 			this.$router.push("/");
 		});
-
 	},
 });
