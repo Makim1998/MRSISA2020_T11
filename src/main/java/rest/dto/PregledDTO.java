@@ -17,6 +17,7 @@ public class PregledDTO implements Comparable<PregledDTO>{
 	private StavkaCenovnikaDTO cena;
 	private SalaDTO sala;
 	private LekarDTO lekar;
+	private String opis;
 	private DijagnozaDTO dijagnoza;
 	
 	public PregledDTO(Pregled s) {
@@ -75,6 +76,15 @@ public class PregledDTO implements Comparable<PregledDTO>{
 
 	public void setTrajanje(int trajanje) {
 		this.trajanje = trajanje;
+	}
+
+	
+	public String getOpis() {
+		return opis;
+	}
+
+	public void setOpis(String opis) {
+		this.opis = opis;
 	}
 
 	public TipPregledaDTO getTip() {

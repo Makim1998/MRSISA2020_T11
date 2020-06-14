@@ -136,6 +136,7 @@ Vue.component("zakazivanje", {
 	    .get('rest/tipPregleda')
 	    .then(response => (this.tipovi=response.data));
 		
+		
 		console.log(this.klinikaodabrana);
 		console.log(this.date);
 		console.log(this.type);
@@ -145,7 +146,8 @@ Vue.component("zakazivanje", {
 		}
 		else{
 			$("#datetimepicker4").val(this.date);
-			this.tip = this.type;
+			//this.tip = this.type;
+			this.tip = this.lekarodabran.tip;
 			this.lekar = this.lekarodabran.username;
 			this.klinika = this.klinikaodabrana.naziv;
 		}

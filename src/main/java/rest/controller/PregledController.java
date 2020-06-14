@@ -128,7 +128,14 @@ public class PregledController {
 		for (Pregled p : svi) {
 			if(p.getKarton() != null ) {
 				if(email.equals(p.getKarton().getPacijent().getEmail())) {
-					zaPacijenta.add(new PregledDTO(p));
+					PregledDTO po = new PregledDTO(p);
+					if(p.getDijagnoza() == null) {
+						po.setOpis("Nije uspostavljena dijagnoza");
+					}
+					else {
+						po.setOpis(p.getDijagnoza().getOpis());
+					}
+					zaPacijenta.add(po);
 					System.out.println(p.getId());
 				}
 			}
@@ -531,9 +538,13 @@ public class PregledController {
 			p.setKarton(pa.getKarton());
 			p.setLekar(l);
 			p.setTip(l.getTipPregleda());
-			StavkaCenovnika st = stavkaCenovnikaService.findOneByUsluga(l.getTipPregleda().getNaziv());
-			System.out.println(st == null);
-			p.setCena(st);
+			List<StavkaCenovnika> sce = stavkaCenovnikaService.findAll();
+			for(StavkaCenovnika sc: sce ) {
+				if(sc.getUsluga().equals(tip + " pregled")) {
+					p.setCena(sc);
+					break;
+				}
+			}			
 			pregledService.save(p);
 		}
 
