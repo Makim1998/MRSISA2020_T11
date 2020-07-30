@@ -17,7 +17,7 @@ Vue.component('godisnjiPrihvatanje', {
 	template: ` 
 <div class="oneoption">
 <div>
-<h2 class="text-center">Godisnji odmor/odsustva</h2>
+<h2 class="text-center">Godisnji odmor/odsustva proba</h2>
 <br>
    <table align="left" class="table klasicna-tabela">
 		<tr>

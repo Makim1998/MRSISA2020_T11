@@ -70,17 +70,25 @@ public class GodisnjiController {
 		//System.out.println(sltermini.isEmpty());
 		List<GodisnjiDTO> godto = new ArrayList<>();
 		for (GodisnjiOdmor s : god) {
-			Lekar lekar=lservice.findOne(s.getMedOsoblje().getId());
-			if(lekar==null) {
+			Uloga uloga = s.getMedOsoblje().getUloga();
+			System.out.println(uloga.name());
+			if(uloga == Uloga.MEDICINSKA_SESTRA) {
 				MedicinskaSestra ms=msservice.findOne(s.getMedOsoblje().getId());
+				System.out.println("Prihvacena je med sestra");
 				if(ms!=null) {
 					if(ms.getKlinika().getId()==id  && s.getPrihvacenOdbijen()==null) {
 						godto.add(new GodisnjiDTO(s));
+						System.out.println("Zahtev je dodat u listu");
 					}
 				}
 			}else {
-				if(lekar.getKlinika().getId()==id && s.getPrihvacenOdbijen()==null) {
-					godto.add(new GodisnjiDTO(s));
+				Lekar lekar=lservice.findOne(s.getMedOsoblje().getId());
+				System.out.println("Prihvacen je lekar");
+				if (lekar != null) {
+					if(lekar.getKlinika().getId()==id && s.getPrihvacenOdbijen()==null) {
+						godto.add(new GodisnjiDTO(s));
+						System.out.println("Zahtev je dodat u listu");
+					}
 				}
 			}
 				
