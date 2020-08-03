@@ -31,6 +31,7 @@ import rest.dto.KartonDTO;
 import rest.dto.PacijentDTO;
 import rest.dto.PregledDTO;
 import rest.service.LekariService;
+import rest.service.MailService;
 import rest.service.PacijentService;
 
 @RestController
@@ -42,6 +43,8 @@ public class PacijentController {
 	private LekariService lekarService;
 	@Autowired
 	public HttpServletRequest request;
+	@Autowired
+	private MailService mailService;
 	
 	private Uloga tipKorisnika() {
 		User logedIn = (User) request.getSession().getAttribute("korisnik");
@@ -178,20 +181,33 @@ public class PacijentController {
 		return true;
 	}
 	
-	@PutMapping(value="/prihvati/{id}", consumes=MediaType.APPLICATION_JSON_VALUE, produces=MediaType.APPLICATION_JSON_VALUE)
+	@PutMapping(value="/prihvati/{id}")
 	public ResponseEntity<Void> prihvati(@PathVariable Integer id){
-		if (tipKorisnika() != Uloga.PACIJENT)
+		System.out.println("Stiglo je do backend-a za prihvatanje zahteva za registraciju");
+		if (tipKorisnika() != Uloga.ADMINISTRATOR_KLINICKOG_CENTRA)
 			return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
 		Pacijent pacijent = patientService.findOne(id);
 		pacijent.setOdobren(Boolean.TRUE);
 		patientService.save(pacijent);
+		String email = pacijent.getEmail();
+		String subject = "Potvrdena registracija";
+		String poruka = "Postovani,\n\nObavestavamo Vas da je prihvacen Vas zahtev "
+				+ "za registraciju na nas klinicki centar.";
+		mailService.SendMail(email, subject, poruka);
 		return new ResponseEntity<>(HttpStatus.OK);
 	}
 	
-	@DeleteMapping(value="/odbij/{id}", consumes=MediaType.APPLICATION_JSON_VALUE, produces=MediaType.APPLICATION_JSON_VALUE)
-	public ResponseEntity<Void> odbij(@PathVariable Integer id){
-		if (tipKorisnika() != Uloga.PACIJENT)
+	@DeleteMapping(value="/odbij/{id}")
+	public ResponseEntity<Void> odbij(@PathVariable Integer id, @RequestParam String razlog){
+		System.out.println("Stiglo je do backend-a za odbijanje zahteva za registraciju");
+		if (tipKorisnika() != Uloga.ADMINISTRATOR_KLINICKOG_CENTRA)
 			return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
+		String email = patientService.findOne(id).getEmail();
+		String subject = "Odbijena registracija";
+		String poruka = "Postovani,\n\nObavestavamo Vas da je odbijen Vas zahtev "
+				+ "za registraciju na nas klinicki centar.\n\n"
+				+ "Razlog:\n" + razlog;
+		mailService.SendMail(email, subject, poruka);
 		patientService.remove(id);
 		return new ResponseEntity<>(HttpStatus.OK);
 	}

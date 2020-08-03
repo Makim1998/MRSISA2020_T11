@@ -2,13 +2,14 @@ Vue.component('zahtevi', {
 	data: function(){
 		return {
 			zahtevi: [],
-			id: null
+			id: null,
+			razlog: "",
 		}
 	},
 	template: `
 <div class="oneoption">
 <div>
-<h2 class="text-center">Zahtevi za registracije</h2>
+<h2 class="text-center">Zahtevi za registracije provera</h2>
 <br>
    <table align="left" class="table klasicna-tabela">
 		<tr>
@@ -25,32 +26,60 @@ Vue.component('zahtevi', {
 			<td class="myclass">{{z.ime}}</td>
 			<td class="myclass">{{z.prezime}}</td>
 			<td><input class="btn btn-primary btn-lg" value='Prihvati' type='button'  v-on:click="prihvati(z.id)"/></td>
-			<td><input class="btn btn-primary btn-lg" value='Odbij' type='button' v-on:click="odbij(z.id)"/></td>
+			<td><input class="btn btn-warning btn-lg" value='Odbij' type='button' v-on:click="odbij(z.id)"/></td>
 		</tr>	
    </table>
+   <div id="modaldark">
+		<div class="form-popup" id="myForm">
+			<h6>Navedite razlog za odbijanje zahteva:</h6>
+			<input type=text class="psw" v-model="razlog"/>
+			</br></br>
+			<button type="button" class="btn maal leftbutton" v-on:click="potvrda()">Potvrdi</button>
+			<button type="button" class="btn zaal rightbutton" v-on:click="otkazi()">Otkazi</button>
+		</div>
+	</div>
 </div>
 </div>
 	`
 	,
 	methods: {
 		prihvati(id){
+			this.odbij(id);
+			console.log("Stiglo je do frontend-a za prihvatanje");
 			axios
 			.put('rest/pacijent/prihvati/'+id)
 			.then(response => {
 				axios
 				.get('rest/pacijent/zahtevi')
 				.then(response => (this.zahtevi=response.data));
-			})
+			});
 		},
 		odbij(id){
-			axios
-			.delete('rest/pacijent/odbij/'+id)
-			.then(response => {
-				axios
-				.get('rest/pacijent/zahtevi')
-				.then(response => (this.zahtevi=response.data));
-			})
-		}
+			console.log("Stiglo je do frontend-a za odbijanje");
+			this.id = id;
+        	document.getElementById("myForm").style.display = "block";
+			document.getElementById("modaldark").style.display = "block";
+			document.getElementById("modaldark").style.opacity="1";
+		},
+		potvrda(){
+        	if (this.izmeni == "")
+        		alert("Niste uneli razlog za odbijanje zahteva!");
+        	else{
+        		axios
+    			.delete('rest/pacijent/odbij/'+this.id, {"razlog": this.razlog})
+    			.then(response => {
+    				axios
+    				.get('rest/pacijent/zahtevi')
+    				.then(response => (this.zahtevi=response.data));
+    			});
+        		this.otkazi();
+        	}
+        },
+        otkazi(){
+        	document.getElementById("myForm").style.display = "none";
+			document.getElementById("modaldark").style.display = "none";
+			document.getElementById("modaldark").style.opacity="0";
+        }
 	},
 	mounted(){
 		axios

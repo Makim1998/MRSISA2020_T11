@@ -88,6 +88,8 @@ insert into user (id,ime,prezime,email,password,uloga,broj_osiguranika,prvi_put,
 insert into user (id,ime,prezime,email,password,uloga,broj_osiguranika,prvi_put,adresa,grad,drzava) values (33,'Vladimir','Stimac','pacijent5@gmail.com','adminkc1',3,2322432322432,false,'Radiceva 6','Novi Sad','Srbija');
 insert into user (id,ime,prezime,email,password,uloga,broj_osiguranika,prvi_put,adresa,grad,drzava) values (34,'Lazar','Miletic','pacijent6@gmail.com','admink1',3,3242543242533,false,'Radiceva 6','Novi Sad','Srbija');
 insert into user (id,ime,prezime,email,password,uloga,broj_osiguranika,prvi_put,adresa,grad,drzava) values (35,'Luka','Jovic','pacijent7@gmail.com','adminkc1',3,2322432322434,false,'Radiceva 6','Novi Sad','Srbija');
+insert into user (id,ime,prezime,email,password,uloga,broj_osiguranika,prvi_put,adresa,grad,drzava) values (36,'Luka','Lukic','jovansvorcan14@gmail.com','adminkc1',3,3322432322435,false,'Radiceva 6','Novi Sad','Srbija');
+insert into user (id,ime,prezime,email,password,uloga,broj_osiguranika,prvi_put,adresa,grad,drzava) values (37,'Jova','Jovic','pacijent9@gmail.com','adminkc1',3,4322432322437,false,'Radiceva 6','Novi Sad','Srbija');
 --Administratori klinickih centara
 insert into administrator_klinickog_centra (id,kc) values (1,1);
 insert into administrator_klinickog_centra (id,kc) values (2,2);
@@ -128,6 +130,8 @@ insert into pacijent (id,odobren) values (32,TRUE);
 insert into pacijent (id,odobren) values (33,TRUE);
 insert into pacijent (id,odobren) values (34,TRUE);
 insert into pacijent (id,odobren) values (35,TRUE);
+insert into pacijent (id,odobren) values (36,FALSE);
+insert into pacijent (id,odobren) values (37,FALSE);
 --Kartoni
 insert into karton (id,ime,prezime,pol,datum_rodjenja,krvna_grupa) values (1,'Sasa','Pavlovic',0,'1998-12-31 23:59:59','A+');
 insert into karton (id,ime,prezime,pol,datum_rodjenja,krvna_grupa) values (2,'Kevin','Durant',0,'1998-12-31 23:59:59','A+');
