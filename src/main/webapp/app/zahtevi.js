@@ -9,7 +9,7 @@ Vue.component('zahtevi', {
 	template: `
 <div class="oneoption">
 <div>
-<h2 class="text-center">Zahtevi za registracije provera</h2>
+<h2 class="text-center">Zahtevi za registracije</h2>
 <br>
    <table align="left" class="table klasicna-tabela">
 		<tr>
@@ -26,13 +26,13 @@ Vue.component('zahtevi', {
 			<td class="myclass">{{z.ime}}</td>
 			<td class="myclass">{{z.prezime}}</td>
 			<td><input class="btn btn-primary btn-lg" value='Prihvati' type='button'  v-on:click="prihvati(z.id)"/></td>
-			<td><input class="btn btn-warning btn-lg" value='Odbij' type='button' v-on:click="odbij(z.id)"/></td>
+			<td><input class="btn btn-primary btn-lg" value='Odbij' type='button' v-on:click="odbij(z.id)"/></td>
 		</tr>	
    </table>
    <div id="modaldark">
 		<div class="form-popup" id="myForm">
 			<h6>Navedite razlog za odbijanje zahteva:</h6>
-			<input type=text class="psw" v-model="razlog"/>
+			<textarea style="width:250px;height:150px;" class="psw" v-model="razlog"></textarea>
 			</br></br>
 			<button type="button" class="btn maal leftbutton" v-on:click="potvrda()">Potvrdi</button>
 			<button type="button" class="btn zaal rightbutton" v-on:click="otkazi()">Otkazi</button>
@@ -44,7 +44,6 @@ Vue.component('zahtevi', {
 	,
 	methods: {
 		prihvati(id){
-			this.odbij(id);
 			console.log("Stiglo je do frontend-a za prihvatanje");
 			axios
 			.put('rest/pacijent/prihvati/'+id)
@@ -66,7 +65,7 @@ Vue.component('zahtevi', {
         		alert("Niste uneli razlog za odbijanje zahteva!");
         	else{
         		axios
-    			.delete('rest/pacijent/odbij/'+this.id, {"razlog": this.razlog})
+    			.delete('rest/pacijent/odbij/'+this.id+"/"+this.razlog)
     			.then(response => {
     				axios
     				.get('rest/pacijent/zahtevi')

@@ -197,8 +197,8 @@ public class PacijentController {
 		return new ResponseEntity<>(HttpStatus.OK);
 	}
 	
-	@DeleteMapping(value="/odbij/{id}")
-	public ResponseEntity<Void> odbij(@PathVariable Integer id, @RequestParam String razlog){
+	@DeleteMapping(value="/odbij/{id}/{razlog}")
+	public ResponseEntity<Void> odbij(@PathVariable Integer id, @PathVariable String razlog){
 		System.out.println("Stiglo je do backend-a za odbijanje zahteva za registraciju");
 		if (tipKorisnika() != Uloga.ADMINISTRATOR_KLINICKOG_CENTRA)
 			return new ResponseEntity<>(HttpStatus.BAD_REQUEST);

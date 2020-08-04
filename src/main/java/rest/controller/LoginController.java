@@ -208,6 +208,12 @@ public class LoginController {
 
 			return new ResponseEntity<User>(HttpStatus.BAD_REQUEST);
 		}
+		
+		if (u.getUloga() == Uloga.PACIJENT) {
+			if (patientService.findOne(u.getId()).getOdobren() == Boolean.FALSE)
+				return new ResponseEntity<User>(HttpStatus.BAD_REQUEST);
+		}
+		
 		System.out.println(u.getUloga());
 		//logedIn = u;
 		request.getSession().setAttribute("korisnik", u);
