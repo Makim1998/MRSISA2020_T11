@@ -61,7 +61,7 @@ Vue.component('zahtevi', {
 			document.getElementById("modaldark").style.opacity="1";
 		},
 		potvrda(){
-        	if (this.izmeni == "")
+        	if (this.razlog.trim() == "")
         		alert("Niste uneli razlog za odbijanje zahteva!");
         	else{
         		axios

@@ -90,7 +90,7 @@ Vue.component('administratorCentra',{
 				})
 			    .then((response) => {
 			    	alert("Uspesno ste izmenili lozinku!");
-			    	this.otkazi()
+			    	this.otkazi();
 			    });
 	    	}
 	    	else{

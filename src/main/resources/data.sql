@@ -213,3 +213,5 @@ insert into stavka_sifarnika(id,sifra,stavka_id,tip) values (2,'d2t67',2,0);
 insert into godisnji_odmor(id,datum_pocetka,datum_kraja,med_osoblje_id) values(1,'2020-07-11 12:00:00','2020-07-21 12:00:00',10);
 insert into godisnji_odmor(id,datum_pocetka,datum_kraja,med_osoblje_id) values(2,'2020-07-12 12:00:00','2020-07-22 12:00:00',11);
 insert into godisnji_odmor(id,datum_pocetka,datum_kraja,med_osoblje_id) values(3,'2020-07-13 12:00:00','2020-07-23 12:00:00',12);
+--Recepti
+
