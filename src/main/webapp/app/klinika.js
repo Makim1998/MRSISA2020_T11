@@ -20,7 +20,7 @@ Vue.component("klinika", {
 <div>
 	<div class="jumbotron">
 	  <h2>Klinike</h2>
-	  <p>Pretraga i dodavanje</p> 
+	  <p>Dodavanje, izmena i brisanje</p> 
 	</div>
    <table align="left" class="table">
 		<tr>
@@ -82,7 +82,7 @@ Vue.component("klinika", {
 			}
         },
         proveraPolja(){
-        	if (this.input.naziv == "" || this.input.adresa == "" || this.input.opis == "")
+        	if (this.input.naziv.trim() == "" || this.input.adresa.trim() == "" || this.input.opis.trim() == "")
         		return false;
         	else
         		return true;
@@ -106,15 +106,19 @@ Vue.component("klinika", {
 			document.getElementById("modaldark").style.opacity="1";
         },
         potvrda(){
-        	axios
-        	.put("rest/klinika/izmeni", {"id":this.id,
-        		"naziv":this.izmena.naziv, "adresa":this.izmena.adresa, "opis":this.izmena.opis})
-        	.then(response => {
-    			axios
-    				.get('rest/klinika')
-    				.then(response => (this.klinike=response.data))
-    		});
-        	this.otkazi();
+        	if (this.izmena.naziv.trim() == "" || this.izmena.adresa.trim() == "" || this.izmena.opis.trim() == "")
+        		alert("Ne moze nijedno od datih polja da ostane prazno");
+        	else{
+        		axios
+        		.put("rest/klinika/izmeni", {"id":this.id,
+        			"naziv":this.izmena.naziv, "adresa":this.izmena.adresa, "opis":this.izmena.opis})
+        		.then(response => {
+    				axios
+    					.get('rest/klinika')
+    					.then(response => (this.klinike=response.data))
+    			});
+        		this.otkazi();
+        	}
         },
         otkazi(){
         	document.getElementById("myForm").style.display = "none";

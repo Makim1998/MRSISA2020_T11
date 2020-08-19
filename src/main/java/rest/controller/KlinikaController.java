@@ -24,6 +24,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
+import rest.domain.AdministratorKlinickogCentra;
 import rest.domain.GodisnjiOdmor;
 import rest.domain.Klinika;
 import rest.domain.Lekar;
@@ -33,6 +34,7 @@ import rest.domain.Uloga;
 import rest.domain.User;
 import rest.dto.KlinikaDTO;
 import rest.dto.LekarDTO;
+import rest.service.AdminKCService;
 import rest.service.KlinikaService;
 import rest.service.PregledService;
 import rest.service.StavkaCenovnikaService;
@@ -54,20 +56,30 @@ public class KlinikaController {
 	@Autowired
 	public HttpServletRequest request;
 	
+	@Autowired
+	private AdminKCService adminService;
+	
 	private Uloga tipKorisnika() {
 		User logedIn = (User) request.getSession().getAttribute("korisnik");
 		return logedIn.getUloga();
-	}	
+	}
+	
+	private AdministratorKlinickogCentra getAdmin() {
+		User logedIn = (User) request.getSession().getAttribute("korisnik");
+		return adminService.findOne(logedIn.getId());
+	}
 
 	
 	@GetMapping
 	public ResponseEntity<List<KlinikaDTO>> getKlinike(){
 		List<Klinika> klinike = service.findAll();
 		List<KlinikaDTO> ret = new ArrayList<KlinikaDTO>();
+		AdministratorKlinickogCentra admin = getAdmin();
 		for (Klinika k: klinike) {
 			KlinikaDTO dto = new KlinikaDTO(k);
 			dto.setProsek(k);
-			ret.add(dto);
+			if (admin.getKlinickiCentar().getId() == k.getKlinickiCentar().getId())
+				ret.add(dto);
 		}
 		return new ResponseEntity<>(ret, HttpStatus.OK);
 	}
@@ -100,8 +112,13 @@ public class KlinikaController {
 		System.out.println("opis: " + klinikaDto.getOpis());
 		Klinika klinika = new Klinika(klinikaDto);
 		System.out.println("Kreirana je nova klinika");
+		User user = (User) request.getSession().getAttribute("korisnik");
+		AdministratorKlinickogCentra administrator = adminService.findOne(user.getId());
+		klinika.setKlinickiCentar(administrator.getKlinickiCentar());
+		System.out.println("Dodeljen je odgovarajuci klinicki centar");
 		klinika = service.save(klinika);
 		System.out.println("Dodata je nova klinika");
+		System.out.println(klinika.getKlinickiCentar().getNaziv());
 		return new ResponseEntity<>(HttpStatus.OK);
 	}
 	
@@ -111,15 +128,28 @@ public class KlinikaController {
 			return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
 		}
 		Klinika klinika = service.findOne(id);
-		if (klinika.getCenovnik() != null)
+		System.out.println("Stigne do backend-a za brisanje klinike - id: "+id);
+		if (klinika.getCenovnik() != null) {
+			System.out.println("Problem je kod cenovnika");
 			return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
-		if (klinika.getAdministrator() != null)
+		}
+		if (klinika.getAdministrator() != null) {
+			System.out.println("Problem je kod administratora");
 			return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
-		if (klinika.getMedicinskeSestre().size() > 0)
+		}
+		if (klinika.getMedicinskeSestre().size() > 0) {
+			System.out.println("Problem je kod med sestri");
 			return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
-		if (klinika.getSale().size() > 0)
+		}
+		if (klinika.getSale().size() > 0) {
+			System.out.println("Problem je kod sala");
 			return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
+		}
 		service.remove(id);
+		for (Klinika k: service.findAll()) {
+			System.out.println(k.getId() + " " + k.getNaziv());
+		}
+		System.out.println("Trebalo bi da je klinika obrisana");
 		return new ResponseEntity<>(HttpStatus.OK);
 	}
 	
