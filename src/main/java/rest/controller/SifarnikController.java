@@ -19,6 +19,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import rest.domain.StavkaSifarnika;
+import rest.domain.TipSifre;
 import rest.domain.Uloga;
 import rest.domain.User;
 import rest.dto.StavkaSifarnikaDTO;
@@ -54,6 +55,12 @@ public class SifarnikController {
 		if(tipKorisnika()!=Uloga.ADMINISTRATOR_KLINICKOG_CENTRA) {
 			return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
 		}
+		for (StavkaSifarnika ss: service.findAll()) {
+			if (ss.getSifra().equals(dto.getSifra()))
+				return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
+			if (ss.getStavkaId() == dto.getStavkaId() && ss.getTip() == TipSifre.valueOf(dto.getTip()))
+				return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
+		}
 		StavkaSifarnika stavka = new StavkaSifarnika(dto);
 		stavka = service.save(stavka);
 		return new ResponseEntity<>(HttpStatus.OK);
@@ -65,6 +72,10 @@ public class SifarnikController {
 			return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
 		}
 		StavkaSifarnika stavka = service.findOne(id);
+		for (StavkaSifarnika ss: service.findAll()) {
+			if (ss.getSifra().equals(novaSifra))
+				return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
+		}
 		stavka.setSifra(novaSifra);
 		stavka = service.save(stavka);
 		return new ResponseEntity<>(new StavkaSifarnikaDTO(stavka), HttpStatus.OK);

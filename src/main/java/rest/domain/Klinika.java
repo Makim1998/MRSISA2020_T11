@@ -150,6 +150,7 @@ public class Klinika {
 		this.opis = dto.getOpis();
 		this.administrator = null;
 		this.cenovnik = null;
+		this.klinickiCentar = null;
 	}
 	public Integer getId() {
 		// TODO Auto-generated method stub

@@ -26,6 +26,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import rest.domain.AdministratorKlinickogCentra;
 import rest.domain.GodisnjiOdmor;
+import rest.domain.KlinickiCentar;
 import rest.domain.Klinika;
 import rest.domain.Lekar;
 import rest.domain.Pregled;
@@ -35,6 +36,7 @@ import rest.domain.User;
 import rest.dto.KlinikaDTO;
 import rest.dto.LekarDTO;
 import rest.service.AdminKCService;
+import rest.service.KlinickiCentarService;
 import rest.service.KlinikaService;
 import rest.service.PregledService;
 import rest.service.StavkaCenovnikaService;
@@ -59,6 +61,9 @@ public class KlinikaController {
 	@Autowired
 	private AdminKCService adminService;
 	
+	@Autowired
+	private KlinickiCentarService kcService;
+	
 	private Uloga tipKorisnika() {
 		User logedIn = (User) request.getSession().getAttribute("korisnik");
 		return logedIn.getUloga();
@@ -80,6 +85,11 @@ public class KlinikaController {
 			dto.setProsek(k);
 			if (admin.getKlinickiCentar().getId() == k.getKlinickiCentar().getId())
 				ret.add(dto);
+		}
+		for (KlinickiCentar kc: kcService.findAll()) {
+			for (Klinika k: kc.getKlinike()) {
+				System.out.println(k.getId() + " " + k.getNaziv() + " " + k.getAdresa());
+			}
 		}
 		return new ResponseEntity<>(ret, HttpStatus.OK);
 	}
@@ -114,7 +124,8 @@ public class KlinikaController {
 		System.out.println("Kreirana je nova klinika");
 		User user = (User) request.getSession().getAttribute("korisnik");
 		AdministratorKlinickogCentra administrator = adminService.findOne(user.getId());
-		klinika.setKlinickiCentar(administrator.getKlinickiCentar());
+		KlinickiCentar kc = kcService.findOne(administrator.getKlinickiCentar().getId());
+		klinika.setKlinickiCentar(kc);
 		System.out.println("Dodeljen je odgovarajuci klinicki centar");
 		klinika = service.save(klinika);
 		System.out.println("Dodata je nova klinika");
@@ -145,6 +156,11 @@ public class KlinikaController {
 			System.out.println("Problem je kod sala");
 			return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
 		}
+		KlinickiCentar kc = kcService.findOne(klinika.getKlinickiCentar().getId());
+		Set<Klinika> izmena = kc.getKlinike();
+		izmena.remove(klinika);
+		kc.setKlinike(izmena);
+		kc = kcService.save(kc);
 		service.remove(id);
 		for (Klinika k: service.findAll()) {
 			System.out.println(k.getId() + " " + k.getNaziv());

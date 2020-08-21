@@ -36,9 +36,9 @@ Vue.component("sifarnik", {
 		<tr>
 			<td></td>
 			<td><input type="text" class="fotrol" v-model="input.sifra" placeholder="Sifra"></td>
-			<td><input type="text" class="fotrol" v-model="input.stavkaId" placeholder="StavkaId"></td>
+			<td><input type="number" min="1" max="1000" class="fotrol" v-model="input.stavkaId" placeholder="StavkaId"></td>
 			<td><select v-model="input.tip">
-				<option>LEK</option>
+				<option selected>LEK</option>
 				<option>DIJAGNOZA</option>
 			</select></td>
 			<td><input class="btn btn-success" type='button' value='Dodavanje'  v-on:click="proveraPolja()"/></td>
@@ -59,7 +59,7 @@ Vue.component("sifarnik", {
 	, 
 	methods : {
 		proveraPolja(){
-			if (this.input.sifra=="" || this.input.stavkaId=="" || this.input.tip=="")
+			if (this.input.sifra.trim()=="" || this.input.stavkaId=="" || this.input.tip=="")
 				alert("Niste uneli sva polja!");
 			else
 				this.dodaj();
