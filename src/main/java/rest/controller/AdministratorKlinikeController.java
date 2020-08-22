@@ -16,11 +16,14 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import rest.domain.AdministratorKlinickogCentra;
 import rest.domain.AdministratorKlinike;
+import rest.domain.KlinickiCentar;
 import rest.domain.Klinika;
 import rest.domain.Uloga;
 import rest.domain.User;
 import rest.dto.AdministratorKlinikeDTO;
+import rest.service.AdminKCService;
 import rest.service.AdminKService;
 import rest.service.KlinikaService;
 
@@ -36,11 +39,20 @@ public class AdministratorKlinikeController {
 	private KlinikaService klinikaService;
 	
 	@Autowired
+	private AdminKCService adminKCService;
+	
+	@Autowired
 	public HttpServletRequest request;
 	
 	private Uloga tipKorisnika() {
 		User logedIn = (User) request.getSession().getAttribute("korisnik");
 		return logedIn.getUloga();
+	}
+	
+	private KlinickiCentar getKC() {
+		User logedIn = (User) request.getSession().getAttribute("korisnik");
+		AdministratorKlinickogCentra admin = adminKCService.findOne(logedIn.getId());
+		return admin.getKlinickiCentar();
 	}
 	
 	@PutMapping(value="/izmeni",consumes = "application/json")
@@ -89,7 +101,9 @@ public class AdministratorKlinikeController {
 		List<AdministratorKlinike> admins = adminKService.findAll();
 		for (AdministratorKlinike a: admins) {
 			AdministratorKlinikeDTO dto = new AdministratorKlinikeDTO(a);
-			ret.add(dto);
+			if (a.getKlinika().getKlinickiCentar().getId() == getKC().getId())
+				ret.add(dto);
+			System.out.println(a.getKlinika().getNaziv() + ": " + a.getKlinika().getAdresa());
 		}
 		return new ResponseEntity<>(ret, HttpStatus.OK);
 	}

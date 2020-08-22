@@ -10,7 +10,7 @@ Vue.component("adminiKCentara", {
                 	},
 			tipovi:[],
 			id:null,
-			izmena:""
+			inicijalni:null
 		}
 	},
 	template: ` 
@@ -56,26 +56,47 @@ Vue.component("adminiKCentara", {
 		, 
 		methods : {
 			otvori() {
-				document.getElementById("myForm").style.display = "block";
-				document.getElementById("modaldark").style.display = "block";
-				document.getElementById("modaldark").style.opacity="1";
+				if (this.inicijalni){
+					document.getElementById("myForm").style.display = "block";
+					document.getElementById("modaldark").style.display = "block";
+					document.getElementById("modaldark").style.opacity="1";
+				}
+				else{
+					alert("Vi nemate pravo da dodajete nove korisnike");
+				}
 	        },
 			otkazi() {
 				document.getElementById("myForm").style.display = "none";
 				document.getElementById("modaldark").style.display = "none";
 				document.getElementById("modaldark").style.opacity="0";
 	        },
+	        proveraPolja(){
+	        	if (this.input.ime.trim() == "")
+	        		return false;
+	        	if (this.input.prezime.trim() == "")
+	        		return false;
+	        	if (this.input.username.trim() == "")
+	        		return false;
+	        	if (this.input.password.trim() == "")
+	        		return false;
+	        	return true;
+	        },
 			dodaj() {
-	        	axios
-	        	.post('rest/adminKC/dodaj', {"id": null,
-	        		"ime":this.input.ime,"prezime":this.input.prezime,"password":this.input.password,
-	        		"username":this.input.username, "brojOsiguranika":this.input.brojOsiguranika})
-				.then(response => {	
-					axios
-				    .get('rest/adminKC')
-				    .then(response => (this.tipovi=response.data));
-					});
-	        	this.otkazi()
+	        	if (this.proveraPolja()){
+	        		axios
+	        		.post('rest/adminKC/dodaj', {"id": null,
+	        			"ime":this.input.ime,"prezime":this.input.prezime,"password":this.input.password,
+	        			"username":this.input.username, "brojOsiguranika":this.input.brojOsiguranika})
+	        		.then(response => {	
+						axios
+				    	.get('rest/adminKC')
+				    	.then(response => (this.tipovi=response.data));
+						});
+	        		this.otkazi();
+	        	}
+	        	else{
+	        		alert("Niste uneli sva polja!");
+	        	}
 	        }
 		},
 		mounted(){
@@ -90,5 +111,8 @@ Vue.component("adminiKCentara", {
 			axios
 		    .get('rest/adminKC')
 		    .then(response => (this.tipovi=response.data));
+			axios
+			.get('rest/adminKC/inicijalni')
+			.then(response => (this.inicijalni=response.data));
 		}
 });

@@ -71,18 +71,41 @@ Vue.component("adminiKlinika", {
 				document.getElementById("modaldark").style.display = "none";
 				document.getElementById("modaldark").style.opacity="0";
 	        },
+	        proveraPolja(){
+	        	console.log("Stiglo je do provere polja");
+	        	if (this.input.ime.trim() == "")
+	        		return false;
+	        	if (this.input.prezime.trim() == "")
+	        		return false;
+	        	if (this.input.username.trim() == "")
+	        		return false;
+	        	if (this.input.password.trim() == "")
+	        		return false;
+	        	if (this.input.kc_id == "")
+	        		return false;
+	        	return true;
+	        },
 			dodaj() {
-	        	axios
-	        	.post('rest/adminK/dodaj', {"id": null,
-	        		"ime":this.input.ime,"prezime":this.input.prezime,"password":this.input.password,
-	        		"username":this.input.username, "kc_id":this.input.kc_id
-	        		, "brojOsiguranika":this.input.brojOsiguranika})
-				.then(response => {	
-					axios
-				    .get('rest/adminK')
-				    .then(response => (this.tipovi=response.data));
-					});
-	        	this.otkazi()
+	        	if (this.proveraPolja()){
+	        		console.log("Prosla je provera polja");
+	        		axios
+	        		.post('rest/adminK/dodaj', {"id": null,
+	        			"ime":this.input.ime,"prezime":this.input.prezime,"password":this.input.password,
+	        			"username":this.input.username, "kc_id":this.input.kc_id.split(" - ")[0]
+	        			, "brojOsiguranika":this.input.brojOsiguranika})
+	        		.then(response => {	
+						axios
+				    	.get('rest/adminK')
+				    	.then(response => (this.tipovi=response.data));
+						axios
+						.get('rest/klinika/adminIds')
+						.then(response => (this.klinike=response.data));
+						});
+	        		this.otkazi();
+	        	}
+	        	else{
+	        		alert("Niste uneli sva polja!");
+	        	}
 	        }
 		},
 		mounted(){

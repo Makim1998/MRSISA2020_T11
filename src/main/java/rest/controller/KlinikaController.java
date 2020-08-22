@@ -170,15 +170,15 @@ public class KlinikaController {
 	}
 	
 	@GetMapping(value="/adminIds")
-	public ResponseEntity<List<Integer>> getAdminss(){
+	public ResponseEntity<List<String>> getAdminss(){
 		if(tipKorisnika()!=Uloga.ADMINISTRATOR_KLINICKOG_CENTRA ) {
 			return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
 		}
 		List<Klinika> klinike = service.findAll();
-		List<Integer> ids = new ArrayList<Integer>();
+		List<String> ids = new ArrayList<String>();
 		for (Klinika k: klinike) {
 			if (k.getAdministrator() == null)
-				ids.add(k.getId());
+				ids.add(k.getId() + " - " + k.getNaziv());
 		}
 		return new ResponseEntity<>(ids, HttpStatus.OK);
 	}

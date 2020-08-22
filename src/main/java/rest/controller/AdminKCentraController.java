@@ -17,10 +17,12 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import rest.domain.AdministratorKlinickogCentra;
+import rest.domain.KlinickiCentar;
 import rest.domain.Uloga;
 import rest.domain.User;
 import rest.dto.AdministratorKCentraDTO;
 import rest.service.AdminKCService;
+import rest.service.KlinickiCentarService;
 
 @RestController
 @RequestMapping("rest/adminKC")
@@ -30,11 +32,20 @@ public class AdminKCentraController {
 	private AdminKCService service;
 	
 	@Autowired
+	private KlinickiCentarService kcService;
+	
+	@Autowired
 	public HttpServletRequest request;
 	
 	private Uloga tipKorisnika() {
 		User logedIn = (User) request.getSession().getAttribute("korisnik");
 		return logedIn.getUloga();
+	}
+	
+	private KlinickiCentar getKC() {
+		User logedIn = (User) request.getSession().getAttribute("korisnik");
+		AdministratorKlinickogCentra admin = service.findOne(logedIn.getId());
+		return kcService.findOne(admin.getKlinickiCentar().getId());
 	}
 
 	@GetMapping
@@ -46,7 +57,8 @@ public class AdminKCentraController {
 		List<AdministratorKlinickogCentra> admins = service.findAll();
 		for (AdministratorKlinickogCentra a: admins) {
 			AdministratorKCentraDTO dto = new AdministratorKCentraDTO(a);
-			ret.add(dto);
+			if (getKC().getId() == a.getKlinickiCentar().getId())
+				ret.add(dto);
 		}
 		return new ResponseEntity<>(ret, HttpStatus.OK);
 	}
@@ -59,6 +71,7 @@ public class AdminKCentraController {
 		dto.setPrviPut(true);
 		AdministratorKlinickogCentra admin = new AdministratorKlinickogCentra(dto);
 		System.out.println("Kreiran je novi admin KC");
+		admin.setKlinickiCentar(getKC());
 		admin = service.save(admin);
 		System.out.println("Dodat je novi admin KC");
 		return new ResponseEntity<>(HttpStatus.OK);
@@ -82,5 +95,19 @@ public class AdminKCentraController {
 		admk.setPassword(admKDTO.getPassword());
 		admk= service.save(admk);
 		return new ResponseEntity<>(new AdministratorKCentraDTO(admk), HttpStatus.OK);
+	}
+	
+	@GetMapping(value="/inicijalni")
+	public ResponseEntity<Boolean> getInitial(){
+		User logedIn = (User) request.getSession().getAttribute("korisnik");
+		AdministratorKlinickogCentra admin = service.findOne(logedIn.getId());
+		if (admin.getId() == 1)
+			return new ResponseEntity<>(true, HttpStatus.OK);
+		else if (admin.getId() == 2)
+			return new ResponseEntity<>(true, HttpStatus.OK);
+		else if (admin.getId() == 3)
+			return new ResponseEntity<>(true, HttpStatus.OK);
+		else
+			return new ResponseEntity<>(false, HttpStatus.OK);
 	}
 }
