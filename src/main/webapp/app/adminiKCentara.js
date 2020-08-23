@@ -14,7 +14,7 @@ Vue.component("adminiKCentara", {
 		}
 	},
 	template: ` 
-		<div class="oneoption">
+		<div class="oneoption_AKC">
 		<div>
 			<div class="jumbotron">
 			  <h2>Administratori klinickih centara</h2> 

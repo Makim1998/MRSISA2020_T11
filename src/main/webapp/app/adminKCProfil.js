@@ -16,7 +16,7 @@ Vue.component('adminKCProfil',{
 		}
 	},
 	template: ` 
-<div class="oneoption">
+<div class="oneoption_AKC">
 <div class="sidenavlogin">
     <form class="fProfil" style="width:600px;">
 		<h2 class="text-center">Pregled i promena profila</h2>       

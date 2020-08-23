@@ -22,7 +22,7 @@ Vue.component('administratorCentra',{
 	},
 	template: ` 
 	<div>
-		<div  id="mySidenav" class="sidenav">
+		<div  id="mySidenav" class="sidenav_AKC">
 		    <a href = "#klinika" v-on:click = "component = 'klinika'" >Klinike</a>
 		    <a href = "#adminiKlinika" v-on:click = "component = 'adminiKlinika'" >Administratori klinika</a>
 		    <a href = "#adminiKCentara" v-on:click = "component = 'adminiKCentara'" >Administratori klinickih centara</a>

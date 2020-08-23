@@ -7,7 +7,7 @@ Vue.component('zahtevi', {
 		}
 	},
 	template: `
-<div class="oneoption">
+<div class="oneoption_AKC">
 <div>
 <h2 class="text-center">Zahtevi za registracije</h2>
 <br>

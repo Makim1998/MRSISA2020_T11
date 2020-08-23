@@ -12,7 +12,7 @@ Vue.component("sifarnik", {
 	    }
 	},
 	template: ` 
-<div class="oneoption">
+<div class="oneoption_AKC">
 <div>
 	<div class="jumbotron">
 	  <h2>Stavke sifarnika</h2>
