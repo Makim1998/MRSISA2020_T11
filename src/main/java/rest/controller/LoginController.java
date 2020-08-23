@@ -23,6 +23,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 
+import rest.domain.AdministratorKlinickogCentra;
 import rest.domain.AdministratorKlinike;
 import rest.domain.Klinika;
 import rest.domain.Lekar;
@@ -30,6 +31,7 @@ import rest.domain.MedicinskaSestra;
 import rest.domain.Pacijent;
 import rest.domain.Uloga;
 import rest.domain.User;
+import rest.service.AdminKCService;
 import rest.service.AdminKService;
 import rest.service.LekariService;
 import rest.service.MSService;
@@ -57,6 +59,8 @@ public class LoginController {
 	private LekariService lekarService;
 	@Autowired
 	private AdminKService adminKService;
+	@Autowired
+	private AdminKCService adminKCService;
 	@Autowired
 	private MSService msService;
 	
@@ -255,13 +259,15 @@ public class LoginController {
 		return new ResponseEntity<>(HttpStatus.NOT_FOUND);
 	}
 	@GetMapping(value = "/getConcreteUser/AdminKC")
-	public ResponseEntity<User> isLogedAdminKC() {
+	public ResponseEntity<AdministratorKlinickogCentra> isLogedAdminKC() {
 		User logedIn = (User) request.getSession().getAttribute("korisnik");
 		if(logedIn == null) {
 			return new ResponseEntity<>(HttpStatus.NOT_FOUND);
 		}
 		if(logedIn.getUloga()==Uloga.ADMINISTRATOR_KLINICKOG_CENTRA){
-			return new ResponseEntity<>( HttpStatus.OK);
+			AdministratorKlinickogCentra akc = adminKCService.findOne(logedIn.getId());
+			System.out.println("Pronaden je ulogovan Admin KC");
+			return new ResponseEntity<AdministratorKlinickogCentra>(akc, HttpStatus.OK);
 		}
 		return new ResponseEntity<>(HttpStatus.NOT_FOUND);
 	}

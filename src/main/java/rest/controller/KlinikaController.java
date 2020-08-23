@@ -25,6 +25,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import rest.domain.AdministratorKlinickogCentra;
+import rest.domain.Cenovnik;
 import rest.domain.GodisnjiOdmor;
 import rest.domain.KlinickiCentar;
 import rest.domain.Klinika;
@@ -36,6 +37,7 @@ import rest.domain.User;
 import rest.dto.KlinikaDTO;
 import rest.dto.LekarDTO;
 import rest.service.AdminKCService;
+import rest.service.CenovnikService;
 import rest.service.KlinickiCentarService;
 import rest.service.KlinikaService;
 import rest.service.PregledService;
@@ -63,6 +65,9 @@ public class KlinikaController {
 	
 	@Autowired
 	private KlinickiCentarService kcService;
+	
+	@Autowired
+	private CenovnikService cenovnikService;
 	
 	private Uloga tipKorisnika() {
 		User logedIn = (User) request.getSession().getAttribute("korisnik");
@@ -130,6 +135,11 @@ public class KlinikaController {
 		klinika = service.save(klinika);
 		System.out.println("Dodata je nova klinika");
 		System.out.println(klinika.getKlinickiCentar().getNaziv());
+		Cenovnik cenovnik = new Cenovnik();
+		cenovnik.setId(klinika.getId());
+		cenovnik.setKlinika(klinika);
+		cenovnikService.save(cenovnik);
+		System.out.println("Trebalo bi da je dodat cenovnik za novu kliniku");
 		return new ResponseEntity<>(HttpStatus.OK);
 	}
 	
