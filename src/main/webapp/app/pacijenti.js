@@ -111,6 +111,10 @@ Vue.component("pacijenti", {
 			<label for="grupa">Krvna grupa: </label>
     		<input type="text"  id = "grupa" class="form-control" v-model="karton.krvnaGrupa" disabled>
 		</div>
+		<div class="lform-group">
+			<label for="istorija">Istorija bolesti: </label>
+    		<input type="text"  id = "istorija" class="form-control" v-model="karton.istorijaBolesti" disabled>
+		</div>
      </form>
      <div class="buttons">
      	<button type="button" id = "zavrsiPregled" style="display:none;" class="btn  btn-primary" v-on:click="otkazi();poruka();zavrsite();">Zavrsi pregled</button>

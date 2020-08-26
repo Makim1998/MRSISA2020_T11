@@ -17,4 +17,8 @@ public class KartonService {
 		// TODO Auto-generated method stub
 		return kartonRepository.findById(id).orElseGet(null);
 	}
+	
+	public Karton save(Karton karton) {
+		return kartonRepository.save(karton);
+	}
 }

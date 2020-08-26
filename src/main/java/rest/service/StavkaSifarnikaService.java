@@ -18,6 +18,10 @@ public class StavkaSifarnikaService {
 		return repository.findById(id).orElse(null);
 	}
 	
+	public StavkaSifarnika findBySifra(String sifra) {
+		return repository.findOneBySifra(sifra);
+	}
+	
 	public List<StavkaSifarnika> findAll(){
 		return repository.findAll();
 	}

@@ -26,7 +26,16 @@ Vue.component("zakazaniPregledi", {
 	    		klinika_id:null,
 	    	},
 	    	id:null,
-	    	trenutniKarton:[]
+	    	trenutniKarton:[],
+	    	dijagnoze:[],
+	    	lekovi:[],
+	    	izvestaj: {
+	    		dijagnoza: "",
+	    		lek: "",
+	    		recept: "",
+	    		opis: ""
+	    	},
+	    	zapocniOdg:null
 	    }
 	},
 	template: ` 
@@ -51,7 +60,7 @@ Vue.component("zakazaniPregledi", {
 			<td class="myclass">{{tp.lekar.username}}</td>
 			<td class="myclass">{{tp.cena.cena}}</td>
 			<td><input class="btn btn-primary" type='button' value='Detalji'  v-on:click="karton(tp.karton)"/></td>
-			<td><input class="btn btn-primary" value='Zapocnite' type='button' v-on:click="zapocni(tp.karton)"/></td>
+			<td><input class="btn btn-primary" value='Zapocnite' type='button' v-on:click="zapocni(tp.karton, tp.id)"/></td>
 		</tr>	
    </table>
          <!-- Modal -->
@@ -115,15 +124,48 @@ Vue.component("zakazaniPregledi", {
 			<label for="grupa">Krvna grupa: </label>
     		<input type="text"  id = "grupa" class="form-control" v-model="trenutniKarton.krvnaGrupa" disabled>
 		</div>
+		<div class="lform-group">
+			<label for="istorija">Istorija bolesti: </label>
+    		<input type="text"  id = "istorija" class="form-control" v-model="trenutniKarton.istorijaBolesti" disabled>
+		</div>
      </form>
      <input class="btn btn-success pkartonbtn" value='OK' type='button' v-on:click="zatvoriKarton()"/>
    </div>
    </div>
    <div id="myForm">
    <div id="zapocniP">
+	   <h3 style="text-align: center;">Izvestaj o pregledu</h3>
+	   <br></br>
+	   <div>
+	   <table class="dijagnoze-sifre">
+	     <tr>
+	       <th colspan="2" style="text-align: center;">Sifre za dijagnoze</th>
+	     </tr>
+	     <tr style="height:40px;"></tr>
+	     <tr v-for="d in dijagnoze">
+	       <td>{{d.split(" - ")[0]+":"}}</td>
+	       <td>{{"--"+d.split(" - ")[1]}}</td>
+	     </tr>
+	   </table>
+	   
+	   <table class="zapocni-input">
+	   <tr>
+		 <td width="28%"><label>Sifra za dijagnozu:</label></td>
+		 <td width="2%"></td>
+		 <td width="70%"><input type="text" style="width:100%;" v-model="izvestaj.dijagnoza"></td>
+	   </tr>
+	   <tr style="height:40px;"></tr>
+	   <tr>
+		 <td width="28%"><label>Istorija bolesti pacijenta:</label></td>
+		 <td width="2%"></td>
+		 <td width="70%"><textarea v-model="izvestaj.opis" style="display:block; width:100%; height:200px;">
+		 </textarea></td>
+	   </tr>
+	   </table>
+	   </div>
 	   <div id="btns">
 	     <input class="btn btn-secondary" value='Otkazi' type='button' v-on:click="otkazi()"/>
-	     <input class="btn btn-primary" value='Zavrsite' type='button' v-on:click="otkazi();poruka();zavrsite();"/>
+	     <input class="btn btn-primary" value='Zavrsite' type='button' v-on:click="zapocniPregled();poruka();zavrsite();"/>
 	   </div>
    </div>
    </div>
@@ -159,9 +201,11 @@ Vue.component("zakazaniPregledi", {
 `
 	, 
 	methods : {
-		zapocni(a){
+		zapocni(a,id){
 			this.input.karton=a;
-			alert("Nije implementirano");
+			this.id=id;
+			this.izvestaj.opis=a.istorijaBolesti;
+			//alert("Nije implementirano");
 			document.getElementById("myForm").style.display = "block";
 			document.getElementById("modaldark").style.display = "block";
 			document.getElementById("modaldark").style.opacity="1";
@@ -172,6 +216,50 @@ Vue.component("zakazaniPregledi", {
 			document.getElementById("modaldark").style.display = "none";
 			document.getElementById("modaldark").style.opacity="0";
 			document.getElementById("zapocniP").style.display="none";
+		},
+		zapocniPregled(){
+			if (this.izvestaj.dijagnoza.trim() == "")
+				alert("Niste uneli sifru za dijagnozu!");
+			else{
+				axios
+				.put('rest/Pregled/zapocni?id='+this.id+'&sifra='+this.izvestaj.dijagnoza.trim()+"&istorija="+this.izvestaj.opis.trim())
+				.then(response => (this.zapocniOdg=response.data));
+				if (this.zapocniOdg){
+					this.otkazi();
+					axios
+					.get('rest/login/getConcreteUser/Lekar')
+				    .then((response) => {
+						axios
+					    .get('rest/Pregled/zakazani/'+response.data.id,response.data.id)
+					    .then(response => {this.pregledi=response.data;})
+						.catch(response => {
+							this.$router.push("/");
+						});
+						this.input.lekar=response.data;
+				    	this.lekar=response.data;
+				    	this.lekar_id=response.data.id;
+				    	this.lekar_username=response.data.username;
+				    	this.klinika_id=response.data.kc_id;
+				    })
+				    .catch(response => {
+						this.$router.push("/");
+					});
+					axios
+				    .get('rest/login/getKlinika')
+				    .then((response) => {;
+				    	this.kc_id=response.data.id;
+						axios
+					    .get('rest/cenovnik/'+this.kc_id,this.kc_id)
+					    .then(response =>{
+					    	this.cenovnik.id=response.data.id;
+					    	this.cenovnik.stavke = response.data.stavke;
+					    	this.cenovnik.klinika_id = response.data.klinikaID;
+					    });
+					})
+				}
+				else
+					alert("Ne postoji dijagnoza sa unetom sifrom");
+			}
 		},
 		zavrsi(){
 			/*document.getElementById("myForm2").style.display = "block";
@@ -285,5 +373,8 @@ Vue.component("zakazaniPregledi", {
 		.catch(response => {
 			this.$router.push("/");
 		});
+		axios
+		.get('rest/sifarnik/dijagnoze')
+		.then(response => (this.dijagnoze=response.data));
 	},
 });

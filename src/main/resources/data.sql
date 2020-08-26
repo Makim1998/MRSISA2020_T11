@@ -133,13 +133,13 @@ insert into pacijent (id,odobren) values (35,TRUE);
 insert into pacijent (id,odobren) values (36,FALSE);
 insert into pacijent (id,odobren) values (37,FALSE);
 --Kartoni
-insert into karton (id,ime,prezime,pol,datum_rodjenja,krvna_grupa) values (1,'Sasa','Pavlovic',0,'1998-12-31 23:59:59','A+');
-insert into karton (id,ime,prezime,pol,datum_rodjenja,krvna_grupa) values (2,'Kevin','Durant',0,'1998-12-31 23:59:59','A+');
-insert into karton (id,ime,prezime,pol,datum_rodjenja,krvna_grupa) values (3,'Marko','Guduric',0,'1998-12-31 23:59:59','A+');
-insert into karton (id,ime,prezime,pol,datum_rodjenja,krvna_grupa) values (4,'Borisa','Simanic',0,'1998-12-31 23:59:59','A+');
-insert into karton (id,ime,prezime,pol,datum_rodjenja,krvna_grupa) values (5,'Vladimir','Stimac',0,'1998-12-31 23:59:59','A+');
-insert into karton (id,ime,prezime,pol,datum_rodjenja,krvna_grupa) values (6,'Lazar','Miletic',0,'1998-12-31 23:59:59','A+');
-insert into karton (id,ime,prezime,pol,datum_rodjenja,krvna_grupa) values (7,'Luka','Jovic',0,'1998-12-31 23:59:59','A+');
+insert into karton (id,ime,prezime,pol,datum_rodjenja,krvna_grupa,istorija_bolesti) values (1,'Sasa','Pavlovic',0,'1998-12-31 23:59:59','A+','Nije bilo nikakvih bolesti');
+insert into karton (id,ime,prezime,pol,datum_rodjenja,krvna_grupa,istorija_bolesti) values (2,'Kevin','Durant',0,'1998-12-31 23:59:59','A+','Nije bilo nikakvih bolesti');
+insert into karton (id,ime,prezime,pol,datum_rodjenja,krvna_grupa,istorija_bolesti) values (3,'Marko','Guduric',0,'1998-12-31 23:59:59','A+','Nije bilo nikakvih bolesti');
+insert into karton (id,ime,prezime,pol,datum_rodjenja,krvna_grupa,istorija_bolesti) values (4,'Borisa','Simanic',0,'1998-12-31 23:59:59','A+','Nije bilo nikakvih bolesti');
+insert into karton (id,ime,prezime,pol,datum_rodjenja,krvna_grupa,istorija_bolesti) values (5,'Vladimir','Stimac',0,'1998-12-31 23:59:59','A+','Nije bilo nikakvih bolesti');
+insert into karton (id,ime,prezime,pol,datum_rodjenja,krvna_grupa,istorija_bolesti) values (6,'Lazar','Miletic',0,'1998-12-31 23:59:59','A+','Nije bilo nikakvih bolesti');
+insert into karton (id,ime,prezime,pol,datum_rodjenja,krvna_grupa,istorija_bolesti) values (7,'Luka','Jovic',0,'1998-12-31 23:59:59','A+','Nije bilo nikakvih bolesti');
 --Dodavanje kartona pacijentu
 update pacijent set karton_id = 1 where id = 29;
 update pacijent set karton_id = 2 where id = 30;
@@ -209,6 +209,7 @@ insert into klinika_ocene (klinika_id,ocene) values (1,2);
 --Stavke sifarnika
 insert into stavka_sifarnika(id,sifra,stavka_id,tip) values (1,'x1t1s2',1,1);
 insert into stavka_sifarnika(id,sifra,stavka_id,tip) values (2,'d2t67',2,0);
+insert into stavka_sifarnika(id,sifra,stavka_id,tip) values (3,'28sfftg',1,0);
 --Godisnji odmori
 insert into godisnji_odmor(id,datum_pocetka,datum_kraja,med_osoblje_id) values(1,'2020-07-11 12:00:00','2020-07-21 12:00:00',10);
 insert into godisnji_odmor(id,datum_pocetka,datum_kraja,med_osoblje_id) values(2,'2020-07-12 12:00:00','2020-07-22 12:00:00',11);

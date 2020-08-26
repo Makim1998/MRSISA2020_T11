@@ -12,6 +12,7 @@ public class KartonDTO {
 	private String ime;
 	private String prezime;
 	private String krvnaGrupa;
+	private String istorijaBolesti;
 	
 	public KartonDTO() {
 		
@@ -25,6 +26,7 @@ public class KartonDTO {
 		ime = k.getIme();
 		krvnaGrupa = k.getKrvnaGrupa();
 		prezime = k.getPrezime();
+		istorijaBolesti = k.getIstorijaBolesti();
 	}
 	
 	public Integer getId() {
@@ -63,9 +65,11 @@ public class KartonDTO {
 	public void setKrvnaGrupa(String krvnaGrupa) {
 		this.krvnaGrupa = krvnaGrupa;
 	}
-	
-	
-
+	public String getIstorijaBolesti() {
+		return istorijaBolesti;
+	}
+	public void setIstorijaBolesti(String istorijaBolesti) {
+		this.istorijaBolesti = istorijaBolesti;
+	}
 
 }
-

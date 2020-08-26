@@ -29,6 +29,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import rest.domain.GodisnjiOdmor;
 import rest.domain.AdministratorKlinike;
+import rest.domain.Dijagnoza;
 import rest.domain.Karton;
 import rest.domain.Klinika;
 import rest.domain.Lekar;
@@ -37,7 +38,9 @@ import rest.domain.Pacijent;
 import rest.domain.Pregled;
 import rest.domain.Sala;
 import rest.domain.StavkaCenovnika;
+import rest.domain.StavkaSifarnika;
 import rest.domain.TipPregleda;
+import rest.domain.TipSifre;
 import rest.domain.Uloga;
 import rest.domain.User;
 
@@ -47,6 +50,7 @@ import rest.dto.PregledDTO;
 import rest.dto.SalaDTO;
 import rest.pk.SalaPK;
 import rest.service.AdminKService;
+import rest.service.DijagnozaService;
 import rest.service.KartonService;
 import rest.service.KlinikaService;
 import rest.service.LekariService;
@@ -55,6 +59,7 @@ import rest.service.PacijentService;
 import rest.service.PregledService;
 import rest.service.SalaService;
 import rest.service.StavkaCenovnikaService;
+import rest.service.StavkaSifarnikaService;
 import rest.service.TipPregledaService;
 
 @RestController
@@ -74,10 +79,15 @@ public class PregledController {
 	private TipPregledaService tipPregledaService;
 	@Autowired
 	private StavkaCenovnikaService stavkaCenovnikaService;
+	@Autowired
+	private StavkaSifarnikaService stavkaSifarnikaService;
+	@Autowired
+	private DijagnozaService dijagnozaService;
 
 	@Autowired
 	private PacijentService pacijentService;
 
+	@Autowired
 	private KartonService kartonService;
 	@Autowired
 	private PacijentService patientService;
@@ -647,5 +657,39 @@ public class PregledController {
 			presjek.kraj.setTime(Math.max(pPoslije.getTime(),kraj.getTime()));
 		}
 		return presjek;
+	}
+	
+	@PutMapping(value="/zapocni")
+	public ResponseEntity<Boolean> zapocniPregled(@RequestParam Integer id, @RequestParam String sifra, @RequestParam String istorija){
+		System.out.println("Stigne do backend-a za izvestaj pregleda");
+		Pregled pregled = pregledService.findOne(id);
+		if (pregled==null) {
+			System.out.println("problem je kod pregleda");
+			return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
+		}
+		StavkaSifarnika ss = stavkaSifarnikaService.findBySifra(sifra);
+		if (ss == null) {
+			System.out.println("problem je kod sifarnika");
+			return new ResponseEntity<>(false, HttpStatus.OK);
+		}
+		if (ss.getTip() != TipSifre.DIJAGNOZA) {
+			System.out.println("problem je kod sifarnika");
+			return new ResponseEntity<>(false, HttpStatus.OK);
+		}
+		Dijagnoza dijagnoza = dijagnozaService.findOne(ss.getStavkaId());
+		System.out.println("dijagnoza: "+dijagnoza.getOpis());
+		pregled.setDijagnoza(dijagnoza);
+		pregled = pregledService.save(pregled);
+		System.out.println("Pregled se uspesno snimio");
+		if (kartonService.findOne(pregled.getKarton().getId()) == null) {
+			System.out.println("Problem je kod kartona");
+		}
+		Karton karton = kartonService.findOne(pregled.getKarton().getId());
+		System.out.println(karton.getKrvnaGrupa());
+		karton.setIstorijaBolesti(istorija);
+		System.out.println("karton se uspesno izmenio");
+		karton = kartonService.save(karton);
+		System.out.println("karton se uspesno snimio");
+		return new ResponseEntity<>(true, HttpStatus.OK);
 	}
 }

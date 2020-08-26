@@ -37,6 +37,9 @@ public class Karton {
 	@Column(name = "krvnaGrupa",nullable = false)
 	private String krvnaGrupa;
 	
+	@Column(name = "istorijaBolesti")
+	private String istorijaBolesti;
+	
 	@OneToOne(mappedBy = "karton")
 	@JsonIgnore
 	private Pacijent pacijent;
@@ -96,4 +99,11 @@ public class Karton {
 	public void setPacijent(Pacijent pacijent) {
 		this.pacijent = pacijent;
 	}
+	public String getIstorijaBolesti() {
+		return istorijaBolesti;
+	}
+	public void setIstorijaBolesti(String istorijaBolesti) {
+		this.istorijaBolesti = istorijaBolesti;
+	}
+	
 }

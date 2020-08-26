@@ -18,11 +18,13 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import rest.domain.Dijagnoza;
 import rest.domain.StavkaSifarnika;
 import rest.domain.TipSifre;
 import rest.domain.Uloga;
 import rest.domain.User;
 import rest.dto.StavkaSifarnikaDTO;
+import rest.service.DijagnozaService;
 import rest.service.StavkaSifarnikaService;
 
 @RestController
@@ -31,6 +33,9 @@ public class SifarnikController {
 	
 	@Autowired
 	private StavkaSifarnikaService service;
+	@Autowired
+	private DijagnozaService dijagnozaService;
+	
 	@Autowired
 	public HttpServletRequest request;
 	
@@ -90,4 +95,21 @@ public class SifarnikController {
 		return new ResponseEntity<>(HttpStatus.OK);
 	}
 	
+	@GetMapping(value="/dijagnoze")
+	public ResponseEntity<List<String>> getDijagnoze(){
+		if(tipKorisnika()!=Uloga.LEKAR) {
+			return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
+		}
+		List<String> ret = new ArrayList<String>();
+		for (StavkaSifarnika ss: service.findAll()) {
+			if (ss.getTip() == TipSifre.DIJAGNOZA) {
+				if (dijagnozaService.findOne(ss.getStavkaId()) != null) {
+					Dijagnoza dijagnoza = dijagnozaService.findOne(ss.getStavkaId());
+					String str = ss.getSifra() + " - " + dijagnoza.getOpis();
+					ret.add(str);
+				}
+			}
+		}
+		return new ResponseEntity<>(ret, HttpStatus.OK);
+	}
 }
