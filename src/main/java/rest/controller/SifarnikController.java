@@ -19,12 +19,14 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import rest.domain.Dijagnoza;
+import rest.domain.Lek;
 import rest.domain.StavkaSifarnika;
 import rest.domain.TipSifre;
 import rest.domain.Uloga;
 import rest.domain.User;
 import rest.dto.StavkaSifarnikaDTO;
 import rest.service.DijagnozaService;
+import rest.service.LekService;
 import rest.service.StavkaSifarnikaService;
 
 @RestController
@@ -35,6 +37,8 @@ public class SifarnikController {
 	private StavkaSifarnikaService service;
 	@Autowired
 	private DijagnozaService dijagnozaService;
+	@Autowired
+	private LekService lekService;
 	
 	@Autowired
 	public HttpServletRequest request;
@@ -106,6 +110,24 @@ public class SifarnikController {
 				if (dijagnozaService.findOne(ss.getStavkaId()) != null) {
 					Dijagnoza dijagnoza = dijagnozaService.findOne(ss.getStavkaId());
 					String str = ss.getSifra() + " - " + dijagnoza.getOpis();
+					ret.add(str);
+				}
+			}
+		}
+		return new ResponseEntity<>(ret, HttpStatus.OK);
+	}
+	
+	@GetMapping(value="/lekovi")
+	public ResponseEntity<List<String>> getLekovi(){
+		if(tipKorisnika()!=Uloga.LEKAR) {
+			return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
+		}
+		List<String> ret = new ArrayList<String>();
+		for (StavkaSifarnika ss: service.findAll()) {
+			if (ss.getTip() == TipSifre.LEK) {
+				if (lekService.findOne(ss.getStavkaId()) != null) {
+					Lek lek = lekService.findOne(ss.getStavkaId());
+					String str = ss.getSifra() + " - " + lek.getNaziv();
 					ret.add(str);
 				}
 			}

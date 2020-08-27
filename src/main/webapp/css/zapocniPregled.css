@@ -45,7 +45,7 @@
 
 .zapocni-input{
 	position:relative;
-	margin-left:auto; 
+	margin-left:5%; 
   	margin-right:auto;
   	max-width: 60%;
   	float: left;
@@ -57,12 +57,35 @@
 }
 
 .dijagnoze-sifre{
-	background-color: #cfcfcf;
-	max-width: 20%;
+	background-color:  #b3ecff;
+	max-width: 18%;
 	float: left;
 	position: relative;
+	margin-left: 1%;
 }
 
 .dijagnoze-sifre td{
 	padding: 10px;
+}
+
+.lekovi-sifre{
+	background-color:  #b3ecff;
+	max-width: 18%;
+	position: relative;
+	margin-right: 5%;
+	float: right;
+}
+
+.btn-sifra-lek-add{
+	background-color: #809fff;
+	border: 1px solid black;
+	color: white;
+}
+
+.btn-recept-overa{
+	background-color: #33ffad;
+	border: 1px solid black;
+	color: white;
+	width: 100%;
+	text-align: center;
 }

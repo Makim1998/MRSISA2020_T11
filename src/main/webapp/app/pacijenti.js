@@ -113,7 +113,7 @@ Vue.component("pacijenti", {
 		</div>
 		<div class="lform-group">
 			<label for="istorija">Istorija bolesti: </label>
-    		<input type="text"  id = "istorija" class="form-control" v-model="karton.istorijaBolesti" disabled>
+    		<textarea style="height:100px;" id = "istorija" class="form-control" v-model="karton.istorijaBolesti" disabled></textarea>
 		</div>
      </form>
      <div class="buttons">

@@ -6,7 +6,8 @@ Vue.component('karton',{
             prezime: "",
             pol: "",
             datumRodj: "",
-            krvna: ""
+            krvna: "",
+            istorija: ""
 		}
 	},
 	template: ` 
@@ -33,6 +34,10 @@ Vue.component('karton',{
 			<label for="grupa">Krvna grupa: </label>
     		<input type="text"  id = "grupa" class="form-control" v-model="krvna" disabled>
 		</div>
+		<div class="form-group">
+			<label for="istorija">Istorija bolesti: </label>
+    		<textarea style="height:100px;" id="istorija" class="form-control" v-model="istorija" disabled></textarea>
+		</div>
     </form>
 </div>		  		  
 `
@@ -55,6 +60,7 @@ Vue.component('karton',{
 		    	this.datumRodj = response.data.datumRodjenja;
 		    	console.log(this.datumRodj);
 		    	this.pol = response.data.pol;
+		    	this.istorija = response.data.istorijaBolesti;
 		    })
 	    	 .catch(function(error){
  				if(error.response){

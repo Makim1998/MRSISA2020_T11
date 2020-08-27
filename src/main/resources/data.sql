@@ -210,6 +210,7 @@ insert into klinika_ocene (klinika_id,ocene) values (1,2);
 insert into stavka_sifarnika(id,sifra,stavka_id,tip) values (1,'x1t1s2',1,1);
 insert into stavka_sifarnika(id,sifra,stavka_id,tip) values (2,'d2t67',2,0);
 insert into stavka_sifarnika(id,sifra,stavka_id,tip) values (3,'28sfftg',1,0);
+insert into stavka_sifarnika(id,sifra,stavka_id,tip) values (4,'x2t2s3',2,1);
 --Godisnji odmori
 insert into godisnji_odmor(id,datum_pocetka,datum_kraja,med_osoblje_id) values(1,'2020-07-11 12:00:00','2020-07-21 12:00:00',10);
 insert into godisnji_odmor(id,datum_pocetka,datum_kraja,med_osoblje_id) values(2,'2020-07-12 12:00:00','2020-07-22 12:00:00',11);

@@ -8,6 +8,7 @@ import java.util.Calendar;
 
 import java.util.Collections;
 import java.util.Date;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
@@ -28,14 +29,17 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import rest.domain.GodisnjiOdmor;
+import rest.domain.AdministratorKlinickogCentra;
 import rest.domain.AdministratorKlinike;
 import rest.domain.Dijagnoza;
 import rest.domain.Karton;
 import rest.domain.Klinika;
+import rest.domain.Lek;
 import rest.domain.Lekar;
 import rest.domain.Operacija;
 import rest.domain.Pacijent;
 import rest.domain.Pregled;
+import rest.domain.Recept;
 import rest.domain.Sala;
 import rest.domain.StavkaCenovnika;
 import rest.domain.StavkaSifarnika;
@@ -49,14 +53,17 @@ import rest.dto.LekarDTO;
 import rest.dto.PregledDTO;
 import rest.dto.SalaDTO;
 import rest.pk.SalaPK;
+import rest.service.AdminKCService;
 import rest.service.AdminKService;
 import rest.service.DijagnozaService;
 import rest.service.KartonService;
 import rest.service.KlinikaService;
+import rest.service.LekService;
 import rest.service.LekariService;
 import rest.service.MailService;
 import rest.service.PacijentService;
 import rest.service.PregledService;
+import rest.service.ReceptService;
 import rest.service.SalaService;
 import rest.service.StavkaCenovnikaService;
 import rest.service.StavkaSifarnikaService;
@@ -74,6 +81,8 @@ public class PregledController {
 	@Autowired
 	private AdminKService akService;
 	@Autowired
+	private AdminKCService akcService;
+	@Autowired
 	private SalaService salaService;
 	@Autowired
 	private TipPregledaService tipPregledaService;
@@ -83,6 +92,10 @@ public class PregledController {
 	private StavkaSifarnikaService stavkaSifarnikaService;
 	@Autowired
 	private DijagnozaService dijagnozaService;
+	@Autowired
+	private LekService lekService;
+	@Autowired
+	private ReceptService receptService;
 
 	@Autowired
 	private PacijentService pacijentService;
@@ -100,6 +113,14 @@ public class PregledController {
 		User logedIn = (User) request.getSession().getAttribute("korisnik");
 		return logedIn.getUloga();
 	}
+	
+	private AdministratorKlinickogCentra getAdmin() {
+		User logedIn = (User) request.getSession().getAttribute("korisnik");
+		Lekar lekar = lekarService.findOne(logedIn.getId());
+		AdministratorKlinickogCentra admin = akcService.findOne(lekar.getKlinika().getKlinickiCentar().getAdmini().iterator().next().getId());
+		return admin;
+	}
+	
 	@GetMapping
 	(value="/slobodni")
 	public ResponseEntity<List<PregledDTO>> getSlobodniTerminiPregleda() {
@@ -660,7 +681,10 @@ public class PregledController {
 	}
 	
 	@PutMapping(value="/zapocni")
-	public ResponseEntity<Boolean> zapocniPregled(@RequestParam Integer id, @RequestParam String sifra, @RequestParam String istorija){
+	public ResponseEntity<Boolean> zapocniPregled(@RequestParam Integer id, @RequestParam String sifra, @RequestParam String istorija, @RequestParam String lekovi){
+		if (tipKorisnika() != Uloga.LEKAR) {
+			return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
+		}
 		System.out.println("Stigne do backend-a za izvestaj pregleda");
 		Pregled pregled = pregledService.findOne(id);
 		if (pregled==null) {
@@ -678,6 +702,29 @@ public class PregledController {
 		}
 		Dijagnoza dijagnoza = dijagnozaService.findOne(ss.getStavkaId());
 		System.out.println("dijagnoza: "+dijagnoza.getOpis());
+		Set<Lek> lekoviD = new HashSet<Lek>();
+		System.out.println("lekovi.split().length = "+lekovi.split("  ").length);
+		if (lekovi.split("  ").length > 1) {
+			for (String lekSifra: lekovi.split("  ")[1].split(" ")) {
+				System.out.println(lekSifra);
+				ss = stavkaSifarnikaService.findBySifra(lekSifra);
+				if (ss != null) {
+					if (ss.getTip()==TipSifre.LEK) {
+						Lek lek = lekService.findOne(ss.getStavkaId());
+						System.out.println(lek.getNaziv());
+						if (!lekoviD.contains(lek))
+							lekoviD.add(lek);
+					}
+				}
+			}
+		}
+		Recept recept = new Recept();
+		recept.setDijagnoza(dijagnoza);
+		recept.setLekovi(lekoviD);
+		recept.setAdministrator(getAdmin());
+		recept = receptService.save(recept);
+		for (Recept r: receptService.findAll())
+			System.out.println(r.getId() + ": " +r.getDijagnoza().getOpis());
 		pregled.setDijagnoza(dijagnoza);
 		pregled = pregledService.save(pregled);
 		System.out.println("Pregled se uspesno snimio");

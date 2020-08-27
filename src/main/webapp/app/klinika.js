@@ -19,7 +19,7 @@ Vue.component("klinika", {
 <div class="oneoption_AKC">
 <div>
 	<div class="jumbotron">
-	  <h2>Klinike2</h2>
+	  <h2>Klinike</h2>
 	  <p>Dodavanje, izmena i brisanje</p> 
 	</div>
    <table align="left" class="table">
