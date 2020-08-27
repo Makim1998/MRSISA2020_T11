@@ -114,6 +114,12 @@ public class PregledController {
 		return logedIn.getUloga();
 	}
 	
+	private Lekar getLekar() {
+		User logedIn = (User) request.getSession().getAttribute("korisnik");
+		Lekar lekar = lekarService.findOne(logedIn.getId());
+		return lekar;
+	}
+	
 	private AdministratorKlinickogCentra getAdmin() {
 		User logedIn = (User) request.getSession().getAttribute("korisnik");
 		Lekar lekar = lekarService.findOne(logedIn.getId());
@@ -701,6 +707,8 @@ public class PregledController {
 			return new ResponseEntity<>(false, HttpStatus.OK);
 		}
 		Dijagnoza dijagnoza = dijagnozaService.findOne(ss.getStavkaId());
+		dijagnoza.setLekar(getLekar());
+		dijagnoza = dijagnozaService.save(dijagnoza);
 		System.out.println("dijagnoza: "+dijagnoza.getOpis());
 		Set<Lek> lekoviD = new HashSet<Lek>();
 		System.out.println("lekovi.split().length = "+lekovi.split("  ").length);

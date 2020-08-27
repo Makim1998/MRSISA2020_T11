@@ -41,6 +41,10 @@ public class Lekar extends User{
 	@JsonIgnore
 	private Set<GodisnjiOdmor> godisnji= new HashSet<GodisnjiOdmor>();
 	
+	@OneToMany(mappedBy="lekar", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
+	@JsonIgnore
+	private Set<Dijagnoza> dijagnoze = new HashSet<Dijagnoza>();
+	
 	@ManyToOne
 	@JoinColumn(name="klinika",nullable=false)
 	@JsonIgnore
@@ -173,6 +177,18 @@ public class Lekar extends User{
 
 	public void setTipPregleda(TipPregleda tipPregleda) {
 		this.tipPregleda = tipPregleda;
+	}
+
+
+
+	public Set<Dijagnoza> getDijagnoze() {
+		return dijagnoze;
+	}
+
+
+
+	public void setDijagnoze(Set<Dijagnoza> dijagnoze) {
+		this.dijagnoze = dijagnoze;
 	}
 	
 	

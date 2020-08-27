@@ -1,5 +1,8 @@
 package rest.domain;
 
+import java.util.HashSet;
+import java.util.Set;
+
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -9,6 +12,7 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
+import javax.persistence.OneToMany;
 import javax.persistence.OneToOne;
 
 @Entity
@@ -21,9 +25,9 @@ public class Dijagnoza {
 	@Column(name = "opis")
 	private String opis;
 	
-	@OneToOne(cascade = CascadeType.ALL)
+	@OneToMany(cascade = CascadeType.ALL)
     @JoinColumn(name = "recept_id", referencedColumnName = "id")
-	private Recept recept;
+	private Set<Recept> recepti = new HashSet<Recept>();
 	
 	@ManyToOne(cascade = CascadeType.ALL, fetch = FetchType.LAZY)
 	private Lekar lekar;
@@ -48,11 +52,11 @@ public class Dijagnoza {
 		this.opis = opis;
 	}
 	
-	public Recept getRecept() {
-		return recept;
+	public Set<Recept> getRecepti() {
+		return recepti;
 	}
-	public void setRecept(Recept recept) {
-		this.recept = recept;
+	public void setRecepti(Set<Recept> recepti) {
+		this.recepti = recepti;
 	}
 	public Lekar getLekar() {
 		return lekar;
