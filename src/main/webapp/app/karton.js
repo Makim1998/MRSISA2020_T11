@@ -7,21 +7,17 @@ Vue.component('karton',{
             pol: "",
             datumRodj: "",
             krvna: "",
-            istorija: ""
+            istorija: "",
+            visina: "",
+            tezina: "",
+            alergije: "",
+            propisano: ""
 		}
 	},
 	template: ` 
 <div id = "karton" class="sidenavlogin">
     <form>
 		<h2 class="text-center">Zdravstveni karton</h2>       
-		<div class="form-group">
-			<label for="ime">Ime: </label>
-   			<input type="text" id = "username" class="form-control" v-model="ime"  disabled>
-		</div>
-		<div class="form-group">
-			<label for="prezime">Prezime: </label>
-			<input type="text" id = "prezime" class="form-control" v-model="prezime" disabled>
-    	</div>
     	<div class="form-group">
 			<label for="pol">Pol: </label>
    			<input type="text" id = "pol" class="form-control" v-model="pol" disabled>
@@ -31,8 +27,24 @@ Vue.component('karton',{
     		<input type="text" id = "rodj" class="form-control"  v-model="datumRodj" disabled>
 		</div>
 		<div class="form-group">
-			<label for="grupa">Krvna grupa: </label>
-    		<input type="text"  id = "grupa" class="form-control" v-model="krvna" disabled>
+			<label for="visina">Visina: </label>
+    		<input type="text"  id = "visina" class="form-control" v-model="visina" disabled>
+		</div>
+		<div class="form-group">
+			<label for="tezina">Tezina: </label>
+    		<input type="text"  id = "tezina" class="form-control" v-model="tezina" disabled>
+		</div>
+		<div class="form-group">
+			<label for="krvna">Krvna grupa: </label>
+    		<input type="text"  id = "krvna" class="form-control" v-model="krvna" disabled>
+		</div>
+		<div class="form-group">
+			<label for="alergije">Alergije: </label>
+    		<input type="text"  id = "alergije" class="form-control" v-model="alergije" disabled>
+		</div>
+		<div class="form-group">
+			<label for="propisano">Propisani lek(ovi): </label>
+    		<input type="text"  id = "propisano" class="form-control" v-model="propisano" disabled>
 		</div>
 		<div class="form-group">
 			<label for="istorija">Istorija bolesti: </label>
@@ -61,6 +73,10 @@ Vue.component('karton',{
 		    	console.log(this.datumRodj);
 		    	this.pol = response.data.pol;
 		    	this.istorija = response.data.istorijaBolesti;
+		    	this.visina = response.data.visina;
+		    	this.tezina = response.data.tezina;
+		    	this.alergije = response.data.alergije;
+		    	this.propisano = response.data.propisano;
 		    })
 	    	 .catch(function(error){
  				if(error.response){

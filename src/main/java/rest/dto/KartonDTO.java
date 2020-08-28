@@ -13,6 +13,10 @@ public class KartonDTO {
 	private String prezime;
 	private String krvnaGrupa;
 	private String istorijaBolesti;
+	private String visina;
+	private String tezina;
+	private String alergije;
+	private String propisano;
 	
 	public KartonDTO() {
 		
@@ -27,6 +31,10 @@ public class KartonDTO {
 		krvnaGrupa = k.getKrvnaGrupa();
 		prezime = k.getPrezime();
 		istorijaBolesti = k.getIstorijaBolesti();
+		visina = k.getVisina();
+		tezina = k.getTezina();
+		alergije = k.getAlergije();
+		propisano = k.getPropisano();
 	}
 	
 	public Integer getId() {
@@ -70,6 +78,30 @@ public class KartonDTO {
 	}
 	public void setIstorijaBolesti(String istorijaBolesti) {
 		this.istorijaBolesti = istorijaBolesti;
+	}
+	public String getVisina() {
+		return visina;
+	}
+	public void setVisina(String visina) {
+		this.visina = visina;
+	}
+	public String getTezina() {
+		return tezina;
+	}
+	public void setTezina(String tezina) {
+		this.tezina = tezina;
+	}
+	public String getAlergije() {
+		return alergije;
+	}
+	public void setAlergije(String alergije) {
+		this.alergije = alergije;
+	}
+	public String getPropisano() {
+		return propisano;
+	}
+	public void setPropisano(String propisano) {
+		this.propisano = propisano;
 	}
 
 }

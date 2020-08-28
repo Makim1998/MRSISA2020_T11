@@ -133,13 +133,13 @@ insert into pacijent (id,odobren) values (35,TRUE);
 insert into pacijent (id,odobren) values (36,FALSE);
 insert into pacijent (id,odobren) values (37,FALSE);
 --Kartoni
-insert into karton (id,ime,prezime,pol,datum_rodjenja,krvna_grupa,istorija_bolesti) values (1,'Sasa','Pavlovic',0,'1998-12-31 23:59:59','A+','Nije bilo nikakvih bolesti');
-insert into karton (id,ime,prezime,pol,datum_rodjenja,krvna_grupa,istorija_bolesti) values (2,'Kevin','Durant',0,'1998-12-31 23:59:59','A+','Nije bilo nikakvih bolesti');
-insert into karton (id,ime,prezime,pol,datum_rodjenja,krvna_grupa,istorija_bolesti) values (3,'Marko','Guduric',0,'1998-12-31 23:59:59','A+','Nije bilo nikakvih bolesti');
-insert into karton (id,ime,prezime,pol,datum_rodjenja,krvna_grupa,istorija_bolesti) values (4,'Borisa','Simanic',0,'1998-12-31 23:59:59','A+','Nije bilo nikakvih bolesti');
-insert into karton (id,ime,prezime,pol,datum_rodjenja,krvna_grupa,istorija_bolesti) values (5,'Vladimir','Stimac',0,'1998-12-31 23:59:59','A+','Nije bilo nikakvih bolesti');
-insert into karton (id,ime,prezime,pol,datum_rodjenja,krvna_grupa,istorija_bolesti) values (6,'Lazar','Miletic',0,'1998-12-31 23:59:59','A+','Nije bilo nikakvih bolesti');
-insert into karton (id,ime,prezime,pol,datum_rodjenja,krvna_grupa,istorija_bolesti) values (7,'Luka','Jovic',0,'1998-12-31 23:59:59','A+','Nije bilo nikakvih bolesti');
+insert into karton (id,ime,prezime,pol,datum_rodjenja,krvna_grupa,istorija_bolesti,visina,tezina,alergije,propisano) values (1,'Sasa','Pavlovic',0,'1998-12-31 23:59:59','A+','Nije bilo nikakvih bolesti','180cm','80g','nema alergije','nema propisane lekove');
+insert into karton (id,ime,prezime,pol,datum_rodjenja,krvna_grupa,istorija_bolesti,visina,tezina,alergije,propisano) values (2,'Kevin','Durant',0,'1998-12-31 23:59:59','A+','Nije bilo nikakvih bolesti','180cm','80g','nema alergije','nema propisane lekove');
+insert into karton (id,ime,prezime,pol,datum_rodjenja,krvna_grupa,istorija_bolesti,visina,tezina,alergije,propisano) values (3,'Marko','Guduric',0,'1998-12-31 23:59:59','A+','Nije bilo nikakvih bolesti','180cm','80g','nema alergije','nema propisane lekove');
+insert into karton (id,ime,prezime,pol,datum_rodjenja,krvna_grupa,istorija_bolesti,visina,tezina,alergije,propisano) values (4,'Borisa','Simanic',0,'1998-12-31 23:59:59','A+','Nije bilo nikakvih bolesti','180cm','80g','nema alergije','nema propisane lekove');
+insert into karton (id,ime,prezime,pol,datum_rodjenja,krvna_grupa,istorija_bolesti,visina,tezina,alergije,propisano) values (5,'Vladimir','Stimac',0,'1998-12-31 23:59:59','A+','Nije bilo nikakvih bolesti','180cm','80g','nema alergije','nema propisane lekove');
+insert into karton (id,ime,prezime,pol,datum_rodjenja,krvna_grupa,istorija_bolesti,visina,tezina,alergije,propisano) values (6,'Lazar','Miletic',0,'1998-12-31 23:59:59','A+','Nije bilo nikakvih bolesti','180cm','80g','nema alergije','nema propisane lekove');
+insert into karton (id,ime,prezime,pol,datum_rodjenja,krvna_grupa,istorija_bolesti,visina,tezina,alergije,propisano) values (7,'Luka','Jovic',0,'1998-12-31 23:59:59','A+','Nije bilo nikakvih bolesti','180cm','80g','nema alergije','nema propisane lekove');
 --Dodavanje kartona pacijentu
 update pacijent set karton_id = 1 where id = 29;
 update pacijent set karton_id = 2 where id = 30;
@@ -164,6 +164,9 @@ update lekar set tip_pregleda = 1 where id = 21;
 --Dijagnoze 
 insert into dijagnoza (id,opis) values (1,'Pacijent je zdrav.');
 insert into dijagnoza (id,opis) values (2,'Redovno dolaziti na preglede svakih godinu dana.');
+insert into dijagnoza (id,opis) values (3,'Redovno dolaziti na preglede svakih mesec dana.');
+insert into dijagnoza (id,opis) values (4,'Trebalo bi samo da konzumira propisane lekove.');
+insert into dijagnoza (id,opis) values (5,'Trebalo bi da ode na operaciju.');
 --Pregledi koje pacijenti mogu zakazati (prepoznajemo ih jer nemaju ni karton a imaju salu)
 insert into pregled(id,datum,trajanje,cena_id,lekar_id,sala_klinika_id,sala_broj_sale,tip_id) values (1,'2020-07-10 17:00:00',50,1,10,1,1,1);
 insert into pregled(id,datum,trajanje,cena_id,lekar_id,sala_klinika_id,sala_broj_sale,tip_id) values (2,'2020-07-10 17:00:00',50,1,11,1,2,1);
@@ -198,8 +201,16 @@ insert into operacija_lekari(operacije_id,lekari_id) values(1,10);
 insert into operacija(id,datum,trajanje,cena_id,karton_id) values (2,'2020-07-12 12:00:00',50,5,5);
 insert into operacija_lekari(operacije_id,lekari_id) values(2,15);
 --Lekovi
-insert into lek (id,naziv,sifra) values (1,'lek1','x1t1s2');
-insert into lek (id,naziv,sifra) values (2,'lek2','x2t2s3');
+insert into lek (id,naziv,sifra) values (1,'lek1','x1t103s2');
+insert into lek (id,naziv,sifra) values (2,'lek2','x2t2s3ss');
+insert into lek (id,naziv,sifra) values (3,'lek3','x2t2673f');
+insert into lek (id,naziv,sifra) values (4,'lek4','t567x2t2');
+insert into lek (id,naziv,sifra) values (5,'lek5','yuyu6s31');
+insert into lek (id,naziv,sifra) values (6,'lek6','x2ts335f');
+insert into lek (id,naziv,sifra) values (7,'lek7','x2s42dd3');
+insert into lek (id,naziv,sifra) values (8,'lek8','x23zt2s3');
+insert into lek (id,naziv,sifra) values (9,'lek9','x2t2xrs3');
+insert into lek (id,naziv,sifra) values (10,'lek10','x2wt2rs3');
 --Ocene lekara
 insert into lekar_ocene (lekar_id,ocene) values (10,4);
 insert into lekar_ocene (lekar_id,ocene) values (10,5);
@@ -207,10 +218,16 @@ insert into lekar_ocene (lekar_id,ocene) values (10,5);
 insert into klinika_ocene (klinika_id,ocene) values (1,4);
 insert into klinika_ocene (klinika_id,ocene) values (1,2);
 --Stavke sifarnika
-insert into stavka_sifarnika(id,sifra,stavka_id,tip) values (1,'x1t1s2',1,1);
+insert into stavka_sifarnika(id,sifra,stavka_id,tip) values (1,'x1t103s2',1,1);
 insert into stavka_sifarnika(id,sifra,stavka_id,tip) values (2,'d2t67',2,0);
 insert into stavka_sifarnika(id,sifra,stavka_id,tip) values (3,'28sfftg',1,0);
-insert into stavka_sifarnika(id,sifra,stavka_id,tip) values (4,'x2t2s3',2,1);
+insert into stavka_sifarnika(id,sifra,stavka_id,tip) values (4,'x2t2s3ss',2,1);
+insert into stavka_sifarnika(id,sifra,stavka_id,tip) values (5,'x2t2673f',3,1);
+insert into stavka_sifarnika(id,sifra,stavka_id,tip) values (6,'t567x2t2',4,1);
+insert into stavka_sifarnika(id,sifra,stavka_id,tip) values (7,'yuyu6s31',5,1);
+insert into stavka_sifarnika(id,sifra,stavka_id,tip) values (8,'x2ts335f',6,1);
+insert into stavka_sifarnika(id,sifra,stavka_id,tip) values (9,'d99at3',3,0);
+insert into stavka_sifarnika(id,sifra,stavka_id,tip) values (10,'99yy2',4,0);
 --Godisnji odmori
 insert into godisnji_odmor(id,datum_pocetka,datum_kraja,med_osoblje_id) values(1,'2020-07-11 12:00:00','2020-07-21 12:00:00',10);
 insert into godisnji_odmor(id,datum_pocetka,datum_kraja,med_osoblje_id) values(2,'2020-07-12 12:00:00','2020-07-22 12:00:00',11);

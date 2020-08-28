@@ -33,7 +33,11 @@ Vue.component("zakazaniPregledi", {
 	    	izvestaj: {
 	    		dijagnoza: "",
 	    		lekovi: "sifre dodatih lekova: ",
-	    		opis: ""
+	    		opis: "",
+	    		visina: "",
+	    		tezina: "",
+	    		krvna: "",
+	    		alergije: ""
 	    	},
 	    	zapocniOdg:null
 	    }
@@ -104,14 +108,6 @@ Vue.component("zakazaniPregledi", {
    <div id="pkarton">
        <form>
 		<h2 class="text-center">Zdravstveni karton</h2>       
-		<div class="lform-group">
-			<label for="ime">Ime: </label>
-   			<input type="text" id = "username" class="form-control" v-model="trenutniKarton.ime"  disabled>
-		</div>
-		<div class="lform-group">
-			<label for="prezime">Prezime: </label>
-			<input type="text" id = "prezime" class="form-control" v-model="trenutniKarton.prezime" disabled>
-    	</div>
     	<div class="lform-group">
 			<label for="pol">Pol: </label>
    			<input type="text" id = "pol" class="form-control" v-model="trenutniKarton.pol" disabled>
@@ -121,8 +117,24 @@ Vue.component("zakazaniPregledi", {
     		<input type="text" id = "rodj" class="form-control"  v-model="trenutniKarton.datumRodjenja" disabled>
 		</div>
 		<div class="lform-group">
+			<label for="visina">Visina: </label>
+    		<input type="text"  id = "visina" class="form-control" v-model="trenutniKarton.visina" disabled>
+		</div>
+		<div class="lform-group">
+			<label for="tezina">Tezina: </label>
+    		<input type="text"  id = "tezina" class="form-control" v-model="trenutniKarton.tezina" disabled>
+		</div>
+		<div class="lform-group">
 			<label for="grupa">Krvna grupa: </label>
     		<input type="text"  id = "grupa" class="form-control" v-model="trenutniKarton.krvnaGrupa" disabled>
+		</div>
+		<div class="lform-group">
+			<label for="alergije">Alergije: </label>
+    		<input type="text"  id = "alergije" class="form-control" v-model="trenutniKarton.alergije" disabled>
+		</div>
+		<div class="lform-group">
+			<label for="propisano">Propisani lek(ovi): </label>
+    		<input type="text"  id = "propisano" class="form-control" v-model="trenutniKarton.propisano" disabled>
 		</div>
 		<div class="lform-group">
 			<label for="istorija">Istorija bolesti: </label>
@@ -167,10 +179,31 @@ Vue.component("zakazaniPregledi", {
 	     <td><input type="button" class="btn-ponisti-recept" v-on:click="ponistiRecept()" value="ponisti"></td>
 	   </tr>
 	   <tr style="height:40px;"></tr>
+	   
+	   <tr>
+		 <td width="28%"><label>Visina:</label></td>
+		 <td width="2%"></td>
+		 <td colspan="2" width="70%"><input type="text" style="width:100%;" v-model="izvestaj.visina"></td>
+	   </tr>
+	   <tr>
+		 <td width="28%"><label>Tezina:</label></td>
+		 <td width="2%"></td>
+		 <td colspan="2" width="70%"><input type="text" style="width:100%;" v-model="izvestaj.tezina"></td>
+	   </tr>
+	   <tr>
+		 <td width="28%"><label>Alergije:</label></td>
+		 <td width="2%"></td>
+		 <td colspan="2" width="70%"><input type="text" style="width:100%;" v-model="izvestaj.alergije"></td>
+	   </tr>
+	   <tr>
+		 <td width="28%"><label>Krvna grupa:</label></td>
+		 <td width="2%"></td>
+		 <td colspan="2" width="70%"><input type="text" style="width:100%;" v-model="izvestaj.krvna"></td>
+	   </tr>
 	   <tr>
 		 <td width="28%"><label>Istorija bolesti pacijenta:</label></td>
 		 <td width="2%"></td>
-		 <td width="70%" colspan="2"><textarea v-model="izvestaj.opis" style="display:block; width:100%; height:130px;">
+		 <td width="70%" colspan="2"><textarea v-model="izvestaj.opis" style="display:block; width:100%; height:100px;">
 		 </textarea></td>
 	   </tr>
 	   </table>
@@ -229,6 +262,10 @@ Vue.component("zakazaniPregledi", {
 			this.input.karton=a;
 			this.id=id;
 			this.izvestaj.opis=a.istorijaBolesti;
+			this.izvestaj.visina=a.visina;
+			this.izvestaj.tezina=a.tezina;
+			this.izvestaj.alergije=a.alergije;
+			this.izvestaj.krvna=a.krvnaGrupa;
 			//alert("Nije implementirano");
 			document.getElementById("myForm").style.display = "block";
 			document.getElementById("modaldark").style.display = "block";
@@ -250,10 +287,16 @@ Vue.component("zakazaniPregledi", {
 		zapocniPregled(){
 			if (this.izvestaj.dijagnoza.trim() == "")
 				alert("Niste uneli sifru za dijagnozu!");
+			else if (this.izvestaj.visina.trim() == "")
+				alert("Visina pacijenta ne moze da ostane prazna!");
+			else if (this.izvestaj.tezina.trim() == "")
+				alert("Tezina pacijenta ne moze da ostane prazna!");
+			else if (this.izvestaj.krvna.trim() == "")
+				alert("Krvna grupa pacijenta ne moze da ostane prazna!");
 			else{
 				console.log(this.izvestaj.lekovi);
 				axios
-				.put('rest/Pregled/zapocni?id='+this.id+'&sifra='+this.izvestaj.dijagnoza.trim()+"&istorija="+this.izvestaj.opis.trim()+"&lekovi="+this.izvestaj.lekovi)
+				.put('rest/Pregled/zapocni?id='+this.id+'&sifra='+this.izvestaj.dijagnoza.trim()+"&istorija="+this.izvestaj.opis.trim()+"&lekovi="+this.izvestaj.lekovi+"&visina="+this.izvestaj.visina+"&tezina="+this.izvestaj.tezina+"&alergije="+this.izvestaj.alergije+"&krvna="+this.izvestaj.krvna)
 				.then(response => {
 					this.zapocniOdg=response.data;
 					if (this.zapocniOdg){

@@ -14,12 +14,14 @@ import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import rest.domain.Karton;
 import rest.domain.Lek;
 import rest.domain.MedicinskaSestra;
 import rest.domain.Recept;
 import rest.domain.Uloga;
 import rest.domain.User;
 import rest.dto.ReceptDTO;
+import rest.service.KartonService;
 import rest.service.MSService;
 import rest.service.ReceptService;
 
@@ -32,6 +34,9 @@ public class ReceptController {
 	
 	@Autowired
 	private MSService msService;
+	
+	@Autowired
+	private KartonService kartonService;
 	
 	@Autowired
 	public HttpServletRequest request;
@@ -81,6 +86,21 @@ public class ReceptController {
 		Recept recept = service.findOne(id);
 		recept.setSestra(ms);
 		recept = service.save(recept);
+		System.out.println(recept.getDijagnoza().getOpis());
+		System.out.println(recept.getDijagnoza().getPregled().getCena().getCena());
+		System.out.println(recept.getDijagnoza().getPregled().getKarton().getKrvnaGrupa());
+		Karton karton = kartonService.findOne(recept.getDijagnoza().getPregled().getKarton().getId());
+		String propisano = "";
+		if (!recept.getLekovi().isEmpty()) {
+			for (Lek lek: recept.getLekovi()) {
+				propisano += lek.getNaziv() + ", ";
+			}
+			propisano = propisano.substring(0, propisano.length()-2);
+		}
+		else
+			propisano = "nema lekova";
+		karton.setPropisano(propisano);
+		karton = kartonService.save(karton);
 		return new ResponseEntity<>(HttpStatus.OK);
 	}
 

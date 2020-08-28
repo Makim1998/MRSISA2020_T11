@@ -30,6 +30,7 @@ import rest.dto.LekarDTO;
 import rest.dto.KartonDTO;
 import rest.dto.PacijentDTO;
 import rest.dto.PregledDTO;
+import rest.service.KartonService;
 import rest.service.LekariService;
 import rest.service.MailService;
 import rest.service.PacijentService;
@@ -39,6 +40,8 @@ import rest.service.PacijentService;
 public class PacijentController {
 	@Autowired
 	private PacijentService patientService;
+	@Autowired
+	private KartonService kartonService;
 	@Autowired
 	private LekariService lekarService;
 	@Autowired
@@ -225,5 +228,10 @@ public class PacijentController {
 		}
 
 		return new ResponseEntity<>(pacijentiDTO, HttpStatus.OK);
+	}
+	
+	@PutMapping(value="/createKarton")
+	public ResponseEntity<Void> createKarton(@RequestBody KartonDTO karton){
+		return new ResponseEntity<>(HttpStatus.OK);
 	}
 }

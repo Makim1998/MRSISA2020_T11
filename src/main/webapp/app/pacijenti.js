@@ -91,14 +91,6 @@ Vue.component("pacijenti", {
      </form>
      <form id="zkarton">
 		<h2 class="text-center">Zdravstveni karton</h2>       
-		<div class="lform-group">
-			<label for="ime">Ime: </label>
-   			<input type="text" id = "username" class="form-control" v-model="karton.ime"  disabled>
-		</div>
-		<div class="lform-group">
-			<label for="prezime">Prezime: </label>
-			<input type="text" id = "prezime" class="form-control" v-model="karton.prezime" disabled>
-    	</div>
     	<div class="lform-group">
 			<label for="pol">Pol: </label>
    			<input type="text" id = "pol" class="form-control" v-model="karton.pol" disabled>
@@ -108,8 +100,24 @@ Vue.component("pacijenti", {
     		<input type="text" id = "rodj" class="form-control"  v-model="karton.datumRodjenja" disabled>
 		</div>
 		<div class="lform-group">
+			<label for="visina">Visina: </label>
+    		<input type="text"  id = "visina" class="form-control" v-model="karton.visina" disabled>
+		</div>
+		<div class="lform-group">
+			<label for="tezina">Tezina: </label>
+    		<input type="text"  id = "tezina" class="form-control" v-model="karton.tezina" disabled>
+		</div>
+		<div class="lform-group">
 			<label for="grupa">Krvna grupa: </label>
     		<input type="text"  id = "grupa" class="form-control" v-model="karton.krvnaGrupa" disabled>
+		</div>
+		<div class="lform-group">
+			<label for="alergije">Alergije: </label>
+    		<input type="text"  id = "alergije" class="form-control" v-model="karton.alergije" disabled>
+		</div>
+		<div class="lform-group">
+			<label for="propisano">Propisani lek(ovi): </label>
+    		<input type="text"  id = "propisano" class="form-control" v-model="karton.propisano" disabled>
 		</div>
 		<div class="lform-group">
 			<label for="istorija">Istorija bolesti: </label>

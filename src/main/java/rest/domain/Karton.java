@@ -40,6 +40,18 @@ public class Karton {
 	@Column(name = "istorijaBolesti")
 	private String istorijaBolesti;
 	
+	@Column(name = "visina",nullable = false)
+	private String visina;
+	
+	@Column(name = "tezina",nullable = false)
+	private String tezina;
+	
+	@Column(name = "propisano")
+	private String propisano;
+	
+	@Column(name = "alergije")
+	private String alergije;
+	
 	@OneToOne(mappedBy = "karton")
 	@JsonIgnore
 	private Pacijent pacijent;
@@ -104,6 +116,30 @@ public class Karton {
 	}
 	public void setIstorijaBolesti(String istorijaBolesti) {
 		this.istorijaBolesti = istorijaBolesti;
+	}
+	public String getVisina() {
+		return visina;
+	}
+	public void setVisina(String visina) {
+		this.visina = visina;
+	}
+	public String getTezina() {
+		return tezina;
+	}
+	public void setTezina(String tezina) {
+		this.tezina = tezina;
+	}
+	public String getPropisano() {
+		return propisano;
+	}
+	public void setPropisano(String propisano) {
+		this.propisano = propisano;
+	}
+	public String getAlergije() {
+		return alergije;
+	}
+	public void setAlergije(String alergije) {
+		this.alergije = alergije;
 	}
 	
 }

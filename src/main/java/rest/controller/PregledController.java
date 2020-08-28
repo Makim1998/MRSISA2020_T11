@@ -687,7 +687,7 @@ public class PregledController {
 	}
 	
 	@PutMapping(value="/zapocni")
-	public ResponseEntity<Boolean> zapocniPregled(@RequestParam Integer id, @RequestParam String sifra, @RequestParam String istorija, @RequestParam String lekovi){
+	public ResponseEntity<Boolean> zapocniPregled(@RequestParam Integer id, @RequestParam String sifra, @RequestParam String istorija, @RequestParam String lekovi, @RequestParam String visina, @RequestParam String tezina, @RequestParam String alergije, @RequestParam String krvna){
 		if (tipKorisnika() != Uloga.LEKAR) {
 			return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
 		}
@@ -734,7 +734,9 @@ public class PregledController {
 		for (Recept r: receptService.findAll())
 			System.out.println(r.getId() + ": " +r.getDijagnoza().getOpis());
 		pregled.setDijagnoza(dijagnoza);
+		dijagnoza.setPregled(pregled);
 		pregled = pregledService.save(pregled);
+		dijagnoza = dijagnozaService.save(dijagnoza);
 		System.out.println("Pregled se uspesno snimio");
 		if (kartonService.findOne(pregled.getKarton().getId()) == null) {
 			System.out.println("Problem je kod kartona");
@@ -742,6 +744,13 @@ public class PregledController {
 		Karton karton = kartonService.findOne(pregled.getKarton().getId());
 		System.out.println(karton.getKrvnaGrupa());
 		karton.setIstorijaBolesti(istorija);
+		karton.setVisina(visina);
+		karton.setTezina(tezina);
+		karton.setKrvnaGrupa(krvna);
+		if (!alergije.equals(""))
+			karton.setAlergije(alergije);
+		else
+			karton.setAlergije("nema alergije");
 		System.out.println("karton se uspesno izmenio");
 		karton = kartonService.save(karton);
 		System.out.println("karton se uspesno snimio");

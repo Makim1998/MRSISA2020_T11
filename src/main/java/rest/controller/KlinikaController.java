@@ -78,17 +78,22 @@ public class KlinikaController {
 		User logedIn = (User) request.getSession().getAttribute("korisnik");
 		return adminService.findOne(logedIn.getId());
 	}
-
 	
 	@GetMapping
 	public ResponseEntity<List<KlinikaDTO>> getKlinike(){
 		List<Klinika> klinike = service.findAll();
 		List<KlinikaDTO> ret = new ArrayList<KlinikaDTO>();
-		AdministratorKlinickogCentra admin = getAdmin();
+		AdministratorKlinickogCentra admin = null;
+		if (tipKorisnika() == Uloga.ADMINISTRATOR_KLINICKOG_CENTRA)
+			admin = getAdmin();
 		for (Klinika k: klinike) {
 			KlinikaDTO dto = new KlinikaDTO(k);
 			dto.setProsek(k);
-			if (admin.getKlinickiCentar().getId() == k.getKlinickiCentar().getId())
+			if (tipKorisnika() == Uloga.ADMINISTRATOR_KLINICKOG_CENTRA) {
+				if (admin.getKlinickiCentar().getId() == k.getKlinickiCentar().getId())
+					ret.add(dto);
+			}
+			else
 				ret.add(dto);
 		}
 		for (KlinickiCentar kc: kcService.findAll()) {

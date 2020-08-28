@@ -48,7 +48,7 @@ public class Pregled implements Comparable<Pregled> {
 	@ManyToOne(fetch = FetchType.LAZY)
 	private Lekar lekar;
 	
-	@ManyToOne(cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+	@OneToOne(cascade = CascadeType.ALL, fetch = FetchType.LAZY)
 	private Dijagnoza dijagnoza;
 	
 	public Integer getId() {
