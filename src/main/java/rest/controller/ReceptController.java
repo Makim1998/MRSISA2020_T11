@@ -59,8 +59,9 @@ public class ReceptController {
 			String lekovi = "";
 			if (!recept.getLekovi().isEmpty()) {
 				for (Lek lek: recept.getLekovi()) {
-					lekovi += lek.getNaziv() + " ";
+					lekovi += lek.getNaziv() + ", ";
 				}
+				lekovi = lekovi.substring(0, lekovi.length()-2);
 			}
 			else
 				lekovi = "nema lekova";

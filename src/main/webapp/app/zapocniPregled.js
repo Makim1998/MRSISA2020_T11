@@ -163,7 +163,8 @@ Vue.component("zakazaniPregledi", {
 		 <td width="10%"><input class="btn-sifra-lek-add" type="button" v-on:click="dodajLek()" value="dodaj"></td>
 	   </tr>
 	   <tr>
-	     <td colspan="4" style="text-align: center;">{{izvestaj.lekovi}}</td>
+	     <td colspan="3" style="text-align: center;">{{izvestaj.lekovi}}</td>
+	     <td><input type="button" class="btn-ponisti-recept" v-on:click="ponistiRecept()" value="ponisti"></td>
 	   </tr>
 	   <tr style="height:40px;"></tr>
 	   <tr>
@@ -242,6 +243,9 @@ Vue.component("zakazaniPregledi", {
 		},
 		dodajLek(){
 			this.izvestaj.lekovi+=" "+this.noviLek;
+		},
+		ponistiRecept(){
+			this.izvestaj.lekovi="sifre dodatih lekova: ";
 		},
 		zapocniPregled(){
 			if (this.izvestaj.dijagnoza.trim() == "")

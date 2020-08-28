@@ -82,6 +82,12 @@
 	color: white;
 }
 
+.btn-ponisti-recept{
+	background-color: #ff3333;
+	border: 1px solid black;
+	color: white;
+}
+
 .btn-recept-overa{
 	background-color: #33ffad;
 	border: 1px solid black;
