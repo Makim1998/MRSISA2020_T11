@@ -15,14 +15,14 @@ Vue.component('overavanje', {
 		<tr>
 		   <th>ID</th>
 		   <th>Dijagnoza</th>
-		   <th>Lekar</th>
+		   <th>Pacijent</th>
 		   <th>Lekovi</th>
 		   <th>Overavanje</th>
 		</tr>
 		<tr v-for="r in recepti" >
 			<td class="myclass">{{r.id}}</td>
 			<td class="myclass">{{r.dijagnoza}}</td>
-			<td class="myclass">{{r.lekar}}</td>
+			<td class="myclass">{{r.pacijent}}</td>
 			<td class="myclass">{{r.lekovi}}</td>
 			<td><input class="btn-recept-overa" value='Overi' type='button' v-on:click="overi(r.id)"/></td>
 		</tr>

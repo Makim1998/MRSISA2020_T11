@@ -14,21 +14,33 @@ import javax.persistence.JoinColumn;
 
 import javax.persistence.ManyToMany;
 import javax.persistence.ManyToOne;
+import javax.persistence.OneToOne;
 
 @Entity
 public class Recept {
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Integer id;
+	
 	@ManyToMany
 	@JoinTable(name = "lecenje", joinColumns = @JoinColumn(name = "recept_id", referencedColumnName = "id"), inverseJoinColumns = @JoinColumn(name = "lek_id", referencedColumnName = "id"))
 	private Set<Lek> lekovi=new HashSet<Lek>();
+	
 	@ManyToOne(cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+	@JoinColumn(name="sestra_id", referencedColumnName="id")
 	private MedicinskaSestra sestra;
+	
 	@ManyToOne(cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+	@JoinColumn(name="dijagnoza_id", referencedColumnName="id", nullable=false)
 	private Dijagnoza dijagnoza;
+	
 	@ManyToOne(cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+	@JoinColumn(name="admin_id", referencedColumnName="id")
 	private AdministratorKlinickogCentra administrator;
+	
+	@OneToOne(cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+	@JoinColumn(name="pregled_id", referencedColumnName="id", nullable=false)
+	private Pregled pregled;
 	
 	public Recept() {
 		super();
@@ -63,5 +75,12 @@ public class Recept {
 	public void setAdministrator(AdministratorKlinickogCentra administrator) {
 		this.administrator = administrator;
 	}
+	public Pregled getPregled() {
+		return pregled;
+	}
+	public void setPregled(Pregled pregled) {
+		this.pregled = pregled;
+	}
+	
 
 }

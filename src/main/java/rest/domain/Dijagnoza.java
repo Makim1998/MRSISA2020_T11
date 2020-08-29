@@ -13,7 +13,6 @@ import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
-import javax.persistence.OneToOne;
 
 @Entity
 public class Dijagnoza {
@@ -32,9 +31,9 @@ public class Dijagnoza {
 	@ManyToOne(cascade = CascadeType.ALL, fetch = FetchType.LAZY)
 	private Lekar lekar;
 	
-	@OneToOne(cascade = CascadeType.ALL)
+	@OneToMany(cascade = CascadeType.ALL)
     @JoinColumn(name = "pregled_id", referencedColumnName = "id")
-	private Pregled pregled;
+	private Set<Pregled> pregledi = new HashSet<Pregled>();
 	
 	public Dijagnoza() {
 		super();
@@ -64,12 +63,11 @@ public class Dijagnoza {
 	public void setLekar(Lekar lekar) {
 		this.lekar = lekar;
 	}
-	public Pregled getPregled() {
-		return pregled;
+	public Set<Pregled> getPregledi() {
+		return pregledi;
 	}
-	public void setPregled(Pregled pregled) {
-		this.pregled = pregled;
+	public void setPregledi(Set<Pregled> pregledi) {
+		this.pregledi = pregledi;
 	}
-
 
 }

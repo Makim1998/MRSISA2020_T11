@@ -87,9 +87,7 @@ public class ReceptController {
 		recept.setSestra(ms);
 		recept = service.save(recept);
 		System.out.println(recept.getDijagnoza().getOpis());
-		System.out.println(recept.getDijagnoza().getPregled().getCena().getCena());
-		System.out.println(recept.getDijagnoza().getPregled().getKarton().getKrvnaGrupa());
-		Karton karton = kartonService.findOne(recept.getDijagnoza().getPregled().getKarton().getId());
+		Karton karton = kartonService.findOne(recept.getPregled().getKarton().getId());
 		String propisano = "";
 		if (!recept.getLekovi().isEmpty()) {
 			for (Lek lek: recept.getLekovi()) {

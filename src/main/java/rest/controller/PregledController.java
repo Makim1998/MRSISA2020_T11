@@ -727,14 +727,18 @@ public class PregledController {
 			}
 		}
 		Recept recept = new Recept();
-		recept.setDijagnoza(dijagnoza);
 		recept.setLekovi(lekoviD);
 		recept.setAdministrator(getAdmin());
-		recept = receptService.save(recept);
 		for (Recept r: receptService.findAll())
 			System.out.println(r.getId() + ": " +r.getDijagnoza().getOpis());
 		pregled.setDijagnoza(dijagnoza);
-		dijagnoza.setPregled(pregled);
+		Set<Pregled> pregledi = dijagnoza.getPregledi();
+		pregledi.add(pregled);
+		dijagnoza.setPregledi(pregledi);
+		recept.setDijagnoza(dijagnoza);
+		recept.setPregled(pregled);
+		pregled.setRecept(recept);
+		recept = receptService.save(recept);
 		pregled = pregledService.save(pregled);
 		dijagnoza = dijagnozaService.save(dijagnoza);
 		System.out.println("Pregled se uspesno snimio");

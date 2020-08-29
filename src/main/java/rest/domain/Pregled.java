@@ -51,6 +51,9 @@ public class Pregled implements Comparable<Pregled> {
 	@OneToOne(cascade = CascadeType.ALL, fetch = FetchType.LAZY)
 	private Dijagnoza dijagnoza;
 	
+	@OneToOne(cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+	private Recept recept;
+	
 	public Integer getId() {
 		return id;
 	}
@@ -106,6 +109,15 @@ public class Pregled implements Comparable<Pregled> {
 	public void setDijagnoza(Dijagnoza dijagnoza) {
 		this.dijagnoza = dijagnoza;
 	}
+	
+	
+	public Recept getRecept() {
+		return recept;
+	}
+	public void setRecept(Recept recept) {
+		this.recept = recept;
+	}
+	
 	public Pregled() {
 		super();
 	}

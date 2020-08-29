@@ -233,4 +233,22 @@ insert into godisnji_odmor(id,datum_pocetka,datum_kraja,med_osoblje_id) values(1
 insert into godisnji_odmor(id,datum_pocetka,datum_kraja,med_osoblje_id) values(2,'2020-07-12 12:00:00','2020-07-22 12:00:00',11);
 insert into godisnji_odmor(id,datum_pocetka,datum_kraja,med_osoblje_id) values(3,'2020-07-13 12:00:00','2020-07-23 12:00:00',12);
 --Recepti
-
+insert into recept(id,pregled_id,dijagnoza_id,admin_id) values (1,5,1,1);
+insert into recept(id,pregled_id,dijagnoza_id,admin_id) values (2,6,1,1);
+insert into recept(id,pregled_id,dijagnoza_id,admin_id) values (3,7,2,1);
+insert into recept(id,pregled_id,dijagnoza_id,admin_id) values (4,8,2,1);
+insert into recept(id,pregled_id,dijagnoza_id,admin_id) values (5,9,1,1);
+insert into recept(id,pregled_id,dijagnoza_id,admin_id) values (6,10,2,1);
+insert into recept(id,pregled_id,dijagnoza_id,admin_id) values (7,11,1,1);
+insert into recept(id,pregled_id,dijagnoza_id,admin_id) values (8,12,2,1);
+--Lekoi za recepte
+insert into lecenje(recept_id,lek_id) values (1,1);
+insert into lecenje(recept_id,lek_id) values (1,8);
+insert into lecenje(recept_id,lek_id) values (1,9);
+insert into lecenje(recept_id,lek_id) values (2,2);
+insert into lecenje(recept_id,lek_id) values (2,10);
+insert into lecenje(recept_id,lek_id) values (3,3);
+insert into lecenje(recept_id,lek_id) values (4,4);
+insert into lecenje(recept_id,lek_id) values (5,5);
+insert into lecenje(recept_id,lek_id) values (6,6);
+insert into lecenje(recept_id,lek_id) values (7,7);

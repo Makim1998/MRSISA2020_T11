@@ -8,7 +8,7 @@ public class ReceptDTO {
 	private String sestra;
 	private String dijagnoza;
 	private String administrator;
-	private String lekar;
+	private String pacijent;
 	private String lekovi;	
 	
 	public ReceptDTO(Recept recept) {
@@ -16,7 +16,7 @@ public class ReceptDTO {
 		this.dijagnoza = recept.getDijagnoza().getOpis();
 		this.administrator = recept.getAdministrator().getEmail();
 		this.lekovi = "";
-		this.lekar = recept.getDijagnoza().getLekar().getIme() + " " + recept.getDijagnoza().getLekar().getPrezime();
+		this.pacijent = recept.getPregled().getKarton().getIme() + " " + recept.getPregled().getKarton().getPrezime();
 	}
 	
 	public ReceptDTO() {
@@ -56,12 +56,12 @@ public class ReceptDTO {
 		this.lekovi = lekovi;
 	}
 
-	public String getLekar() {
-		return lekar;
+	public String getPacijent() {
+		return pacijent;
 	}
 
-	public void setLekar(String lekar) {
-		this.lekar = lekar;
+	public void setPacijent(String pacijent) {
+		this.pacijent = pacijent;
 	}
 
 }
