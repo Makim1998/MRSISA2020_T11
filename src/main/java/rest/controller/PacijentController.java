@@ -1,6 +1,7 @@
 package rest.controller;
 
 import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -8,7 +9,6 @@ import javax.servlet.http.HttpServletRequest;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
-import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -26,10 +26,8 @@ import rest.domain.Pacijent;
 import rest.domain.Pregled;
 import rest.domain.Uloga;
 import rest.domain.User;
-import rest.dto.LekarDTO;
 import rest.dto.KartonDTO;
 import rest.dto.PacijentDTO;
-import rest.dto.PregledDTO;
 import rest.service.KartonService;
 import rest.service.LekariService;
 import rest.service.MailService;
@@ -230,8 +228,34 @@ public class PacijentController {
 		return new ResponseEntity<>(pacijentiDTO, HttpStatus.OK);
 	}
 	
-	@PutMapping(value="/createKarton")
-	public ResponseEntity<Void> createKarton(@RequestBody KartonDTO karton){
+	@PutMapping(value="/createKarton/{id}")
+	public ResponseEntity<Void> createKarton(@RequestBody KartonDTO karton, @PathVariable Integer id) throws ParseException{
+		System.out.println(karton.getPolStr());
+		System.out.println(karton.getIme() + " " + karton.getPrezime());
+		System.out.println(karton.getDatumRodjenja());
+		SimpleDateFormat sdf = new SimpleDateFormat("DD.MM.YYYY.");
+		Karton k = new Karton();
+		k.setIme(karton.getIme());
+		k.setKrvnaGrupa(karton.getKrvnaGrupa());
+		k.setPol(karton.getPolStr());
+		k.setPrezime(karton.getPrezime());
+		k.setTezina(karton.getTezina());
+		k.setVisina(karton.getVisina());
+		k.setPropisano("nema propisane lekove");
+		if (karton.getAlergije().equals(""))
+			k.setAlergije("nema alergije");
+		else
+			k.setAlergije(karton.getAlergije());
+		if (karton.getIstorijaBolesti().equals(""))
+			k.setIstorijaBolesti("Nije bilo nikakvih bolesti");
+		else
+			k.setIstorijaBolesti(karton.getIstorijaBolesti());
+		k.setDatumRodjenja(sdf.parse(karton.getDatumRodjenja()));
+		Pacijent p = patientService.findOne(id);
+		p.setKarton(k);
+		k.setPacijent(p);
+		k = kartonService.save(k);
+		p = patientService.save(p);
 		return new ResponseEntity<>(HttpStatus.OK);
 	}
 }

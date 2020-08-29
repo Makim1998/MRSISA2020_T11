@@ -81,6 +81,12 @@ public class Karton {
 	public void setPol(Pol pol) {
 		this.pol = pol;
 	}
+	public void setPol(String pol) {
+		if (pol.equals("MUSKO"))
+			this.pol = Pol.MUSKO;
+		else
+			this.pol = Pol.ZENSKO;
+	}
 	public String getIme() {
 		return ime;
 	}

@@ -1,0 +1,26 @@
+@charset "ISO-8859-1";
+
+#AKC-nov-karton{
+	display: none;
+	position: fixed;
+    top: 0;
+    right: 0;
+    bottom: 0;
+    left: 0;
+    background: rgba(0,0,0,0.6);
+}
+
+#AKC-karton-form{
+	display: none;
+	position: absolute;
+	right: 20%;
+	left: 20%;
+	height: 98%;
+    background-color: #a3c2c2;
+}
+
+#AKC-nov-karton #AKC-karton-form .lform-group{
+	margin-right: 10%;
+	margin-left: 10%;
+	max-width: 80%;
+}

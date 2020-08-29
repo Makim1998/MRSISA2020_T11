@@ -9,6 +9,7 @@ public class KartonDTO {
 	private Integer id;
 	private String datumRodjenja;
 	private Pol pol;
+	private String polStr;
 	private String ime;
 	private String prezime;
 	private String krvnaGrupa;
@@ -27,6 +28,7 @@ public class KartonDTO {
 		SimpleDateFormat simpleDateFormat = new SimpleDateFormat(pattern);
 		datumRodjenja = simpleDateFormat.format(k.getDatumRodjenja());
 		pol = k.getPol();
+		polStr = k.getPol().name();
 		ime = k.getIme();
 		krvnaGrupa = k.getKrvnaGrupa();
 		prezime = k.getPrezime();
@@ -102,6 +104,12 @@ public class KartonDTO {
 	}
 	public void setPropisano(String propisano) {
 		this.propisano = propisano;
+	}
+	public String getPolStr() {
+		return polStr;
+	}
+	public void setPolStr(String polStr) {
+		this.polStr = polStr;
 	}
 
 }
