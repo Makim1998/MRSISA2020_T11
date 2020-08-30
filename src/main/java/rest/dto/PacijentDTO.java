@@ -1,6 +1,5 @@
 package rest.dto;
 
-import rest.domain.Karton;
 import rest.domain.Pacijent;
 import rest.domain.User;
 
@@ -9,7 +8,7 @@ public class PacijentDTO extends UserDTO {
 	private String adresa;
 	private String grad;
 	private String drzava;
-	private Karton karton;
+	private KartonDTO karton;
 	
 	public String getBrojOsiguranika() {
 		return brojOsiguranika;
@@ -35,10 +34,10 @@ public class PacijentDTO extends UserDTO {
 	public void setDrzava(String drzava) {
 		this.drzava = drzava;
 	}
-	public Karton getKarton() {
+	public KartonDTO getKarton() {
 		return karton;
 	}
-	public void setKarton(Karton karton) {
+	public void setKarton(KartonDTO karton) {
 		this.karton = karton;
 	}
 	
@@ -51,7 +50,7 @@ public class PacijentDTO extends UserDTO {
 		this.adresa = p.getAdresa();
 		this.grad = p.getGrad();
 		this.drzava = p.getDrzava();
-		this.karton = p.getKarton();
+		this.karton = new KartonDTO(p.getKarton());
 	}
 	
 }

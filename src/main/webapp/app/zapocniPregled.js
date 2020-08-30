@@ -331,7 +331,7 @@ Vue.component("zakazaniPregledi", {
 						    	this.cenovnik.stavke = response.data.stavke;
 						    	this.cenovnik.klinika_id = response.data.klinikaID;
 						    });
-						})
+						});
 					}
 					else
 						alert("Ne postoji dijagnoza sa unetom sifrom");

@@ -241,7 +241,7 @@ insert into recept(id,pregled_id,dijagnoza_id,admin_id) values (5,9,1,1);
 insert into recept(id,pregled_id,dijagnoza_id,admin_id) values (6,10,2,1);
 insert into recept(id,pregled_id,dijagnoza_id,admin_id) values (7,11,1,1);
 insert into recept(id,pregled_id,dijagnoza_id,admin_id) values (8,12,2,1);
---Lekoi za recepte
+--Lekovi za recepte
 insert into lecenje(recept_id,lek_id) values (1,1);
 insert into lecenje(recept_id,lek_id) values (1,8);
 insert into lecenje(recept_id,lek_id) values (1,9);
