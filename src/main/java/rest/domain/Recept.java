@@ -34,10 +34,6 @@ public class Recept {
 	@JoinColumn(name="dijagnoza_id", referencedColumnName="id", nullable=false)
 	private Dijagnoza dijagnoza;
 	
-	@ManyToOne(cascade = CascadeType.ALL, fetch = FetchType.LAZY)
-	@JoinColumn(name="admin_id", referencedColumnName="id")
-	private AdministratorKlinickogCentra administrator;
-	
 	@OneToOne(cascade = CascadeType.ALL, fetch = FetchType.LAZY)
 	@JoinColumn(name="pregled_id", referencedColumnName="id", nullable=false)
 	private Pregled pregled;
@@ -68,12 +64,6 @@ public class Recept {
 	}
 	public void setDijagnoza(Dijagnoza dijagnoza) {
 		this.dijagnoza = dijagnoza;
-	}
-	public AdministratorKlinickogCentra getAdministrator() {
-		return administrator;
-	}
-	public void setAdministrator(AdministratorKlinickogCentra administrator) {
-		this.administrator = administrator;
 	}
 	public Pregled getPregled() {
 		return pregled;

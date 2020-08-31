@@ -22,6 +22,10 @@ public class AdminKCService {
 		return repository.findById(id).orElseGet(null);
 	}
 	
+	public AdministratorKlinickogCentra findByEmail(String email) {
+		return repository.findOneByEmail(email);
+	}
+	
 	public List<AdministratorKlinickogCentra> findAll(){
 		return repository.findAll();
 	}

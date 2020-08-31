@@ -53,16 +53,16 @@ insert into stavka_cenovnika (cenovnik_id,id,cena,usluga) values (4,12,5000,'Ops
 insert into cenovnik (id,klinika_id) values (5,5);
 insert into stavka_cenovnika (cenovnik_id,id,cena,usluga) values (5,13,10000,'Oftamoloski pregled');
 --Korisnici
-insert into user (id,ime,prezime,email,password,uloga,broj_osiguranika,prvi_put) values (1,'Ivan','Ivanovic','AdminKC@gmail.com','adminkc1',4,2322432322400,false);
+insert into user (id,ime,prezime,email,password,uloga,broj_osiguranika,prvi_put) values (1,'Ivan','Ivanovic','AdminKC1@gmail.com','adminkc2',4,2322432322400,false);
 insert into user (id,ime,prezime,email,password,uloga,broj_osiguranika,prvi_put) values (2,'Jovan','Jovanovic','AdminKC2@gmail.com','admink1',4,3242543242501,false);
 insert into user (id,ime,prezime,email,password,uloga,broj_osiguranika,prvi_put) values (3,'Marko','Markovic','AdminKC3@gmail.com','lekar1',4,3424234242202,false);
-insert into user (id,ime,prezime,email,password,uloga,broj_osiguranika,prvi_put) values (4,'Ivan','Ivanovic','srbislav30111998@gmail.com','admink1',0,2322432322403,true);
+insert into user (id,ime,prezime,email,password,uloga,broj_osiguranika,prvi_put) values (4,'Ivan','Ivanovic','adminK1@gmail.com','admink1',0,2322432322403,true);
 insert into user (id,ime,prezime,email,password,uloga,broj_osiguranika,prvi_put) values (5,'Jovan','Jovanovic','adminK2@gmail.com','admink1',0,3242543242504,false);
 insert into user (id,ime,prezime,email,password,uloga,broj_osiguranika,prvi_put) values (6,'Marko','Markovic','adminK3@gmail.com','lekar1',0,3424234242205,false);
 insert into user (id,ime,prezime,email,password,uloga,broj_osiguranika,prvi_put) values (7,'Marko','Simonovic','adminK4@gmail.com','adminkc1',0,2322432322406,false);
 insert into user (id,ime,prezime,email,password,uloga,broj_osiguranika,prvi_put) values (8,'Nemanja','Bjelica','adminK5@gmail.com','admink1',0,3242543242507,false);
 insert into user (id,ime,prezime,email,password,uloga,broj_osiguranika,prvi_put) values (9,'Nikola','Jokic','adminK6@gmail.com','lekar1',0,3424234242208,false);
-insert into user (id,ime,prezime,email,password,uloga,broj_osiguranika,prvi_put) values (10,'Borisa','Simanic','lekar@gmail.com','lekar1',1,3242543242509,false);
+insert into user (id,ime,prezime,email,password,uloga,broj_osiguranika,prvi_put) values (10,'Borisa','Simanic','mmijatovic32@gmail.com','lekar1',1,3242543242509,false);
 insert into user (id,ime,prezime,email,password,uloga,broj_osiguranika,prvi_put) values (11,'Milos','Teodosic','lekar2@gmail.com','lekar1',1,3424234242210,false);
 insert into user (id,ime,prezime,email,password,uloga,broj_osiguranika,prvi_put) values (12,'Jovan','Krasic','lekar3@gmail.com','adminkc1',1,2322432322411,false);
 insert into user (id,ime,prezime,email,password,uloga,broj_osiguranika,prvi_put) values (13,'Jovan','Jovanovic','lekar4@gmail.com','admink1',1,3242543242512,false);
@@ -81,14 +81,14 @@ insert into user (id,ime,prezime,email,password,uloga,broj_osiguranika,prvi_put)
 insert into user (id,ime,prezime,email,password,uloga,broj_osiguranika,prvi_put) values (26,'Ivan','Ivanovic','sestra5@gmail.com','adminkc1',2,2322432322425,false);
 insert into user (id,ime,prezime,email,password,uloga,broj_osiguranika,prvi_put) values (27,'Jovan','Jovanovic','sestra6@gmail.com','admink1',2,3242543242526,false);
 insert into user (id,ime,prezime,email,password,uloga,broj_osiguranika,prvi_put) values (28,'Marko','Markovic','sestra7@gmail.com','lekar1',2,3424234242227,false);
-insert into user (id,ime,prezime,email,password,uloga,broj_osiguranika,prvi_put,adresa,grad,drzava) values (29,'Sasa','Pavlovic','pacijent@gmail.com','pacijent',3,2322432322428,false,'Radiceva 6','Novi Sad','Srbija');
+insert into user (id,ime,prezime,email,password,uloga,broj_osiguranika,prvi_put,adresa,grad,drzava) values (29,'Sasa','Pavlovic','jovansvorcan14@gmail.com','pacijent',3,2322432322428,false,'Radiceva 6','Novi Sad','Srbija');
 insert into user (id,ime,prezime,email,password,uloga,broj_osiguranika,prvi_put,adresa,grad,drzava) values (30,'Kevin','Durant','pacijent2@gmail.com','admink1',3,3242543242529,false,'Radiceva 6','Novi Sad','Srbija');
 insert into user (id,ime,prezime,email,password,uloga,broj_osiguranika,prvi_put,adresa,grad,drzava) values (31,'Marko','Guduric','pacijent3@gmail.com','lekar1',3,3424234242230,false,'Radiceva 6','Novi Sad','Srbija');
 insert into user (id,ime,prezime,email,password,uloga,broj_osiguranika,prvi_put,adresa,grad,drzava) values (32,'Borisa','Simanic','pacijent4@gmail.com','lekar1',3,3424234242231,false,'Radiceva 6','Novi Sad','Srbija');
 insert into user (id,ime,prezime,email,password,uloga,broj_osiguranika,prvi_put,adresa,grad,drzava) values (33,'Vladimir','Stimac','pacijent5@gmail.com','adminkc1',3,2322432322432,false,'Radiceva 6','Novi Sad','Srbija');
 insert into user (id,ime,prezime,email,password,uloga,broj_osiguranika,prvi_put,adresa,grad,drzava) values (34,'Lazar','Miletic','pacijent6@gmail.com','admink1',3,3242543242533,false,'Radiceva 6','Novi Sad','Srbija');
 insert into user (id,ime,prezime,email,password,uloga,broj_osiguranika,prvi_put,adresa,grad,drzava) values (35,'Luka','Jovic','pacijent7@gmail.com','adminkc1',3,2322432322434,false,'Radiceva 6','Novi Sad','Srbija');
-insert into user (id,ime,prezime,email,password,uloga,broj_osiguranika,prvi_put,adresa,grad,drzava) values (36,'Luka','Lukic','jovansvorcan14@gmail.com','adminkc1',3,3322432322435,false,'Radiceva 6','Novi Sad','Srbija');
+insert into user (id,ime,prezime,email,password,uloga,broj_osiguranika,prvi_put,adresa,grad,drzava) values (36,'Luka','Lukic','pacijent8@gmail.com','adminkc1',3,3322432322435,false,'Radiceva 6','Novi Sad','Srbija');
 insert into user (id,ime,prezime,email,password,uloga,broj_osiguranika,prvi_put,adresa,grad,drzava) values (37,'Jova','Jovic','pacijent9@gmail.com','adminkc1',3,4322432322437,false,'Radiceva 6','Novi Sad','Srbija');
 --Administratori klinickih centara
 insert into administrator_klinickog_centra (id,kc) values (1,1);
@@ -166,7 +166,6 @@ insert into dijagnoza (id,opis) values (1,'Pacijent je zdrav.');
 insert into dijagnoza (id,opis) values (2,'Redovno dolaziti na preglede svakih godinu dana.');
 insert into dijagnoza (id,opis) values (3,'Redovno dolaziti na preglede svakih mesec dana.');
 insert into dijagnoza (id,opis) values (4,'Trebalo bi samo da konzumira propisane lekove.');
-insert into dijagnoza (id,opis) values (5,'Trebalo bi da ode na operaciju.');
 --Pregledi koje pacijenti mogu zakazati (prepoznajemo ih jer nemaju ni karton a imaju salu)
 insert into pregled(id,datum,trajanje,cena_id,lekar_id,sala_klinika_id,sala_broj_sale,tip_id) values (1,'2020-07-10 17:00:00',50,1,10,1,1,1);
 insert into pregled(id,datum,trajanje,cena_id,lekar_id,sala_klinika_id,sala_broj_sale,tip_id) values (2,'2020-07-10 17:00:00',50,1,11,1,2,1);
@@ -227,20 +226,19 @@ insert into stavka_sifarnika(id,sifra,stavka_id,tip) values (6,'t567x2t2',4,1);
 insert into stavka_sifarnika(id,sifra,stavka_id,tip) values (7,'yuyu6s31',5,1);
 insert into stavka_sifarnika(id,sifra,stavka_id,tip) values (8,'x2ts335f',6,1);
 insert into stavka_sifarnika(id,sifra,stavka_id,tip) values (9,'d99at3',3,0);
-insert into stavka_sifarnika(id,sifra,stavka_id,tip) values (10,'99yy2',4,0);
 --Godisnji odmori
 insert into godisnji_odmor(id,datum_pocetka,datum_kraja,med_osoblje_id) values(1,'2020-07-11 12:00:00','2020-07-21 12:00:00',10);
 insert into godisnji_odmor(id,datum_pocetka,datum_kraja,med_osoblje_id) values(2,'2020-07-12 12:00:00','2020-07-22 12:00:00',11);
 insert into godisnji_odmor(id,datum_pocetka,datum_kraja,med_osoblje_id) values(3,'2020-07-13 12:00:00','2020-07-23 12:00:00',12);
 --Recepti
-insert into recept(id,pregled_id,dijagnoza_id,admin_id) values (1,5,1,1);
-insert into recept(id,pregled_id,dijagnoza_id,admin_id) values (2,6,1,1);
-insert into recept(id,pregled_id,dijagnoza_id,admin_id) values (3,7,2,1);
-insert into recept(id,pregled_id,dijagnoza_id,admin_id) values (4,8,2,1);
-insert into recept(id,pregled_id,dijagnoza_id,admin_id) values (5,9,1,1);
-insert into recept(id,pregled_id,dijagnoza_id,admin_id) values (6,10,2,1);
-insert into recept(id,pregled_id,dijagnoza_id,admin_id) values (7,11,1,1);
-insert into recept(id,pregled_id,dijagnoza_id,admin_id) values (8,12,2,1);
+insert into recept(id,pregled_id,dijagnoza_id) values (1,5,1);
+insert into recept(id,pregled_id,dijagnoza_id) values (2,6,1);
+insert into recept(id,pregled_id,dijagnoza_id) values (3,7,2);
+insert into recept(id,pregled_id,dijagnoza_id) values (4,8,2);
+insert into recept(id,pregled_id,dijagnoza_id) values (5,9,1);
+insert into recept(id,pregled_id,dijagnoza_id) values (6,10,2);
+insert into recept(id,pregled_id,dijagnoza_id) values (7,11,1);
+insert into recept(id,pregled_id,dijagnoza_id) values (8,12,2);
 --Lekovi za recepte
 insert into lecenje(recept_id,lek_id) values (1,1);
 insert into lecenje(recept_id,lek_id) values (1,8);

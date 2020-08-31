@@ -1,14 +1,10 @@
 package rest.domain;
 
-import java.util.HashSet;
-import java.util.Set;
-
 import javax.persistence.CascadeType;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
-import javax.persistence.OneToMany;
 import javax.persistence.Table;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
@@ -18,22 +14,11 @@ import rest.dto.AdministratorKCentraDTO;
 @Entity
 @Table(name="administratorKlinickogCentra")
 public class AdministratorKlinickogCentra extends User{
-
-	@OneToMany(mappedBy="administrator",fetch = FetchType.LAZY, cascade = CascadeType.ALL)
-	private Set<Recept> recepti=new HashSet<Recept>();
 	
 	@ManyToOne(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
 	@JoinColumn(name = "KC", referencedColumnName = "id")
 	@JsonIgnore
 	private KlinickiCentar klinickiCentar;
-	
-	public Set<Recept> getRecepti() {
-		return recepti;
-	}
-
-	public void setRecepti(Set<Recept> recepti) {
-		this.recepti = recepti;
-	}
 
 	public KlinickiCentar getKlinickiCentar() {
 		return klinickiCentar;

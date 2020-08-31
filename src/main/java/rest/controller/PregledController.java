@@ -745,7 +745,6 @@ public class PregledController {
 		}
 		Recept recept = new Recept();
 		recept.setLekovi(lekoviD);
-		recept.setAdministrator(getAdmin());
 		for (Recept r: receptService.findAll())
 			System.out.println(r.getId() + ": " +r.getDijagnoza().getOpis());
 		pregled.setDijagnoza(dijagnoza);

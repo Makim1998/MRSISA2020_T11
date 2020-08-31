@@ -6,4 +6,6 @@ import rest.domain.AdministratorKlinickogCentra;
 
 public interface AdminKCRepository extends JpaRepository<AdministratorKlinickogCentra, Integer>{
 
+	AdministratorKlinickogCentra findOneByEmail(String email);
+	
 }

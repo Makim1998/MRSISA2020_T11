@@ -37,6 +37,7 @@ import rest.service.LekariService;
 import rest.service.MSService;
 import rest.dto.KlinikaDTO;
 import rest.dto.PacijentDTO;
+import rest.dto.UserDTO;
 import rest.service.PacijentService;
 import rest.service.UserService;
 
@@ -191,7 +192,7 @@ public class LoginController {
 
 	
 	@PostMapping(consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
-	public ResponseEntity<User> login(@RequestBody User user)
+	public ResponseEntity<User> login(@RequestBody UserDTO user)
 			throws Exception {
 		User logedIn = (User) request.getSession().getAttribute("korisnik");
 		if(logedIn != null) {
@@ -199,15 +200,15 @@ public class LoginController {
 		}
 		System.out.println("logovanje");
 		System.out.println("halo");
-		User u = userService.findByEmail(user.getUsername());
+		User u = userService.findByEmail(user.getEmail());
 		
-		System.out.println(user.getUsername()+ " " + user.getPassword());
+		System.out.println(user.getEmail()+ " " + user.getPassword());
 		if(u == null) {
 			System.out.println("nije pronasao korisnicko ime");
 
 			return new ResponseEntity<User>(HttpStatus.BAD_REQUEST);
 		}
-		if(!(u.getUsername().equals(user.getUsername()) && u.getPassword().equals(user.getPassword()))) {
+		if(!(u.getUsername().equals(user.getEmail()) && u.getPassword().equals(user.getPassword()))) {
 			System.out.println("nije pronasao par ime-lozinka");
 
 			return new ResponseEntity<User>(HttpStatus.BAD_REQUEST);
@@ -265,7 +266,7 @@ public class LoginController {
 			return new ResponseEntity<>(HttpStatus.NOT_FOUND);
 		}
 		if(logedIn.getUloga()==Uloga.ADMINISTRATOR_KLINICKOG_CENTRA){
-			AdministratorKlinickogCentra akc = adminKCService.findOne(logedIn.getId());
+			AdministratorKlinickogCentra akc = adminKCService.findByEmail(logedIn.getEmail());
 			System.out.println("Pronaden je ulogovan Admin KC");
 			return new ResponseEntity<AdministratorKlinickogCentra>(akc, HttpStatus.OK);
 		}

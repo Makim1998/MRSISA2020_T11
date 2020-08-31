@@ -50,7 +50,10 @@ public class PacijentDTO extends UserDTO {
 		this.adresa = p.getAdresa();
 		this.grad = p.getGrad();
 		this.drzava = p.getDrzava();
-		this.karton = new KartonDTO(p.getKarton());
+		if (p.getKarton() != null)
+			this.karton = new KartonDTO(p.getKarton());
+		else
+			this.karton = null;
 	}
 	
 }
