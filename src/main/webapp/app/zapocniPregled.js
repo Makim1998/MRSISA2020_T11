@@ -16,6 +16,7 @@ Vue.component("zakazaniPregledi", {
                  lekari:[]
              		},
 	    	pregledi:[],
+	    	zavrseniPregledi:[],
 	    	sale:[],
 	    	lekari:[],
 	    	kc_id:null,
@@ -52,7 +53,7 @@ Vue.component("zakazaniPregledi", {
 		   <th>Datum i vreme pregleda</th>
 		   <th>Tip pregleda</th>
 		   <th>Sala</th>
-		   <th>Lekar</th>
+		   <th>Pacijent</th>
 		   <th>Cena</th>
 		   <th>Zdravstveni karton</th>
 		   <th>Pregled</th>
@@ -61,10 +62,32 @@ Vue.component("zakazaniPregledi", {
 			<td class="myclass">{{tp.datum.substring(0,10)}} {{tp.datum.substring(11,16)}}</td>
 			<td class="myclass">{{tp.tip.naziv}}</td>
 			<td class="myclass">{{tp.sala.naziv}}</td>
-			<td class="myclass">{{tp.lekar.username}}</td>
+			<td class="myclass">{{tp.karton.ime+" "+tp.karton.prezime}}</td>
 			<td class="myclass">{{tp.cena.cena}}</td>
 			<td><input class="btn btn-primary" type='button' value='Detalji'  v-on:click="karton(tp.karton)"/></td>
 			<td><input class="btn btn-primary" value='Zapocnite' type='button' v-on:click="zapocni(tp.karton, tp.id)"/></td>
+		</tr>	
+   </table>
+   <h2 class="text-center">Zavrseni pregledi</h2>
+<br>
+   <table align="left" class="table klasicna-tabela">
+		<tr>
+		   <th>Datum i vreme pregleda</th>
+		   <th>Tip pregleda</th>
+		   <th>Sala</th>
+		   <th>Pacijent</th>
+		   <th>Cena</th>
+		   <th>Zdravstveni karton</th>
+		   <th>Pregled</th>
+		</tr>
+		<tr v-for="tp in zavrseniPregledi" class="filterDiv ">
+			<td class="myclass">{{tp.datum.substring(0,10)}} {{tp.datum.substring(11,16)}}</td>
+			<td class="myclass">{{tp.tip.naziv}}</td>
+			<td class="myclass">{{tp.sala.naziv}}</td>
+			<td class="myclass">{{tp.karton.ime+" "+tp.karton.prezime}}</td>
+			<td class="myclass">{{tp.cena.cena}}</td>
+			<td><input class="btn btn-primary" type='button' value='Detalji'  v-on:click="karton(tp.karton)"/></td>
+			<td><input class="btn btn-primary" value='Izmenite' type='button' v-on:click="zapocni(tp.karton, tp.id)"/></td>
 		</tr>	
    </table>
          <!-- Modal -->
@@ -103,7 +126,7 @@ Vue.component("zakazaniPregledi", {
     </div>
   </div>
 </div>
-   <div id="modaldark">
+   <div id="modaldark" style="overflow-y:scroll;">
    <div id="myForm4">
    <div id="pkarton">
        <form>
@@ -138,7 +161,7 @@ Vue.component("zakazaniPregledi", {
 		</div>
 		<div class="lform-group">
 			<label for="istorija">Istorija bolesti: </label>
-    		<textarea style="height:100px;" id = "istorija" class="form-control" v-model="trenutniKarton.istorijaBolesti" disabled></textarea>
+    		<textarea style="height:80px;" id = "istorija" class="form-control" v-model="trenutniKarton.istorijaBolesti" disabled></textarea>
 		</div>
      </form>
      <input class="btn btn-success pkartonbtn" value='OK' type='button' v-on:click="zatvoriKarton()"/>
@@ -222,7 +245,7 @@ Vue.component("zakazaniPregledi", {
 	   </div>
 	   <div id="btns">
 	     <input class="btn btn-secondary" value='Otkazi' type='button' v-on:click="otkazi()"/>
-	     <input class="btn btn-primary" value='Zavrsite' type='button' v-on:click="zapocniPregled();poruka();zavrsite();"/>
+	     <input class="btn btn-primary" value='Zavrsite' type='button' v-on:click="zapocniPregled();"/>
 	   </div>
    </div>
    </div>
@@ -300,13 +323,18 @@ Vue.component("zakazaniPregledi", {
 				.then(response => {
 					this.zapocniOdg=response.data;
 					if (this.zapocniOdg){
-						this.otkazi();
 						axios
 						.get('rest/login/getConcreteUser/Lekar')
 					    .then((response) => {
 							axios
 						    .get('rest/Pregled/zakazani/'+response.data.id,response.data.id)
 						    .then(response => {this.pregledi=response.data;})
+							.catch(response => {
+								this.$router.push("/");
+							});
+							axios
+						    .get('rest/Pregled/zavrseniLekar/'+response.data.id,response.data.id)
+						    .then(response => {this.zavrseniPregledi=response.data;})
 							.catch(response => {
 								this.$router.push("/");
 							});
@@ -332,11 +360,17 @@ Vue.component("zakazaniPregledi", {
 						    	this.cenovnik.klinika_id = response.data.klinikaID;
 						    });
 						});
+						this.zavrsiPregled();
 					}
 					else
 						alert("Ne postoji dijagnoza sa unetom sifrom");
 				});
 			}
+		},
+		zavrsiPregled(){
+			document.getElementById("myForm").style.display = "none";
+			document.getElementById("zapocniP").style.display = "none";
+			this.poruka();
 		},
 		zavrsi(){
 			/*document.getElementById("myForm2").style.display = "block";
@@ -423,6 +457,12 @@ Vue.component("zakazaniPregledi", {
 			axios
 		    .get('rest/Pregled/zakazani/'+response.data.id,response.data.id)
 		    .then(response => {this.pregledi=response.data;})
+			.catch(response => {
+				this.$router.push("/");
+			});
+			axios
+		    .get('rest/Pregled/zavrseniLekar/'+response.data.id,response.data.id)
+		    .then(response => {this.zavrseniPregledi=response.data;})
 			.catch(response => {
 				this.$router.push("/");
 			});

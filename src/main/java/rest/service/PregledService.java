@@ -84,5 +84,9 @@ public class PregledService {
 		// TODO Auto-generated method stub
 		return pregledRepository.findByDijagnozaIsNotNull();
 	}
+	
+	public List<Pregled> findZavrsene(Lekar lekar){
+		return pregledRepository.findByDijagnozaIsNotNullAndLekar(lekar);
+	}
 
 }

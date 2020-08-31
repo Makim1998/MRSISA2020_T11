@@ -197,6 +197,23 @@ public class PregledController {
 		System.out.println("kiko332");
 		return new ResponseEntity<>(slterminiDTO, HttpStatus.OK);
 	}
+	
+	@GetMapping
+	(value = "/zavrseniLekar/{id}")
+	public ResponseEntity<List<PregledDTO>> getZavrseniLekar(@PathVariable Integer id) throws ParseException {
+		System.out.println("stigne do backend-a za zavrsene preglede specificnog lekara");
+		Lekar l=lekarService.findOne(id);
+		List<Pregled> sltermini = pregledService.findZavrsene(l);
+		System.out.println(sltermini.isEmpty());
+		List<PregledDTO> slterminiDTO = new ArrayList<>();
+		for (Pregled s : sltermini) {
+			slterminiDTO.add(new PregledDTO(s));
+			System.out.println("sasa23343");
+		}
+		System.out.println("kiko332");
+		return new ResponseEntity<>(slterminiDTO, HttpStatus.OK);
+	}
+	
 	@GetMapping
 	(value = "/zavrseni/{id}")
 	public ResponseEntity<List<PregledDTO>> getZavrseniTerminiPregleda(@PathVariable Integer id) throws ParseException {
