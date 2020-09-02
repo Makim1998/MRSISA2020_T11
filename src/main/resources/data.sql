@@ -56,13 +56,13 @@ insert into stavka_cenovnika (cenovnik_id,id,cena,usluga) values (5,13,10000,'Of
 insert into user (id,ime,prezime,email,password,uloga,broj_osiguranika,prvi_put) values (1,'Ivan','Ivanovic','AdminKC1@gmail.com','adminkc2',4,2322432322400,false);
 insert into user (id,ime,prezime,email,password,uloga,broj_osiguranika,prvi_put) values (2,'Jovan','Jovanovic','AdminKC2@gmail.com','admink1',4,3242543242501,false);
 insert into user (id,ime,prezime,email,password,uloga,broj_osiguranika,prvi_put) values (3,'Marko','Markovic','AdminKC3@gmail.com','lekar1',4,3424234242202,false);
-insert into user (id,ime,prezime,email,password,uloga,broj_osiguranika,prvi_put) values (4,'Ivan','Ivanovic','adminK1@gmail.com','admink1',0,2322432322403,true);
+insert into user (id,ime,prezime,email,password,uloga,broj_osiguranika,prvi_put) values (4,'Ivan','Ivanovic','adminK1@gmail.com','admink1',0,2322432322403,false);
 insert into user (id,ime,prezime,email,password,uloga,broj_osiguranika,prvi_put) values (5,'Jovan','Jovanovic','adminK2@gmail.com','admink1',0,3242543242504,false);
 insert into user (id,ime,prezime,email,password,uloga,broj_osiguranika,prvi_put) values (6,'Marko','Markovic','adminK3@gmail.com','lekar1',0,3424234242205,false);
 insert into user (id,ime,prezime,email,password,uloga,broj_osiguranika,prvi_put) values (7,'Marko','Simonovic','adminK4@gmail.com','adminkc1',0,2322432322406,false);
 insert into user (id,ime,prezime,email,password,uloga,broj_osiguranika,prvi_put) values (8,'Nemanja','Bjelica','adminK5@gmail.com','admink1',0,3242543242507,false);
 insert into user (id,ime,prezime,email,password,uloga,broj_osiguranika,prvi_put) values (9,'Nikola','Jokic','adminK6@gmail.com','lekar1',0,3424234242208,false);
-insert into user (id,ime,prezime,email,password,uloga,broj_osiguranika,prvi_put) values (10,'Borisa','Simanic','mmijatovic32@gmail.com','lekar1',1,3242543242509,false);
+insert into user (id,ime,prezime,email,password,uloga,broj_osiguranika,prvi_put) values (10,'Borisa','Simanic','lekar1@gmail.com','lekar1',1,3242543242509,false);
 insert into user (id,ime,prezime,email,password,uloga,broj_osiguranika,prvi_put) values (11,'Milos','Teodosic','lekar2@gmail.com','lekar1',1,3424234242210,false);
 insert into user (id,ime,prezime,email,password,uloga,broj_osiguranika,prvi_put) values (12,'Jovan','Krasic','lekar3@gmail.com','adminkc1',1,2322432322411,false);
 insert into user (id,ime,prezime,email,password,uloga,broj_osiguranika,prvi_put) values (13,'Jovan','Jovanovic','lekar4@gmail.com','admink1',1,3242543242512,false);
@@ -190,13 +190,15 @@ insert into pregled(id,datum,trajanje,cena_id,lekar_id,sala_klinika_id,sala_broj
 insert into pregled(id,datum,trajanje,cena_id,lekar_id,sala_klinika_id,sala_broj_sale,tip_id,karton_id) values (19,'2020-07-09 15:00:00',50,1,13,1,4,2,7);
 insert into pregled(id,datum,trajanje,cena_id,lekar_id,sala_klinika_id,sala_broj_sale,tip_id,karton_id) values (20,'2020-07-09 12:00:00',50,5,15,2,1,5,2);
 --Pregledi koji su zakazani i administrator ih treba odobriti (imaju karton ali ne salu)
-insert into pregled(id,datum,trajanje,cena_id,lekar_id,tip_id,karton_id) values (21,'2020-07-09 13:30:00',50,1,10,2,1);
-insert into pregled(id,datum,trajanje,cena_id,lekar_id,tip_id,karton_id) values (22,'2020-07-09 15:30:00',50,1,10,2,3);
-insert into pregled(id,datum,trajanje,cena_id,lekar_id,tip_id,karton_id) values (23,'2020-07-09 17:00:00',50,1,10,2,2);
+insert into pregled(id,datum,trajanje,cena_id,lekar_id,tip_id,karton_id) values (21,'2020-07-13 14:30:00',50,1,10,2,1);
+insert into pregled(id,datum,trajanje,cena_id,lekar_id,tip_id,karton_id) values (22,'2020-07-13 15:30:00',50,1,10,2,3);
+insert into pregled(id,datum,trajanje,cena_id,lekar_id,tip_id,karton_id) values (23,'2020-07-13 17:00:00',50,1,10,2,2);
 insert into pregled(id,datum,trajanje,cena_id,lekar_id,tip_id,karton_id) values (24,'2020-07-09 17:30:00',50,5,15,5,5);
 --Operacije koji su zakazane i administrator ih treba odobriti (nemaju salu)
 insert into operacija(id,datum,trajanje,cena_id,karton_id) values (1,'2020-07-13 14:30:00',50,1,1);
 insert into operacija_lekari(operacije_id,lekari_id) values(1,10);
+insert into operacija(id,datum,trajanje,cena_id,karton_id) values (3,'2020-07-13 15:00:00',50,1,2);
+insert into operacija_lekari(operacije_id,lekari_id) values(3,11);
 insert into operacija(id,datum,trajanje,cena_id,karton_id) values (2,'2020-07-12 12:00:00',50,5,5);
 insert into operacija_lekari(operacije_id,lekari_id) values(2,15);
 --Lekovi

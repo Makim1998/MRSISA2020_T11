@@ -3,6 +3,7 @@ package rest.controller;
 
 import java.text.ParseException;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 import javax.servlet.http.HttpServletRequest;
@@ -23,12 +24,15 @@ import org.springframework.web.bind.annotation.RestController;
 
 import rest.controller.PregledController.PreglediSale;
 import rest.domain.Lekar;
+import rest.domain.Operacija;
 import rest.domain.Pregled;
 import rest.domain.Uloga;
 import rest.domain.User;
 import rest.dto.KlinikaDTO;
 import rest.dto.LekarDTO;
+import rest.dto.OperacijaDTO;
 import rest.service.LekariService;
+import rest.service.OperacijaService;
 import rest.service.PregledService;
 
 
@@ -41,6 +45,8 @@ public class LekariController {
 	private LekariService lekariService;
 	@Autowired
 	private PregledService pregledService;
+	@Autowired
+	private OperacijaService operacijaService;
 	
 	@Autowired
 	public HttpServletRequest request;
@@ -65,6 +71,55 @@ public class LekariController {
 
 		return new ResponseEntity<>(lekariDTO, HttpStatus.OK);
 	}
+	
+	@GetMapping(value="/dostupni/{id}")
+	public ResponseEntity<List<LekarDTO>> getDostupni(@PathVariable Integer id) {
+		Operacija dto = operacijaService.findOne(id);
+		for (Lekar lek: dto.getLekari())
+			System.out.println("lekar za operaciju: " + lek.getIme() + " " + lek.getPrezime());
+		System.out.println("operacija id: " + dto.getId());
+		System.out.println("operacija datum: " + dto.getDatum());
+		List<Lekar> lekari = lekariService.findAll();
+		List<LekarDTO> lekariDTO = new ArrayList<>();
+		first:
+		for (Lekar l: lekari) {
+			Date vremeKrajaOp = new Date(dto.getDatum().getTime());
+			vremeKrajaOp.setTime(dto.getDatum().getTime() + dto.getTrajanje()*60000);
+			List<Pregled> pregledi = pregledService.findZakazane(l);
+			for (Pregled p: pregledi) {
+				Date pregledTime = new Date(p.getDatum().getTime());
+				pregledTime.setTime(p.getDatum().getTime() + p.getTrajanje()*60000);
+				if (p.getDatum().after(dto.getDatum()) && p.getDatum().before(vremeKrajaOp)) {
+					continue first;
+				}
+				else if (p.getDatum().before(dto.getDatum()) && pregledTime.after(dto.getDatum())) {
+					continue first;
+				}
+			}
+			List<Operacija> operacije = operacijaService.findNeZakazane();
+			for (Operacija o: operacije) {
+				Date operacijaTime = new Date(o.getDatum().getTime());
+				operacijaTime.setTime(o.getDatum().getTime() + o.getTrajanje()*60000);
+				if (o.getDatum().after(dto.getDatum()) && o.getDatum().before(vremeKrajaOp)) {
+					if (o.getLekari().contains(l))
+						continue first;
+				}
+				else if (o.getDatum().before(dto.getDatum()) && operacijaTime.after(dto.getDatum())) {
+					if (o.getLekari().contains(l))
+						continue first;
+				}
+			}
+			LekarDTO lekar = new LekarDTO(l);
+			lekar.setProsek(l);
+			lekariDTO.add(lekar);
+		}
+		for (LekarDTO dt: lekariDTO) {
+			System.out.println("lekar id: " + dt.getId());
+			System.out.println("lekar: " + dt.getIme() + " " + dt.getPrezime());
+		}
+		return new ResponseEntity<>(lekariDTO, HttpStatus.OK);
+	}
+	
 	@DeleteMapping(value = "/{id}")
 	public ResponseEntity<Void> deleteCourse(@PathVariable Integer id) {
 		if(tipKorisnika()!=Uloga.ADMINISTRATOR_KLINIKE) {

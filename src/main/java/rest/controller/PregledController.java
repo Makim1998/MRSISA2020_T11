@@ -419,7 +419,7 @@ public class PregledController {
 		if(tipKorisnika()!=Uloga.ADMINISTRATOR_KLINIKE) {
 			return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
 		}
-		System.out.println("ispitan za potvrdu PREGLED:"+preg.getDatum()+preg.getSala().getNaziv()+preg.getLekar().getUsername());
+		//System.out.println("ispitan za potvrdu PREGLED:"+preg.getDatum()+preg.getSala().getNaziv()+preg.getLekar().getUsername());
 		Pregled p = pregledService.findOne(preg.getId());
 		if (p == null) {
 			return new ResponseEntity<>(HttpStatus.BAD_REQUEST);

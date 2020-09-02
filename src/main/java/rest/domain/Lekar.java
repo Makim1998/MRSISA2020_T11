@@ -99,6 +99,7 @@ public class Lekar extends User{
 		this.setPassword(lekarDTO.getPassword());
 		this.setRadnoVremeDo(df.parse(lekarDTO.getRadnoVremeDo()));
 		this.setRadnoVremeOd(df.parse(lekarDTO.getRadnoVremeOd()));
+		this.setUloga(Uloga.LEKAR);
 	}
 
 	public Set<Operacija> getOperacije() {

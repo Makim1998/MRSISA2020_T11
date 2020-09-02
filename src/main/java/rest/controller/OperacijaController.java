@@ -7,6 +7,7 @@ import java.util.Collections;
 import java.util.Date;
 import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
 import javax.servlet.http.HttpServletRequest;
 
@@ -31,6 +32,7 @@ import rest.domain.Karton;
 import rest.domain.Klinika;
 import rest.domain.Lekar;
 import rest.domain.Operacija;
+import rest.domain.Pacijent;
 import rest.domain.Pregled;
 import rest.domain.Sala;
 import rest.domain.StavkaCenovnika;
@@ -49,6 +51,7 @@ import rest.service.KlinikaService;
 import rest.service.LekariService;
 import rest.service.MailService;
 import rest.service.OperacijaService;
+import rest.service.PacijentService;
 import rest.service.PregledService;
 import rest.service.SalaService;
 import rest.service.StavkaCenovnikaService;
@@ -69,6 +72,8 @@ public class OperacijaController {
 	private SalaService salaService;
 	@Autowired
 	private KartonService kartonService;
+	@Autowired
+	private PacijentService pacijentService;
 	@Autowired
 	private TipPregledaService tipPregledaService;
 	@Autowired
@@ -195,27 +200,57 @@ public class OperacijaController {
 		}
 		System.out.println("kiko3");
 		return new ResponseEntity<>(sviDTO, HttpStatus.OK);
+	}*/
+	static class LekariOperacija{
+		public List<LekarDTO> lekari;
+		public OperacijaDTO operacija;
 	}
+	
 	@PutMapping(value="/potvrdi",consumes = "application/json")
-	public ResponseEntity<PregledDTO> updateCourse(@RequestBody PregledDTO pregledDTO) {
+	public ResponseEntity<OperacijaDTO> updateCourse(@RequestBody LekariOperacija lekariOperacija) {
 
 		// a course must exist
-		Pregled p = pregledService.findOne(pregledDTO.getId());
+		OperacijaDTO operacijaDTO = lekariOperacija.operacija;
+		List<LekarDTO> lekariDTO = lekariOperacija.lekari;
+		Operacija p = operacijaService.findOne(operacijaDTO.getId());
 
 		if (p == null) {
 			return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
 		}
-		System.out.println(pregledDTO.getSala().getBrojSale());
-		System.out.println(pregledDTO.getSala().getKlinika());
-		Klinika k= klinikaService.findOne(pregledDTO.getSala().getKlinika());
-		Sala s=new Sala(k,pregledDTO.getSala().getBrojSale(),pregledDTO.getSala().getNaziv());
+		//System.out.println(operacijaDTO.getSala().getKlinika());
+		Klinika k= klinikaService.findOne(operacijaDTO.getSala().getKlinika());
+		Sala s=new Sala(k,operacijaDTO.getSala().getBrojSale(),operacijaDTO.getSala().getNaziv());
 		p.setSala(s);
-		p.setDatum(pregledDTO.getDatum());
+		p.setDatum(operacijaDTO.getDatum());
+		HashSet<Lekar> lekari = new HashSet<Lekar>();
+		for (LekarDTO l: lekariDTO) {
+			System.out.println("lekar za operaciju: " + l.getIme() + " " + l.getPrezime());
+			Lekar lekar = lekarService.findOne(l.getId());
+			lekari.add(lekar);
+		}
+		p.setLekari(lekari);
+		String naslov="Zakazivanje pregleda";
+		String tekst="Poštovani,"
+				+ "\nVas operacija je potvrdjena za  "+p.getDatum().toString().substring(0,16)
+		        + ".\nOperacija ce se odrzati u sali "+p.getSala().getNaziv()+",broj:"+p.getSala().getBrojSale()+".";
+		Pacijent pacijent = pacijentService.findOneByKarton(p.getKarton());
+		String email = pacijent.getEmail();
+		mailService.SendMail(email, naslov, tekst);
+		for (Lekar l: p.getLekari()) {
+			email = l.getEmail();
+			tekst="Poštovani,"
+					+ "\nOperacija Vam je potvrdjena za  "+p.getDatum().toString().substring(0,16)
+			        + ".\nOperacija ce se odrzati u sali "+p.getSala().getNaziv()+",broj:"+p.getSala().getBrojSale()+"."
+			        + "\nU obavezi ste da prisustvujete.";
+			mailService.SendMail(email, naslov, tekst);
+		}
 		System.out.println("15. MAJ");
-		pregledService.save(p);
+		operacijaService.save(p);
 		System.out.println("saa");
-		return new ResponseEntity<PregledDTO>(new PregledDTO(p), HttpStatus.OK);
+		return new ResponseEntity<OperacijaDTO>(new OperacijaDTO(p), HttpStatus.OK);
 	}
+	
+	/*
 	@DeleteMapping(value = "/{id}")
 	public ResponseEntity<Void> deleteCourse(@PathVariable Integer id) {
 
