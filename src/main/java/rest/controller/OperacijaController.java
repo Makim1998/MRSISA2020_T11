@@ -229,7 +229,7 @@ public class OperacijaController {
 			lekari.add(lekar);
 		}
 		p.setLekari(lekari);
-		String naslov="Zakazivanje pregleda";
+		String naslov="Zakazivanje operacije";
 		String tekst="Poštovani,"
 				+ "\nVas operacija je potvrdjena za  "+p.getDatum().toString().substring(0,16)
 		        + ".\nOperacija ce se odrzati u sali "+p.getSala().getNaziv()+",broj:"+p.getSala().getBrojSale()+".";
@@ -558,6 +558,64 @@ public class OperacijaController {
 			presjek.kraj.setTime(Math.max(pPoslije.getTime(),kraj.getTime()));
 		}
 		return presjek;
+	}
+	
+	static class OdlaganjeO{
+		public Integer id;
+		public Date novi;
+	}
+	
+	@PutMapping(value="/odlozi")
+	public ResponseEntity<Void> odloziOp(@RequestBody OdlaganjeO odlaganje) throws ParseException{
+		Integer id = odlaganje.id;
+		if (tipKorisnika() != Uloga.ADMINISTRATOR_KLINIKE)
+			return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
+		Date datum = odlaganje.novi;
+		Operacija operacija = operacijaService.findOne(id);
+		System.out.println("Izmenjeni datum parsiran: " + datum);
+		System.out.println("Trenutni datum operacije: " + operacija.getDatum());
+		if (datum.before(operacija.getDatum())) {
+			System.out.println("Novi datum nije posle starog");
+			return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
+		}
+		Date krajOperacije = new Date(datum.getTime());
+		krajOperacije.setTime(krajOperacije.getTime() + 60000*operacija.getTrajanje());
+		for (Operacija o: operacijaService.findNeZakazane()) {
+			if (operacija.getId() != o.getId()) {
+				Date temp_kraj = new Date(o.getDatum().getTime());
+				temp_kraj.setTime(temp_kraj.getTime() + 60000*o.getTrajanje());
+				if (o.getDatum().before(datum) && temp_kraj.after(datum)) {
+					if (o.getSala().getId() == operacija.getSala().getId()) {
+						System.out.println("Preklapanje sa salom (pocinje pre neke operacije)");
+						return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
+					}
+				}
+				if (o.getDatum().after(datum) && o.getDatum().before(krajOperacije)) {
+					if (o.getSala().getId() == operacija.getSala().getId()) {
+						System.out.println("Preklapanje sa salom (pocinje posle neke operacije)");
+						return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
+					}
+				}
+			}
+		}
+		SimpleDateFormat sdf = new SimpleDateFormat("dd.MM.YYYY HH:mm");
+		String stariDatum = sdf.format(operacija.getDatum());
+		String noviDatum = sdf.format(datum);
+		String naslov="Odlaganje operacije";
+		String tekst="Poštovani,"
+				+ "\nVas operacija rezervisana za "+stariDatum
+		        + " je odlozena na "+noviDatum;
+		Pacijent pacijent = pacijentService.findOneByKarton(operacija.getKarton());
+		String email = pacijent.getEmail();
+		mailService.SendMail(email, naslov, tekst);
+		tekst += "\nU obavezi ste da prisustvujete.";
+		for (Lekar l: operacija.getLekari()) {
+			email = l.getEmail();
+			mailService.SendMail(email, naslov, tekst);
+		}
+		operacija.setDatum(datum);
+		operacija = operacijaService.save(operacija);
+		return new ResponseEntity<>(HttpStatus.OK);
 	}
 }
 

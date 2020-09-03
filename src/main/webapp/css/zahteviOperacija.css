@@ -40,3 +40,28 @@
   	margin-right:auto;
   	max-width: 60%;
 }
+
+#odl-oper-el{
+	display:none;
+	margin:0 5%;
+	position:relative;
+		margin-top:10px;
+		width: 60%;
+		height:50vh;
+		background-color:#b3ff66;
+		overflow:hidden;
+		padding:20px;
+		border-radius:10px;
+}
+
+.btn-oper-odl{
+	background-color: #ff9933;
+	border: 1px solid black;
+	color: white;
+}
+
+.btn-oper-otk{
+	background-color: #b3cccc;
+	border: 1px solid black;
+	color: white;
+}

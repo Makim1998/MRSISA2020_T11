@@ -12,8 +12,10 @@ Vue.component("zahteviOperacija", {
 	    	ispitanPregled:null,
 	    	sala:null,
 	    	lekari:[],
-	    	lekariIds:[],
-	    	dodati:[]
+	    	dodati:[],
+	    	nepregledi:[],
+	    	zaOdlaganje:null,
+	    	noviDatum:null
 	    }
 	},
 	template: ` 
@@ -36,7 +38,38 @@ Vue.component("zahteviOperacija", {
 		</tr>
 	
 </table>
+
+	<br><br>
+	
+	<h2 class="text-center">Rezervisane operacije</h2>
+	  <br>
+	<table align="left" class="table klasicna-tabela">
+	  <tr>
+		   <th>Datum i vreme operacije</th>
+		   <th>Trajanje</th>
+		   <th>Zdravstveni karton</th>
+		   <th>Operacija</th>
+	  </tr>
+	  <tr v-for="tp in nepregledi" class="filterDiv">
+		  <td class="myclass">{{tp.datum.substring(0,10)}} {{tp.datum.substring(11,16)}}</td>
+		  <td class="myclass">{{tp.trajanje}} minuta</td>
+	      <td><input class="btn btn-primary" type='button' value='Detalji'  v-on:click="karton(tp.karton)"/></td>
+		  <td><input class="btn btn-primary" value='Odlozite' type='button' v-on:click="odlozite(tp)"/></td>
+	  </tr>
+	</table>
 <div id="modaldark">
+		<div id="myForm5">
+		<div id="odl-oper-el">
+			<label for="newDate">Novi Datum:</label>
+			<input id="newDate" type="datetime-local" class="psw" placeholder="Novi datum" v-model="noviDatum">
+			<br>
+			<div id="btns">
+				<input type="button" class="btn-oper-odl" value="Odlozi" v-on:click="odloziOper()"/>
+				<input type="button" class="btn-oper-otk" value="Otkazi" v-on:click="zavrsiOdl()"/>
+			</div>
+		</div>
+		</div>
+
 		<div id="myForm4">
 			<div id="dostupniLekari">
 				<h2 class="text-center">Dostupni lekari</h2>
@@ -132,13 +165,78 @@ Vue.component("zahteviOperacija", {
 `
 	, 
 	methods : {
-		prikaziLekare(){
+		odlozite(tp){
+			this.zaOdlaganje = tp;
+			document.getElementById("modaldark").style.display = "block";
+			document.getElementById("modaldark").style.opacity="1";
+			document.getElementById("myForm5").style.display = "block";
+			document.getElementById("odl-oper-el").style.display = "block";
+		},
+		odloziOper(){
+			if(!moment( $("#newDate").val(), 'YYYY-MM-DDTHH:mm', true).isAfter(moment())){
+        		alert("Odaberite datum i vreme u buducnosti!");
+        	}
+			else if(!moment( $("#newDate").val(), 'YYYY-MM-DDTHH:mm', true).isValid()){
+        		alert("Datum nije u ispravnom formatu!\n (YYYY-MM-DD HH:mm)");
+        	}
+			else{
+			axios
+			.put('rest/Operacija/odlozi', {"id":this.zaOdlaganje.id, 'novi':this.noviDatum})
+			.then(response => {
+				axios
+				.get('rest/login/getConcreteUser/AdminK')
+			    .then((response) => {
+					axios
+				    .get('rest/Operacija/zahtevi/'+response.data.id,response.data.id)
+				    .then(response => {
+				    	if(response.data.length==0){
+				    		this.operacije=response.data;
+				    		this.nemaZahteva();
+				    	}else{
+				    		this.operacije=response.data;
+				    		this.saljemPregled=response.data[0];
+					    	this.ispitanPregled=response.data[0];
+				    	}
+				    })
+					.catch(response => {
+						this.$router.push("/");
+					});
+					axios
+				    .get('rest/Operacija/nezahtevi/'+response.data.id,response.data.id)
+				    .then(response => {
+				    	this.nepregledi=response.data;
+						axios
+					    .get('rest/sala')
+					    .then(response =>(this.sale=response.data));
+				    })
+					.catch(response => {
+						this.$router.push("/");
+					});
+			    	this.admin=response.data;
+					axios
+				    .get('rest/login/getKlinika')
+				    .then(response =>(this.klinika_id=response.data.id));
+			    })
+			    .catch(response => {
+					this.$router.push("/");
+				});
+				alert("Uspesno ste odlozili operaciju na dalji datum!");
+				this.zavrsiOdl();
+			})
+			.catch(error => {
+				alert("Niste uneli dobar datum! Pokusajte neki drugi");
+			});
+			}
+		},
+		zavrsiOdl(){
+			document.getElementById("modaldark").style.display = "none";
+			document.getElementById("modaldark").style.opacity="0";
+			document.getElementById("myForm5").style.display = "none";
+			document.getElementById("odl-oper-el").style.display = "none";
+		},prikaziLekare(){
 			axios
 	    	.get('rest/lekari/dostupni/'+this.ispitanPregled.id)
-	    	.then(response => this.lekari=response.data);
-			for (var l of this.lekari){
-				lekariIds.push(l.id);
-			}
+	    	.then(response => (this.lekari=response.data));
 			document.getElementById("myForm4").style.display = "block";
 			document.getElementById("dostupniLekari").style.display = "block";
 			document.getElementById("myForm").style.display = "none";
@@ -153,14 +251,14 @@ Vue.component("zahteviOperacija", {
 			this.dodati.splice(index, 1);
 		},
 		pronadiLekare(){
-			if (this.dodati.length != 0){
+			if (this.dodati.length >= 2){
 				document.getElementById("myForm4").style.display = "none";
 				document.getElementById("dostupniLekari").style.display = "none";
 		    	this.potvrdiRezervisanje();
 		    	this.otkaziRezervisanje();
 			}
 			else{
-				alert("Morate uneti barem jednog lekara!");
+				alert("Morate uneti barem dva lekara!");
 			}
 		},
         prikaziSve(){
@@ -191,20 +289,43 @@ Vue.component("zahteviOperacija", {
 				axios
         		.put('rest/Operacija/potvrdi',{"lekari": this.dodati, "operacija":this.ispitanPregled})
             	.then(response =>{
-    				axios
-    		    	.get('rest/Operacija/zahtevi/'+this.admin.id,this.admin.id)
-    		    	.then(response => {
-    		    		if(response.data.length==0){
-    		    			alert("Trenutno nema zahteva za operaciju");
-    		    		}else{
-    		    			this.pregledi=response.data;
-    			    		this.saljemPregled=this.pregledi[0];
-    			    		this.ispitanPregled=this.pregledi[0];
-    		    		}
-    		    	})
-    		    	.catch(response => {
-    					this.$router.push("/");
-    				});
+            		axios
+            		.get('rest/login/getConcreteUser/AdminK')
+            	    .then((response) => {
+            			axios
+            		    .get('rest/Operacija/zahtevi/'+response.data.id,response.data.id)
+            		    .then(response => {
+            		    	if(response.data.length==0){
+            		    		this.operacije=response.data;
+            		    		this.nemaZahteva();
+            		    	}else{
+            		    		this.operacije=response.data;
+            		    		this.saljemPregled=response.data[0];
+    					    	this.ispitanPregled=response.data[0];
+            		    	}
+            		    })
+            			.catch(response => {
+            				this.$router.push("/");
+            			});
+            			axios
+            		    .get('rest/Operacija/nezahtevi/'+response.data.id,response.data.id)
+            		    .then(response => {
+            		    	this.nepregledi=response.data;
+            				axios
+            			    .get('rest/sala')
+            			    .then(response =>(this.sale=response.data));
+            		    })
+            			.catch(response => {
+            				this.$router.push("/");
+            			});
+            	    	this.admin=response.data;
+            			axios
+            		    .get('rest/login/getKlinika')
+            		    .then(response =>(this.klinika_id=response.data.id));
+            	    })
+            	    .catch(response => {
+            			this.$router.push("/");
+            		});
             		alert("Uspesno ste potvrdili operaciju.");
             		document.getElementById("sa").style.display = "none";
     				document.getElementById("myForm3").style.display = "none";
@@ -292,6 +413,15 @@ Vue.component("zahteviOperacija", {
 			document.getElementById("modaldark").style.opacity="0";
 			document.getElementById("zkarton").style.display = "none";
         },
+        nemaZahteva(){
+        	axios
+		    .get('rest/Operacija/nezahtevi/'+this.admin.id,this.admin.id)
+		    .then(response => {
+		    	this.nepregledi=response.data;
+		    	this.saljemPregled=response.data[0];
+		    	this.ispitanPregled=response.data[0];
+		    })
+        }
 	},
 	mounted(){
 		$('#datetimepicker4').datetimepicker();
@@ -302,11 +432,12 @@ Vue.component("zahteviOperacija", {
 		    .get('rest/Operacija/zahtevi/'+response.data.id,response.data.id)
 		    .then(response => {
 		    	if(response.data.length==0){
-		    		alert("Trenutno nema zahteva za operaciju");
+		    		this.operacije=response.data;
+		    		this.nemaZahteva();
 		    	}else{
 		    		this.operacije=response.data;
-			    	this.saljemPregled=this.operacije[0];
-			    	this.ispitanPregled=this.operacije[0];
+		    		this.saljemPregled=response.data[0];
+			    	this.ispitanPregled=response.data[0];
 		    	}
 		    })
 			.catch(response => {
@@ -314,11 +445,11 @@ Vue.component("zahteviOperacija", {
 			});
 			axios
 		    .get('rest/Operacija/nezahtevi/'+response.data.id,response.data.id)
-		    .then(response => {this.nepregledi=response.data
+		    .then(response => {
+		    	this.nepregledi=response.data;
 				axios
 			    .get('rest/sala')
-			    .then(response =>{this.sale=response.data
-				});
+			    .then(response => (this.sale=response.data));
 		    })
 			.catch(response => {
 				this.$router.push("/");
