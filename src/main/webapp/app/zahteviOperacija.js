@@ -15,7 +15,8 @@ Vue.component("zahteviOperacija", {
 	    	dodati:[],
 	    	nepregledi:[],
 	    	zaOdlaganje:null,
-	    	noviDatum:null
+	    	noviDatum:null,
+	    	sistem:[]
 	    }
 	},
 	template: ` 
@@ -34,7 +35,8 @@ Vue.component("zahteviOperacija", {
 			<td class="myclass">{{tp.datum.substring(0,10)}} {{tp.datum.substring(11,16)}}</td>
 			<td class="myclass">{{tp.trajanje}} minuta</td>
 			<td><input class="btn btn-primary" type='button' value='Detalji'  v-on:click="karton(tp.karton)"/></td>
-			<td><input class="btn btn-primary" value='Zakazite' type='button' v-on:click="zakazite(tp.datum,tp.trajanje,tp,0)"/></td>
+			<td v-if="sistem.indexOf(tp)==-1"><input class="btn btn-primary" value='Zakazite' type='button' v-on:click="zakazite(tp.datum,tp.trajanje,tp,0)"/></td>
+			<td v-else><input class="btn btn-primary" value='Potvrdite' type='button' v-on:click="zakazite2(tp.datum,tp.trajanje,tp,0)"/></td>
 		</tr>
 	
 </table>
@@ -196,6 +198,7 @@ Vue.component("zahteviOperacija", {
 				    		this.operacije=response.data;
 				    		this.saljemPregled=response.data[0];
 					    	this.ispitanPregled=response.data[0];
+					    	this.sistemMora(response.data);
 				    	}
 				    })
 					.catch(response => {
@@ -285,7 +288,28 @@ Vue.component("zahteviOperacija", {
 			document.getElementById("modaldark").style.display = "block";
 			document.getElementById("modaldark").style.opacity="1";
 		},
+		zakazite2(ou,traje,pr,a){
+			if(a==0){
+        		this.saljemPregled=pr;
+        	}
+          	var str1=ou.substring(0,10);
+        	var str2=" ";
+        	var str3=ou.substring(11,16);
+        	this.datumPretrage=str1.concat(str2,str3);
+			this.sistemRez();
+		},
+		sistemRez(){
+			axios
+        	.put('rest/Operacija/sistem/'+this.saljemPregled.id+"/"+this.klinika_id)
+            .then(response =>{
+            	this.ispitanPregled=response.data;
+    			document.getElementById("myForm3").style.display = "block";
+    			document.getElementById("modaldark").style.display = "block";
+    			document.getElementById("modaldark").style.opacity="1";
+            });
+		},
 		potvrdiRezervisanje(){
+				alert("Sacekajte na rezultate operacije i nemojte nista jos kliknuti!");
 				axios
         		.put('rest/Operacija/potvrdi',{"lekari": this.dodati, "operacija":this.ispitanPregled})
             	.then(response =>{
@@ -302,6 +326,7 @@ Vue.component("zahteviOperacija", {
             		    		this.operacije=response.data;
             		    		this.saljemPregled=response.data[0];
     					    	this.ispitanPregled=response.data[0];
+    					    	this.sistemMora(response.data);
             		    	}
             		    })
             			.catch(response => {
@@ -421,6 +446,22 @@ Vue.component("zahteviOperacija", {
 		    	this.saljemPregled=response.data[0];
 		    	this.ispitanPregled=response.data[0];
 		    })
+        },
+        sistemMora(data){
+        	for (var p of data){
+        		sada = new Date();
+        		console.log("sada: "+sada.getTime());
+        		tada = new Date(p.datum.toString());
+        		console.log("tada: "+tada.getTime());
+        		razlika = (tada.getTime() - sada.getTime())/(60000*60);
+        		console.log("razlika je: "+razlika);
+        		if (razlika <= 72){
+        			this.sistem.push(p);
+        			console.log("id operacije: "+p.id);
+        		}
+        		console.log("zavrsila se jedna provera");
+        	}
+        	console.log("trebalo bi da je funkcija gotova");
         }
 	},
 	mounted(){
@@ -438,6 +479,7 @@ Vue.component("zahteviOperacija", {
 		    		this.operacije=response.data;
 		    		this.saljemPregled=response.data[0];
 			    	this.ispitanPregled=response.data[0];
+			    	this.sistemMora(response.data);
 		    	}
 		    })
 			.catch(response => {

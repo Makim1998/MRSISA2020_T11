@@ -1,4 +1,4 @@
-//const RadniKalendar = { template : '<radniKalendar></radniKalendar>' }
+const RadniKalendar = { template : '<radniKalendar></radniKalendar>' }
 //const Overavanje = { template : '<overavanje></overavanje>' }
 
 Vue.component("MSHome", {
@@ -54,7 +54,7 @@ Vue.component("MSHome", {
 `
 		, 
 		components:{
-			//'radniKalendar': RadniKalendar,
+			'radniKalendar': RadniKalendar,
 			//'overavanje': Overavanje
 		},
 		

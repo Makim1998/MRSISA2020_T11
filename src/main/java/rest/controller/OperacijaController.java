@@ -7,10 +7,12 @@ import java.util.Collections;
 import java.util.Date;
 import java.util.HashSet;
 import java.util.List;
+import java.util.Random;
 import java.util.Set;
 
 import javax.servlet.http.HttpServletRequest;
 
+import org.hibernate.engine.transaction.jta.platform.internal.SynchronizationRegistryBasedSynchronizationStrategy;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
@@ -616,6 +618,22 @@ public class OperacijaController {
 		operacija.setDatum(datum);
 		operacija = operacijaService.save(operacija);
 		return new ResponseEntity<>(HttpStatus.OK);
+	}
+	
+	@PutMapping(value="/sistem/{id}/{klinika}")
+	public ResponseEntity<OperacijaDTO> sistemRezervacija(@PathVariable Integer id, @PathVariable Integer klinika) throws ParseException{
+		System.out.println("Stigne do backend-a za sistemsku rezervaciju");
+		Operacija operacija = operacijaService.findOne(id);
+		List<Sala> sale = salaService.findAll(klinikaService.findOne(klinika));
+		Random rand = new Random();
+		int brojSale = rand.nextInt(sale.size());
+		Sala odabrana = sale.get(brojSale);
+		System.out.println("odabrana je sala: " + odabrana.getNaziv());
+		operacija = pronadjiSlobodniTermin(operacija, odabrana);
+		System.out.println("Trebalo bi da je pronadjen termin!");
+		operacija = operacijaService.save(operacija);
+		OperacijaDTO dto = new OperacijaDTO(operacija);
+		return new ResponseEntity<OperacijaDTO>(dto, HttpStatus.OK);
 	}
 }
 
