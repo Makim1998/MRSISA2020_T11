@@ -10,7 +10,8 @@ Vue.component("adminiKCentara", {
                 	},
 			tipovi:[],
 			id:null,
-			inicijalni:null
+			inicijalni:null,
+			admin_id:null
 		}
 	},
 	template: ` 
@@ -25,12 +26,14 @@ Vue.component("adminiKCentara", {
 				   <th>Korisnicko ime</th>
 				   <th>Ime</th>
 				   <th>Prezime</th>
+				   <th>Brisanje</th>
 				</tr>
 				<tr v-for="tp in tipovi" class="filterDiv ">
 					<td class="myclass">{{tp.id}}</td>
 					<td class="myclass">{{tp.username}}</td>
 					<td class="myclass">{{tp.ime}}</td>
 					<td class="myclass">{{tp.prezime}}</td>
+					<td><input class="btn btn-danger btn-lg" type='button' value='Obrisi'  v-on:click="obrisi(tp.id)"/></td>
 				</tr>
 				<tr>
 					<td></td>
@@ -48,6 +51,12 @@ Vue.component("adminiKCentara", {
 		    </br></br>
 		    <button type="button" class="btn maal leftbutton" v-on:click="dodaj()">Potvrdi</button>
 		    <button type="button" class="btn zaal rightbutton" v-on:click="otkazi()">Otkazi</button>
+		   </div>
+		   <div class="form-popup" id="myForm2">
+		      <h6>Da li ste sigurni da zelite da obrisete datog korisnika?</h6>
+		      </br></br>
+		      <button type="button" class="btn maal leftbutton" v-on:click="del()">Potvrdi</button>
+		      <button type="button" class="btn zaal rightbutton" v-on:click="otkazi2()">Otkazi</button>
 		   </div>
 		   </div>
 		</div>
@@ -69,6 +78,23 @@ Vue.component("adminiKCentara", {
 				document.getElementById("myForm").style.display = "none";
 				document.getElementById("modaldark").style.display = "none";
 				document.getElementById("modaldark").style.opacity="0";
+	        },
+	        otkazi2() {
+				document.getElementById("myForm2").style.display = "none";
+				document.getElementById("modaldark").style.display = "none";
+				document.getElementById("modaldark").style.opacity="0";
+	        },
+	        obrisi(id) {
+	        	if (admin_id != 1 && admin_id!=2 && admin_id!=3)
+	        		alert("Niste ovlasceni da vrsite brisanje administratora!");
+	        	else if (id == 1 || id==2 || id==3)
+	        		alert("Datog korisnika ne mozete da brisete!");
+	        	else{
+	        		this.id = id;
+					document.getElementById("myForm2").style.display = "block";
+					document.getElementById("modaldark").style.display = "block";
+					document.getElementById("modaldark").style.opacity="1";
+	        	}
 	        },
 	        proveraPolja(){
 	        	if (this.input.ime.trim() == "")
@@ -97,13 +123,32 @@ Vue.component("adminiKCentara", {
 	        	else{
 	        		alert("Niste uneli sva polja!");
 	        	}
+	        },
+	        del(){
+	        	console.log("Pronadena je operacija za brisanje!");
+	        	console.log("Id: "+this.id);
+	        	axios
+	        	.delete('rest/adminKC/'+this.id)
+	        	.then(response => {	
+	        		axios
+	    		    .get('rest/adminKC')
+	    		    .then(response => (this.tipovi=response.data));
+	    			axios
+	    			.get('rest/adminKC/inicijalni')
+	    			.then(response => (this.inicijalni=response.data));
+					this.otkazi2();
+				})
+				.catch(error => {
+					alert("Niste ovlasceni da vrsite brisanje administratora!");
+				});
 	        }
 		},
 		mounted(){
 			axios
 		    .get('rest/login/getConcreteUser/AdminKC')
 		    .then((response) => {
-		    	console.log(response.data);	
+		    	console.log(response.data);
+		    	admin_id = response.data.id;
 		    })
 		    .catch(response => {
 				this.$router.push("/");

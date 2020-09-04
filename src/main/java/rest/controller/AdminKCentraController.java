@@ -2,6 +2,7 @@ package rest.controller;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Set;
 
 import javax.servlet.http.HttpServletRequest;
 
@@ -9,7 +10,9 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -109,5 +112,28 @@ public class AdminKCentraController {
 			return new ResponseEntity<>(true, HttpStatus.OK);
 		else
 			return new ResponseEntity<>(false, HttpStatus.OK);
+	}
+	
+	@DeleteMapping(value="/{id}")
+	public ResponseEntity<Void> deleteAdmin(@PathVariable Integer id){
+		System.out.println("Stigne do backend-a za brisanje admina KC");
+		System.out.println("id brisanog: " + id);
+		if (tipKorisnika() != Uloga.ADMINISTRATOR_KLINICKOG_CENTRA)
+			return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
+		User logedIn = (User) request.getSession().getAttribute("korisnik");
+		AdministratorKlinickogCentra admin = service.findOne(logedIn.getId());
+		if (admin.getId() != 1 && admin.getId() != 2 && admin.getId() != 3) { 
+			System.out.println("Problem je kod ulogovanog");
+			return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
+		}
+		KlinickiCentar kc = getKC();
+		Set<AdministratorKlinickogCentra> admini = kc.getAdmini();
+		admini.remove(service.findOne(id));
+		kc.setAdmini(admini);
+		kc = kcService.save(kc);
+		service.remove(id);
+		for (AdministratorKlinickogCentra a: service.findAll())
+			System.out.println(a.getEmail() + " " +a.getBrojOsiguranika() + " " + a.getId());
+		return new ResponseEntity<>(HttpStatus.OK);
 	}
 }

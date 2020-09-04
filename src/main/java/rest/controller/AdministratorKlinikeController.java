@@ -9,7 +9,9 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -120,6 +122,26 @@ public class AdministratorKlinikeController {
 		admin = adminKService.save(admin);
 		klinika.setAdministrator(admin);
 		klinika = klinikaService.save(klinika);
+		return new ResponseEntity<>(HttpStatus.OK);
+	}
+	
+	@DeleteMapping(value="/{id}")
+	public ResponseEntity<Void> deleteAdmin(@PathVariable Integer id){
+		System.out.println("Stigne do backend-a za brisanje admina K");
+		if (tipKorisnika()!=Uloga.ADMINISTRATOR_KLINICKOG_CENTRA)
+			return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
+		User logedIn = (User) request.getSession().getAttribute("korisnik");
+		AdministratorKlinickogCentra admin = adminKCService.findOne(logedIn.getId());
+		System.out.println("admin KC id: "+admin.getId());
+		if (admin.getId() != 1 && admin.getId() != 2 && admin.getId() != 3) { 
+			System.out.println("Problem je kod ulogovanog");
+			return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
+		}
+		AdministratorKlinike brisan = adminKService.findOne(id);
+		Klinika klinika = klinikaService.findOne(brisan.getKlinika().getId());
+		klinika.setAdministrator(null);
+		klinika = klinikaService.save(klinika);
+		adminKService.remove(id);
 		return new ResponseEntity<>(HttpStatus.OK);
 	}
 }

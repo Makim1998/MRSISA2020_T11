@@ -27,12 +27,14 @@ Vue.component("adminiKlinika", {
 				   <th>Korisnicko ime</th>
 				   <th>Ime</th>
 				   <th>Prezime</th>
+				   <th>Brisanje</th>
 				</tr>
 				<tr v-for="tp in tipovi" class="filterDiv ">
 					<td class="myclass">{{tp.id}}</td>
 					<td class="myclass">{{tp.username}}</td>
 					<td class="myclass">{{tp.ime}}</td>
 					<td class="myclass">{{tp.prezime}}</td>
+					<td><input class="btn btn-danger btn-lg" type='button' value='Obrisi'  v-on:click="obrisi(tp.id)"/></td>
 				</tr>
 				<tr>
 					<td></td>
@@ -40,6 +42,7 @@ Vue.component("adminiKlinika", {
 				</tr>	
 		   </table>
 		   <div id="modaldark">
+		   
 		   <div class="form-popup" id="myForm">
 		    <h4>Novi administrator klinike</h4>
 		    <input type="text" class="psw" v-model="input.ime" placeholder="Ime" required>
@@ -55,7 +58,15 @@ Vue.component("adminiKlinika", {
 		    <button type="button" class="btn maal leftbutton" v-on:click="dodaj()">Potvrdi</button>
 		    <button type="button" class="btn zaal rightbutton" v-on:click="otkazi()">Otkazi</button>
 		   </div>
+		   <div class="form-popup" id="myForm2">
+		      <h6>Da li ste sigurni da zelite da obrisete datog korisnika?</h6>
+		      </br></br>
+		      <button type="button" class="btn maal leftbutton" v-on:click="del()">Potvrdi</button>
+		      <button type="button" class="btn zaal rightbutton" v-on:click="otkazi2()">Otkazi</button>
 		   </div>
+		   
+		   </div>
+		   
 		</div>
 		</div>		  
 		`
@@ -70,6 +81,21 @@ Vue.component("adminiKlinika", {
 				document.getElementById("myForm").style.display = "none";
 				document.getElementById("modaldark").style.display = "none";
 				document.getElementById("modaldark").style.opacity="0";
+	        },
+	        otkazi2() {
+				document.getElementById("myForm2").style.display = "none";
+				document.getElementById("modaldark").style.display = "none";
+				document.getElementById("modaldark").style.opacity="0";
+	        },
+	        obrisi(id) {
+	        	if (id == 1 || id==2 || id==3)
+	        		alert("Datog korisnika ne mozete da brisete!");
+	        	else{
+	        		this.id = id;
+					document.getElementById("myForm2").style.display = "block";
+					document.getElementById("modaldark").style.display = "block";
+					document.getElementById("modaldark").style.opacity="1";
+	        	}
 	        },
 	        proveraPolja(){
 	        	console.log("Stiglo je do provere polja");
@@ -106,6 +132,24 @@ Vue.component("adminiKlinika", {
 	        	else{
 	        		alert("Niste uneli sva polja!");
 	        	}
+	        },
+	        del(){
+	        	console.log("Pronadena je operacija za brisanje!");
+	        	console.log("Id: "+this.id);
+	        	axios
+	        	.delete('rest/adminK/'+this.id)
+	        	.then(response => {	
+					axios
+			    	.get('rest/adminK')
+			    	.then(response => (this.tipovi=response.data));
+					axios
+					.get('rest/klinika/adminIds')
+					.then(response => (this.klinike=response.data));
+					this.otkazi2();
+				})
+				.catch(error => {
+					alert("Niste ovlasceni da vrsite brisanje administratora!");
+				});
 	        }
 		},
 		mounted(){
