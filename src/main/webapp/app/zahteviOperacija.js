@@ -65,6 +65,7 @@ Vue.component("zahteviOperacija", {
 			<label for="newDate">Novi Datum:</label>
 			<input id="newDate" type="datetime-local" class="psw" placeholder="Novi datum" v-model="noviDatum">
 			<br>
+			<label>{{"Trenutni datum: "+ispitanPregled.datum}}</label>
 			<div id="btns">
 				<input type="button" class="btn-oper-odl" value="Odlozi" v-on:click="odloziOper()"/>
 				<input type="button" class="btn-oper-otk" value="Otkazi" v-on:click="zavrsiOdl()"/>

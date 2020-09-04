@@ -46,9 +46,11 @@
 	margin:0 5%;
 	position:relative;
 		margin-top:10px;
+		margin-left: auto;
+		margin-right: auto;
 		width: 60%;
 		height:50vh;
-		background-color:#b3ff66;
+		background-color:#66ff66;
 		overflow:hidden;
 		padding:20px;
 		border-radius:10px;
